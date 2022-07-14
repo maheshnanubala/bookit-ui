@@ -1,68 +1,64 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import './Signin.scss';
-import { useState } from 'react';
-import toastr from 'toastr';
+import React from "react";
+import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { signin } from "../../redux/ActionReducer/authSlice";
+import "./Signin.scss";
 
 const Signin = () => {
+  const { loading, error } = useSelector((state) => ({ ...state.auth }));
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const { register, handleSubmit } = useForm();
 
-  const handleSignIn = (e) => {
+  const onSubmit = (formValues, e) => {
     e.preventDefault();
-    const emailFormat = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-    if (password.trim().length === 0) {
-      toastr.error('password can not be blank')
+    alert("");
+    console.log(formValues);
+    if (formValues.email && formValues.password) {
+      dispatch(signin({ formValues, navigate }));
     }
-    if (email.trim().length === 0) {
-      toastr.error('Email can not be blank')
-    }
-    if (email.trim().length !== 0 && (email.match(emailFormat) === null)) {
-      toastr.error('Invalid Email format')
-    }
-    if (email.trim().length !== 0 && email.match(emailFormat) !== null && password.trim().length !== 0) {
-      toastr.success('User has been logged-in successfully')
-    }
-  }
+  };
 
-  return(
-    <div className="Signin" >
-      <h3 className='signInBookIt'>BOOKIT</h3>
-      <form className='signInForm'>
-        <h5 className='signInText'>SIGN IN</h5>
+  return (
+    <div className="Signin">
+      <h3 className="signInBookIt">BOOKIT</h3>
+      <form className="signInForm" onSubmit={handleSubmit(onSubmit)}>
+        <h5 className="signInText">SIGN IN</h5>
         <div className="mb-3">
-          <label className='emailLabel'>Email address</label>
+          <label className="emailLabel">Email address</label>
           <input
             type="email"
             className="form-control"
             placeholder="Enter email"
-            onChange={e => { setEmail(e.target.value) }}
+            {...register("email")}
           />
         </div>
         <div className="mb-3">
-          <label className='passwordLable'>Password</label>
+          <label className="passwordLable">Password</label>
           <input
             type="password"
             className="form-control"
             placeholder="Enter password"
-            onChange={e => { setPassword(e.target.value) }}
+            {...register("password")}
           />
         </div>
         <p className="forgotPassword">
-          <a href='#'>Forgot password</a>
+          <a href="#">Forgot password</a>
         </p>
         <div className="d-grid">
-          <button type="submit" className="btn btn-primary signInButton" onClick={handleSignIn}>
+          <button type="submit" className="btn btn-primary signInButton">
             Sign-in
           </button>
         </div>
         <p className="signUpLink">
-          <a href='#'>Sign-up</a>
+          <a href="#">Sign-up</a>
         </p>
       </form>
     </div>
-  )
+  );
 };
 
 Signin.propTypes = {};

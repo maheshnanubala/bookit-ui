@@ -1,19 +1,15 @@
-// for future private access  
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import Signin from "../pages/Signin/Signin.lazy";
 
-
-import { useState } from 'react';
-
-import { Col } from 'react-bootstrap';
-const PrivateRoute = ({children},{/*, {Authenticate}*/}) => {
-    const [isAuth, setAuth] = useState(true);
-    // console.log('fron pvt',Authenticate);
-    return(
-        <>
-         { isAuth?  <> <Col md={10} className="pe-0 ps-0">
-          {children}
-          </Col>  </> :  '' }
-        </>
-       );
-
-}
+const PrivateRoute = ({ children }) => {
+  const { user } = useSelector((state) => ({ ...state.auth.user }));
+  return user?.email ? (
+    { children }
+  ) : (
+    <>
+      <Signin />
+    </>
+  );
+};
 export default PrivateRoute;
