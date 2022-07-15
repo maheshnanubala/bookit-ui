@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { signin } from "../../redux/ActionReducer/authSlice";
 import "./Signin.scss";
 
@@ -15,16 +16,14 @@ const Signin = () => {
 
   const onSubmit = (formValues, e) => {
     e.preventDefault();
-    alert("");
-    console.log(formValues);
     if (formValues.email && formValues.password) {
-      dispatch(signin({ formValues, navigate }));
+      dispatch(signin({ formValues, navigate, toast }));
     }
   };
 
   return (
     <div className="Signin">
-      <h3 className="signInBookIt">BOOKIT</h3>
+      <h3 className="signInBookIt text-center">BOOKIT</h3>
       <form className="signInForm" onSubmit={handleSubmit(onSubmit)}>
         <h5 className="signInText">SIGN IN</h5>
         <div className="mb-3">

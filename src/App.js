@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import Home from "./pages/Home/Home.lazy";
 import About from "./pages/About/About.lazy";
@@ -19,7 +21,10 @@ import PrivateRoute from "./Authentication/PrivateRoutes";
 import { setUser } from "./redux/ActionReducer/authSlice";
 
 function App() {
-  //const { user } = useSelector((state) => ({ ...state.auth.user }));
+  const [isAuth, setAuth] = useState(false);
+  const { user: userAuthenticated } = useSelector((state) => ({
+    ...state.auth.user,
+  }));
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
