@@ -1,39 +1,49 @@
 .home {
-    text-align:left;
-    width:auto;
-    margin-left: -5%;
-    // font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;   
-    font-family:"adobe-clean", sans-serif; 
+  text-align: left;
+  width: auto;
+  margin-left: -5%;
+  // font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: "adobe-clean", sans-serif;
 }
-.hr{
-    border:solid 1px;
-    box-shadow: 15px 10px 8px #888888;    
-    width:auto;  
+.hr {
+  border: solid 1px;
+  box-shadow: 15px 10px 8px #888888;
+  width: auto;
 }
-.cardtext{
-    color:  #92979a;
+.cardtext {
+  color: #92979a;
 }
-.cardheadings{
-    color: #41484f;    
+.cardheadings {
+  color: #41484f;
 }
-.headings{
-    margin-left: 3%;
-    color: #3396f1;
- }
- #welcomeName-row{
-    margin-left: 4%;
- }
- #text-name{
-    color:  #3396f1;
- }
-.text-initial{
-    margin-left: 8%;
-    margin-top: 2%;
-    height:fit-content;
+.headings {
+  margin-left: 3%;
+  color: #3396f1;
 }
-.text-initial:hover{
-    cursor:pointer;
- }
-.custom-recentbooking-section{
-    height:auto;
+#welcomeName-row {
+  margin-left: 4%;
+}
+#text-name {
+  color: #3396f1;
+}
+.text-initial {
+  margin-left: 8%;
+  margin-top: 2%;
+  height: fit-content;
+}
+.text-initial:hover {
+  cursor: pointer;
+}
+.custom-recentbooking-section {
+  height: auto;
+}
+
+.noBookingSPan {
+  color: rgb(221, 51, 8);
+  padding-left: 50px;
+}
+
+.participantModelPurpose {
+  font-size: initial;
+  font-weight: 400;
 }

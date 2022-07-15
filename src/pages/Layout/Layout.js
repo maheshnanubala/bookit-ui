@@ -10,10 +10,10 @@ import Signup from "../Signup/Signup.lazy";
 
 const Layout = ({ children }) => {
   const { user } = useSelector((state) => ({ ...state.auth.user }));
-  console.log(user, "inside layout");
+
   return (
     <>
-      {user?.email && (
+      {user && (
         <Container fluid className="layout">
           <Row className="positon-sticky">
             <Col md={12} className="pe-0 ps-0">

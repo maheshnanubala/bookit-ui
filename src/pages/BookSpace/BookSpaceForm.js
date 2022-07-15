@@ -1,34 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { Form, Button, Container, Row, Col, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { MultiSelect } from "react-multi-select-component";
-import "./BookSpace.scss";
+import { toast } from "react-toastify";
 import BookSpaceModal from "./BookSpaceModal";
-
-const options = [
-  { label: "User 1", value: "1" },
-  { label: "User 2", value: "3" },
-  { label: "User 3", value: "2" },
-];
+import { data } from "../../constants/mockdata";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  bookworkspace,
+  availableworkspace,
+} from "../../redux/ActionReducer/bookSlice";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { bookWorkSpaceSchema } from "../../services/ValidationSchema";
+import "./BookSpace.scss";
 
 const BookSpaceForm = () => {
   const [show, setShow] = useState(false);
+
   const [selected, setSelected] = useState([]);
   const navigate = useNavigate();
-  const { register, handleSubmit, setValue } = useForm();
+  const dispatch = useDispatch();
+  const { user, loading, error } = useSelector((state) => ({
+    ...state.auth.user,
+  }));
+
+  // const availableBookSpaceValue = {
+  //   floor_id: 1,
+  //   from_date: "15-07-2022",
+  //   to_date: "15-07-2022",
+  // };
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(bookWorkSpaceSchema) });
   const [bookSpace, setBookspace] = useState({
-    city_id: "",
-    location_id: "",
-    building_id: "",
-    floor_id: "",
+    city_id: 0,
+    location_id: 0,
+    building_id: 1,
+    floor_id: 0,
     from_date: "",
     to_date: "",
-    workspace_available: "",
-    workspace_required: "",
+    workspaces_booked: 0,
     purpose: "",
-    booking_for: [],
+    user_id: user?.id,
+    user_ids: [],
   });
 
   const handleClose = () => {
@@ -36,29 +56,30 @@ const BookSpaceForm = () => {
   };
   const handleSave = () => {
     setShow(false);
-    navigate("/book-space-confirmation");
+    dispatch(bookworkspace({ bookSpace, navigate, toast }));
   };
   const handleSelectChange = (data) => {
     setSelected(data);
     setValue(
-      "booking_for",
-      data.map((item) => {
-        return { selectedItem: item.value };
-      })
+      "user_ids",
+      data &&
+        data.map((item) => {
+          return parseInt(item.value);
+        })
     );
   };
   const onSubmit = (formValue, e) => {
-    console.log(formValue);
     setBookspace({
-      city_id: formValue.city_id || "",
-      location_id: formValue.location_id || "",
-      building_id: formValue.city_id || "",
-      floor_id: formValue.floor_id || "",
+      city_id: parseInt(formValue.city_id) || 0,
+      location_id: parseInt(formValue.location_id) || 0,
+      building_id: 1,
+      floor_id: parseInt(formValue.floor_id) || 0,
       from_date: formValue.from_date || "",
       to_date: formValue.to_date || "",
-      workspace_available: formValue.workspace_available || "",
-      workspace_required: formValue.workspace_required || "",
+      workspaces_booked: parseInt(formValue.workspaces_booked) || 0,
       purpose: formValue.purpose || "",
+      user_id: user?.id,
+      user_ids: formValue.user_ids || [],
     });
     setShow(true);
   };
@@ -73,10 +94,12 @@ const BookSpaceForm = () => {
                 <Form.Group className="mb-3">
                   <Form.Label>City</Form.Label>
                   <Form.Select size="sm" {...register("city_id")}>
-                    <option></option>
-                    <option value="1">Chennai</option>
-                    <option value="2">Bangalore</option>
-                    <option value="3">Others</option>
+                    <option>Select City</option>
+                    {data.workspace_details.CityList.map((item) => (
+                      <option value={item.id} key={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
                   </Form.Select>
                 </Form.Group>
               </Col>
@@ -84,10 +107,12 @@ const BookSpaceForm = () => {
                 <Form.Group className="mb-3">
                   <Form.Label>Location</Form.Label>
                   <Form.Select size="sm" {...register("location_id")}>
-                    <option></option>
-                    <option value="1">Ganesh Chambers</option>
-                    <option value="2">Workafella</option>
-                    <option value="3">Others</option>
+                    <option>Select Location</option>
+                    {data.workspace_details.LocationList.map((item) => (
+                      <option value={item.id} key={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
                   </Form.Select>
                 </Form.Group>
               </Col>
@@ -95,10 +120,12 @@ const BookSpaceForm = () => {
                 <Form.Group className="mb-3">
                   <Form.Label>Floor</Form.Label>
                   <Form.Select size="sm" {...register("floor_id")}>
-                    <option></option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                    <option>Select Floor</option>
+                    {data.workspace_details.FloorList.map((item) => (
+                      <option value={item.id} key={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
                   </Form.Select>
                 </Form.Group>
               </Col>
@@ -134,6 +161,7 @@ const BookSpaceForm = () => {
                     size="sm"
                     type="text"
                     disabled
+                    defaultValue={"100"}
                     {...register("workspace_available")}
                   />
                 </Form.Group>
@@ -144,9 +172,13 @@ const BookSpaceForm = () => {
                   <Form.Control
                     size="sm"
                     type="text"
-                    {...register("workspace_required")}
+                    {...register("workspaces_booked")}
                   />
                 </Form.Group>
+                <span className="text-danger">
+                  {errors.workspaces_booked &&
+                    errors.workspaces_booked?.message}
+                </span>
               </Col>
               <Col></Col>
             </Row>
@@ -155,10 +187,12 @@ const BookSpaceForm = () => {
                 <Form.Group className="mb-3">
                   <Form.Label>Purpose</Form.Label>
                   <Form.Select size="sm" {...register("purpose")}>
-                    <option></option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                    <option>Select</option>
+                    {data.workspace_details.Purpose.map((item) => (
+                      <option value={item} key={item}>
+                        {item}
+                      </option>
+                    ))}
                   </Form.Select>
                 </Form.Group>
               </Col>
@@ -168,7 +202,9 @@ const BookSpaceForm = () => {
                 <Form.Group className="mb-3">
                   <Form.Label>Booking for</Form.Label>
                   <MultiSelect
-                    options={options}
+                    options={data.workspace_details.UserList.map((item) => {
+                      return { label: item.name, value: item.id };
+                    })}
                     value={selected}
                     onChange={handleSelectChange}
                     hasSelectAll={false}
@@ -184,6 +220,16 @@ const BookSpaceForm = () => {
               type="submit"
             >
               Book
+              {loading ? (
+                <Spinner
+                  animation="border"
+                  size="sm"
+                  variant="light"
+                  className="ms-2"
+                />
+              ) : (
+                ""
+              )}
             </Button>
           </Form>
         </Col>
