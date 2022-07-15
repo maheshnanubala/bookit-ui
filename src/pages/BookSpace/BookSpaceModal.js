@@ -5,6 +5,44 @@ import { CustomFieldInput } from "./CustomFieldInput";
 import "./BookSpace.scss";
 
 const BookSpaceModal = ({ show, handleClose, formData, handleSave }) => {
+  const location = (val) => {
+    switch (val) {
+      case 1:
+        return "Ganesh Chambers";
+      case 2:
+        return "Olymbiya Tech Park";
+      case 3:
+        return "Electronics City";
+      case 4:
+        return "Madiwala";
+      case 5:
+        return "Koramangala";
+      case 6:
+        return "Tambaram";
+      case 7:
+        return "Trichy";
+      default:
+        return "Others";
+    }
+  };
+
+  const city = (val) => {
+    switch (val) {
+      case 1:
+        return "Chennai";
+      case 2:
+        return "Bangalore";
+      case 3:
+        return "Hyderabad";
+      case 4:
+        return "Kerala";
+      case 5:
+        return "Mumbai";
+      default:
+        return "Others";
+    }
+  };
+
   return (
     <>
       <Modal
@@ -23,11 +61,16 @@ const BookSpaceModal = ({ show, handleClose, formData, handleSave }) => {
         <Modal.Body className="justify-content-center">
           <CustomFieldInput
             label={"No . of workspaces booked"}
-            inputs={formData?.workspace_required}
+            inputs={formData?.workspaces_booked}
           />
           <CustomFieldInput
             label={"Location"}
-            inputs={"Ganesh Chambers - Chennai"}
+            inputs={
+              <>
+                <span className="ms-2">{location(formData?.location_id)}</span>{" "}
+                - <span className="me-2">{city(formData?.city_id)}</span>
+              </>
+            }
           />
           <CustomFieldInput
             label={"Booked Dates"}

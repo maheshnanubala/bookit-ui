@@ -4,7 +4,7 @@ import Signin from "../pages/Signin/Signin.lazy";
 
 const PrivateRoute = ({ children }) => {
   const { user } = useSelector((state) => ({ ...state.auth.user }));
-  return user?.email ? (
+  return user ? (
     { children }
   ) : (
     <>

@@ -1,52 +1,51 @@
-.bookspace-confirmation-section{
-    .modal-dialog{
-        max-width: 650px;
-    }
-    .modal-content{
-        padding: 0.5rem 2rem 0.5rem 2rem!important;
-    }
-    .modal-title{
-        color: #4588F0;
-        font-size: large;
-    }
-    .modal-body{
-        color: #535353!important;
-    }
-  
-    .bookspace-cancel-btn{
-          color: #000!important;
-          padding-left: 4rem;
-          padding-right: 4rem;         
-    }
-    .bookspace-btn:focus{
-        box-shadow: none!important;      
+.bookspace-confirmation-section {
+  .modal-dialog {
+    max-width: 650px;
   }
-    .bookspace-confirm-btn{
-        background-color: #4588f0!important;
-        color: white;
-        padding-left: 4rem;
-        padding-right: 4rem;
-    }
-.form-label {
-  float: left;
-  color: #818181;
-}
+  .modal-content {
+    padding: 0.5rem 2rem 0.5rem 2rem !important;
+  }
+  .modal-title {
+    color: #4588f0;
+    font-size: large;
+  }
+  .modal-body {
+    color: #535353 !important;
+  }
 
-.mb-3 {
-  margin-top: 1.5rem;
-}
+  .bookspace-cancel-btn {
+    color: #000 !important;
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+  .bookspace-btn:focus {
+    box-shadow: none !important;
+  }
+  .bookspace-confirm-btn {
+    background-color: #4588f0 !important;
+    color: white;
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+  .form-label {
+    float: left;
+    color: #818181;
+  }
 
+  .mb-3 {
+    margin-top: 1.5rem;
+  }
 }
-.dropdown-container{
-    height: 31px;
+.dropdown-container {
+  height: 31px;
 }
-.dropdown-heading-dropdown-arrow{
-    color: #808387!important;
-    margin-top: -6px;
+.dropdown-heading-dropdown-arrow {
+  color: #808387 !important;
+  margin-top: -6px;
 }
-.dropdown-heading{
-    padding-right: 7px!important;
+.dropdown-heading {
+  padding-right: 7px !important;
 }
-.dropdown-heading-value span{
-    display: none!important;
+.dropdown-heading-value {
+  margin-top: -7px !important;
 }
