@@ -20,10 +20,15 @@ export const BookSpaceConfirmation = () => {
           <Row className="mt-5">
             <Col>
               <Alert variant={"success"} className="text-center p-5">
-                Congratulations! 20 workstations have been booked at Ganesh
-                Chambers, Building 2, Floor 3 from 11th July, 2022 to 15th July,
-                2022 for Yuvaraj, Jashwanth, Mahesh, Karthick. The emails have
-                been sent to their respective ids
+                <i
+                  class="bi bi-check-circle text-success"
+                  style={{ fontSize: 50 }}
+                ></i>
+                <h3 className="mb-3">Congratulations!</h3>
+                20 workstations have been booked at Ganesh Chambers, Building 2,
+                Floor 3 from 11th July, 2022 to 15th July, 2022 for Yuvaraj,
+                Jashwanth, Mahesh, Karthick. The emails have been sent to their
+                respective members
               </Alert>
             </Col>
           </Row>
