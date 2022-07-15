@@ -29,7 +29,7 @@ function App() {
   return (
     <div className="App">
       {/* Public Routes */}
-      {!user ? (
+
         <Routes>
           <Route path="/" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
@@ -37,12 +37,10 @@ function App() {
           <Route path="/forgot-password" element={<Forgotpassword />} />
           <Route path="/reset-password" element={<Resetpassword />} />
         </Routes>
-      ) : (
-        <></>
-      )}
+      
 
       {/* Private Routes */}
-      {!user ? (
+     
         <Layout>
           <Routes>
             <Route path="/home" element={<Home />} />
@@ -57,11 +55,7 @@ function App() {
             />
           </Routes>
         </Layout>
-      ) : (
-        <Routes>
-          <Route path="/" element={<Signin />} />
-        </Routes>
-      )}
+     
     </div>
   );
 }

@@ -5,14 +5,26 @@
 
 .form-main-page {
   background-color: #fff;
-  padding: 50px 100px;
+  // padding: 50px 100px;
   box-shadow: 2px 2px 10px 10px #c3c3db;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 600px;
+  min-width: 320px;
 }
 
 .form-row {
   text-align: left;
-  position: relative;
-  top: 15vh;
+  display: flex;
+  padding: 10px;
+  height: inherit;
+  justify-content: center;
+  align-items: center;
+}
+
+.internal-div {
+  max-width: 400px;
 }
 
 .form-header {
@@ -45,4 +57,9 @@
 }
 .label-text {
   color: rgb(71, 70, 70);
+}
+
+.internal-div .toast-container .fade .toast-header {
+  background-color: red;
+  color: white;
 }
