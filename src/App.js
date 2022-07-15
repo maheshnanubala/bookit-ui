@@ -19,7 +19,7 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/about" element={<About />} />
-          <Route path="/" element={<Signin />}/>
+          <Route path="/" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<Forgotpassword />} />
           <Route path="/reset-password" element={<Resetpassword />} />
@@ -33,7 +33,7 @@ function App() {
           <Route
             path="/book-space-confirmation"
             element={<BookSpaceConfirmation />}
-          />              
+          />
         </Routes>
       </Layout>
     </div>
