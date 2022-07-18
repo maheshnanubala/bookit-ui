@@ -135,7 +135,7 @@ const BookSpaceForm = () => {
     } else{
       let response = await ApiUtility.getSpaceAvailability(parseInt(floorId), fromDate, fromDate);
       setAvailableWorkSpace(response)
-      if(response === 0) {
+      if(response === 0 || response < 0) {
         toast.error('Workspace is not available for the selected date')
       }else{
         setBookingDataClass(true)
