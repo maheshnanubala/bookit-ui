@@ -6,7 +6,7 @@ const AsideBar  = () => {
         <div id='sidenav_title'>BOOKIT</div>
         <div className='nav-link-context'>
           <NavLink to='/home' ><i class="bi bi-house-fill sidebaricon">&nbsp;&nbsp;&nbsp;</i>Home</NavLink>
-          <NavLink to='/book-space' ><i class="bi bi-calendar4-week  sidebaricon">&nbsp;&nbsp;&nbsp;</i>BOOK</NavLink>
+          <NavLink to='/book-space' ><i class="bi bi-calendar4-week  sidebaricon">&nbsp;&nbsp;&nbsp;</i>Book</NavLink>
         </div>
       {/* <NavLink to='/home' ><i class="bi bi-calendar-check-fill sidebaricon"></i> Booking</NavLink> */}
 

@@ -59,7 +59,7 @@ const Home = () => {
                     </Card.Body>
                   </Card>
                 </Col>
-              )) : <span className='noBookingSPan'>No UpComming booking</span>
+              )) : <span className='noBookingSPan'>No upcoming booking</span>
             }
           </Row>
         </section>
@@ -79,7 +79,7 @@ const Home = () => {
                     </Card.Body>
                   </Card>
                 </Col>
-              )) : <span className='noBookingSPan'>No Past booking</span>
+              )) : <span className='noBookingSPan'>No past booking</span>
             }
           </Row>
         </section>
@@ -91,7 +91,7 @@ const Home = () => {
           <Modal.Body>
             <div>
               <h6><b>Purpose:</b>&nbsp;&nbsp;&nbsp; <span className='participantModelPurpose'>{bookingData?.purpose}</span></h6>
-              <h6><b>Participant Details</b></h6>
+              <h6><b>Participants Details</b></h6>
             </div>
               
             <Table striped bordered hover>

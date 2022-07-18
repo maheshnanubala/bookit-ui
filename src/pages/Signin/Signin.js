@@ -7,12 +7,23 @@ import { toast } from "react-toastify";
 import { signin } from "../../redux/ActionReducer/authSlice";
 import "./Signin.scss";
 import { NavLink } from "react-router-dom";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 
 const Signin = () => {
   const { loading, error } = useSelector((state) => ({ ...state.auth }));
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm();
+  const userSchema = yup.object().shape({
+    email: yup.string().email().required("Email is required"),
+    password: yup.string().required("Password is required"),
+  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(userSchema) });
 
   const onSubmit = (formValues, e) => {
     e.preventDefault();
@@ -34,6 +45,7 @@ const Signin = () => {
             placeholder="Enter email"
             {...register("email")}
           />
+          <span className="text-danger">{errors.email && errors.email?.message}</span>
         </div>
         <div className="mb-3">
           <label className="passwordLable">Password</label>
@@ -43,6 +55,7 @@ const Signin = () => {
             placeholder="Enter password"
             {...register("password")}
           />
+          <span className="text-danger">{errors.password && errors.password?.message}</span>
         </div>
         <p className="text-end">
           <a href="#">Forgot password</a>

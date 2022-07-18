@@ -1,12 +1,21 @@
 import { useNavigate } from "react-router-dom";
 import "./header.scss";
 import { NavLink } from "react-router-dom";
+import { setLogout } from "../../../redux/ActionReducer/authSlice";
+import { useDispatch } from "react-redux";
 
 const Header = () => {
   const navigate = useNavigate();
 
+  // const handleLogout = () => {
+  //   localStorage.clear("user");
+  //   navigate(`/`);
+  //   window.location.reload();
+  // };
+  const dispatch = useDispatch();
+
   const handleLogout = () => {
-    localStorage.clear("user");
+    dispatch(setLogout(JSON.parse(localStorage.getItem('user'))));
     navigate(`/`);
     window.location.reload();
   };

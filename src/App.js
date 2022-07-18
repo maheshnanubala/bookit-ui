@@ -34,14 +34,14 @@ function App() {
   return (
     <div className="App">
       {/* Public Routes */}
-
-        <Routes>
-          <Route path="/" element={<Signin />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/forgot-password" element={<Forgotpassword />} />
-          <Route path="/reset-password" element={<Resetpassword />} />
-        </Routes>
+        <ToastContainer/>
+          <Routes>
+            <Route path="/" element={<Signin />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/forgot-password" element={<Forgotpassword />} />
+            <Route path="/reset-password" element={<Resetpassword />} />
+          </Routes>
       
 
       {/* Private Routes */}
