@@ -6,12 +6,12 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { signin } from "../../redux/ActionReducer/authSlice";
 import "./Signin.scss";
+import { NavLink } from "react-router-dom";
 
 const Signin = () => {
   const { loading, error } = useSelector((state) => ({ ...state.auth }));
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (formValues, e) => {
@@ -44,7 +44,7 @@ const Signin = () => {
             {...register("password")}
           />
         </div>
-        <p className="forgotPassword">
+        <p className="text-end">
           <a href="#">Forgot password</a>
         </p>
         <div className="d-grid">
@@ -53,7 +53,7 @@ const Signin = () => {
           </button>
         </div>
         <p className="signUpLink">
-          <a href="#">Sign-up</a>
+          <u><NavLink className="text-center" to='/signup'>Signup</NavLink></u>
         </p>
       </form>
     </div>

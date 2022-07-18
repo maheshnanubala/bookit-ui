@@ -213,24 +213,27 @@ const BookSpaceForm = () => {
                 </Form.Group>
               </Col>
             </Row>
-            <Button
-              className="mb-3"
-              style={{ float: "right" }}
-              variant="primary"
-              type="submit"
-            >
-              Book
-              {loading ? (
-                <Spinner
-                  animation="border"
-                  size="sm"
-                  variant="light"
-                  className="ms-2"
-                />
-              ) : (
-                ""
-              )}
-            </Button>
+            <div className="text-center">
+              <Button
+                className="mb-5"
+                style={{ float: "center" }}
+                variant="primary"
+                type="submit"
+                size="lg"
+              >
+                Book
+                {loading ? (
+                  <Spinner
+                    animation="border"
+                    size="sm"
+                    variant="light"
+                    className="ms-2"
+                  />
+                ) : (
+                  ""
+                )}
+              </Button>
+            </div>
           </Form>
         </Col>
       </Row>

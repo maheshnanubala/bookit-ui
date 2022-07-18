@@ -7,7 +7,6 @@ export const signin = createAsyncThunk(
     try {
       const response = await api.signIn(formValues);
       navigate(`/home`);
-      toast.success("Successfully logged in");
       return response.data;
     } catch (err) {
       if (err.response.status !== 200 && err.response.status !== 201) {

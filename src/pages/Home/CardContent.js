@@ -4,7 +4,7 @@ const CardContent = (props) => {
   const toDate = new Date(bookingDetail?.to_date).toDateString()
   return(
     <span className="cardContent-span">
-      Booked from {fromDate} to {toDate} on {bookingDetail.floor_name}, {bookingDetail.building_name}, {bookingDetail.location_name}, {bookingDetail.city_name}
+      {fromDate} to {toDate} <br></br> {bookingDetail.floor_name}, {bookingDetail.building_name},<br></br> {bookingDetail.city_name}
     </span>
   )
 }

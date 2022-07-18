@@ -5,7 +5,6 @@ import BookSpaceForm from './BookSpaceForm';
 
 const BookSpace = () => (
   <div className="BookSpace">
-    BookSpace Component
     <BookSpaceForm />
   </div>
 );

@@ -52,6 +52,7 @@ const Home = () => {
                   <Card className="text-initial" onClick={ () => { openParticipatDatail(upcommingBooking) } }>
                     <Card.Body>
                       <Card.Title className='cardheadings'>{upcommingBooking?.purpose}</Card.Title>
+                      <hr />
                       <Card.Text className='cardtext' >
                         <CardContent bookingDetails={upcommingBooking} />
                       </Card.Text >
@@ -71,6 +72,7 @@ const Home = () => {
                   <Card className="text-initial" onClick={ () => { openParticipatDatail(pastBooking) } }>
                     <Card.Body>
                       <Card.Title className='cardheadings'>{pastBooking?.purpose}</Card.Title>
+                      <hr />
                       <Card.Text className='cardtext' >
                         <CardContent bookingDetails={pastBooking} />
                       </Card.Text >
