@@ -9,15 +9,14 @@
   bottom:0;
   right:0;  
   text-align: center;
-  box-shadow: 0px 0px 1px grey inset;
+  // box-shadow: 0px 0px 1px grey inset;
   height: 100px;   
-  background-color: #fff;
   
 }
 
 .font-face-gm {
   font-family: "lato-regular";
-  color: rgb(75, 68, 68, 0.798);
+  color:white;
 }
 
 .footer-text{   
@@ -26,20 +25,19 @@
 }
 /* background  */
 .bg{
-  background: url("../../assest/images/Indium-software-Logo.png"), linear-gradient(#E3EEFF, #ffffff);
+  
+  background: url("../../assest/images/Indium-software-Logo.png"),linear-gradient(180deg, #2F3C7F 0%, #30396D 47%, #252B4B 100%)  padding-box;
   background-color:rgba(236,243,254,255); 
   background-repeat: repeat-x repeat-y;
-      height: 100vh;
-      background-size: 50%;
-      opacity: 1;
+  height: 100vh;
+  background-size: 50%;
+  opacity: 1;
 }
 /* form  */
 .form-cotainer{
-  background-color:rgba(255,255,255,255); 
+  background-color:#F6F6F6; 
   border-radius: 2px;
   box-shadow: 0px 0px 3px 0px rgb(94, 162, 225);
-  /* height:480px;
-  width: 380px; */
   z-index: 100;
 }
 
@@ -48,6 +46,7 @@
   text-align: center;
   font-size: 18px;
   padding-top: 10px;
+  color: #F06A3E;
  
 }
 .input-lable{
@@ -70,7 +69,7 @@
 }
 
 #submit-btn{
-  background-color:  rgb(69,136,240);
+  background-color:  #F06A3E;
   color: white;
   font-family: "lato-Medium";
   
@@ -111,7 +110,7 @@
 #heading-text{
   font-family: "norwester";
   font-size: 32px;
-  color: rgb(69, 136, 240, 0.964);
+  color:white;
 }
 
 .navlinks{
