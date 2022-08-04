@@ -1,39 +1,167 @@
-.Signin {
-  width: 38%;
-  margin-left: 32%;
-  border: 1px solid;
-  padding: 20px;
-  box-shadow: 2px 2px 10px 10px #c3c3db;
-  margin-top: 3%;
+/* footer css */
+.footer-logo{
+  width: 130px;
+  padding-top: 10px;  
+}
+.footer {
+  position:fixed;
+  left:0;
+  bottom:0;
+  right:0;  
+  text-align: center;
+  height: 100px;   
+  
+}
 
-  .signInBookIt {
-    color: blue;
-    font-size: 2.75rem;
+.font-face-gm {
+  font-family: "lato-regular";
+  color:white;
+}
+
+.footer-text{   
+ font-size: 12px;
+ margin: 0rem;
+}
+/* background  */
+.bg{
+  
+  background: url("../../assest/images/Indium-software-Logo.png"),linear-gradient(180deg, #2F3C7F 0%, #30396D 47%, #252B4B 100%)  padding-box;
+  background-color:rgba(236,243,254,255); 
+  background-repeat: repeat-x repeat-y;
+  height: 100vh;
+  background-size: 50%;
+  opacity: 1;
+}
+/* form  */
+.form-cotainer{
+  background-color:#F6F6F6; 
+  border-radius: 2px;
+  box-shadow: 0px 0px 3px 0px rgb(94, 162, 225);
+  z-index: 100;
+}
+
+#signin-text{
+  font-family: "lato-heavy";
+  text-align: center;
+  font-size: 18px;
+  padding-top: 10px;
+  color: #F06A3E;
+ 
+}
+.input-lable{
+  font-family: "lato-Medium";
+  text-align: left;
+  font-size: 14px;
+  padding-bottom: 3px;
+  color:  rgb(75, 68, 68, 0.798);
+  font-weight: 600;
+
+}
+.input-box{
+  border-radius: 1.5rem;
+  border: none;
+  box-shadow: 0px 0px 3px 0px rgba(143, 209, 199, 0.757);
+  height: 35px;
+  font-size:initial;
+  font-family: "lato-Medium";
+  color: grey ;
+}
+
+#submit-btn{
+  background-color:  #F06A3E;
+  color: white;
+  font-family: "lato-Medium";
+  
+  
+}
+#signin-option-line{
+  width: 100%; 
+  text-align: center; 
+  border-bottom: 1px solid grey   ; 
+  line-height: 0.1em;
+  
+} 
+
+#signin-option-line span { 
+   background:#fff; 
+   padding:0 10px; 
+   color: rgb(75, 68, 68, 0.798);
+   font-size: 12px;
+   font-family: "lato-Medium";
+   font-weight: 600;
+   
+}
+#signin-others{
+  background: none;
+  font-size: 14px;
+  font-family: "lato-Medium";
+  box-shadow: 0px 0px 3px 0px rgba(12, 12, 13, 0.964);
+  color:  rgb(75, 68, 68, 0.798);
+  font-weight: 600;
+}
+#microsoft-logo {
+  content:url("../../assest/images/732221.png");
+  height: 20px;
+  padding-right: 10px;
+  padding-top: 2px;
+ 
+}
+#heading-text{
+  font-family: "norwester";
+  font-size: 32px;
+  color:white;
+}
+
+.navlinks{
+  font-family: "lato-regular";
+  font-size: 12px;
+  color: rgba(98,150,147,255);
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/* for small screens */
+@media only screen and  (min-width:100px)and (max-width:450px) {
+  .form-cotainer{
+      width: 280px;
   }
-
-  .signInText {
-    margin-right: 75%;
+  .input-box{
+      height: 25px;
+      font-size:initial;
+      font-family: "lato-Medium";
+      color: grey ;
+  }  
+  .footer {
+      height: 70px; 
   }
-
-  .emailLabel {
-    margin-right: 64%;
+  .footer-logo{
+      width: 100px;
+      padding-top: 5px;  
   }
-
-  .passwordLable {
-    margin-right: 90%;
-  }
-
-  .forgotPassword {
-    margin-right: 54%;
-  }
-
-  .signUpLink {
-    margin-top: 10%;
-  }
-
-  .signInForm {
-    padding-left: 20%;
-    padding-right: 20%;
-    margin-top: 10%;
+  .footer-text{   
+      font-size: x-small;
+   }
+   #heading-text{
+      margin-bottom: 10vh;
   }
 }
+
+/* for tablets */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation : portrait){
+  .form-cotainer{
+      width: 450px;
+      margin-bottom: 0rem;
+  }
+  .input-box{
+      height: 45px;
+  } 
+  #heading-text{
+      margin-bottom: 18vh;
+      font-size: 32px;
+  }
+  #navlinks{
+      padding: 5px 50px 20px 50px;
+  }
+ 
+}
+

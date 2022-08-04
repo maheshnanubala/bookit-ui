@@ -14,3 +14,25 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+@font-face {
+  font-family: "norwester";
+  src: local("norwester"),
+  url("./assest/fonts/norwester.ttf") format("truetype");
+  font-weight: bold;
+}
+@font-face {
+  font-family: "lato-regular";
+  src: local("lato-regular"),
+  url("./assest/fonts/Lato-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "lato-heavy";
+  src: local("lato-heavy"),
+  url("./assest/fonts/Lato-Heavy.ttf") format("truetype");
+}
+@font-face {
+  font-family: "lato-Medium";
+  src: local("lato-Medium"),
+  url("./assest/fonts/Lato-Medium.ttf") format("truetype");
+}
