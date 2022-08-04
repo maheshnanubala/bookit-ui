@@ -25,89 +25,54 @@ const onSubmit = (formValues, e) => {
 
 return (
 <>
-    <>
-    <Container fluid className="bg" > 
-      <Row className="justify-content-center align-items-center">
-        <Col md="auto" sm="auto" lg="auto" xs="auto">
-          <Container>
-            <Row id='heading-text' className="justify-content-center align-items-center mt-5" >
-              BOOKIT
+  <>
+  <Container fluid className="bg" > 
+    <Row className="justify-content-center align-items-center">
+      <Col md="auto" sm="auto" lg="auto" xs="auto">
+        <Container>
+          <Row id='heading-text' className="justify-content-center align-items-center mt-5" >
+            BOOKIT
+          </Row> 
+        </Container>
+        <Card className="form-cotainer p-4 mt-5 ">
+          <Form onSubmit={handleSubmit(onSubmit)}> 
+            <Row>
+            <p id='signin-text'> Sign-in</p>
+            </Row>
+            <Row className='form-group mt-4 mb-4 mx-2'>
+              <label className='input-lable'> Email</label> 
+              <input className="form-control input-box" type="email" {...register("email")}/> 
             </Row> 
-          </Container>
-          <Card className="form-cotainer p-4 mt-5 ">
-            <Form onSubmit={handleSubmit(onSubmit)}> 
-              <Row>
-              <p id='signin-text'> Sign-in</p>
-              </Row>
-              <Row className='form-group mt-4 mb-4 mx-2'>
-                <label className='input-lable'> Email</label> 
-                <input className="form-control input-box" type="email" {...register("email")}/> 
-              </Row> 
-              <Row className='form-group mt-4 mb-4 mx-2'>
-                <label className='input-lable'>Password</label> 
-                <input type="password" className=" form-control input-box" {...register("password")}/> 
-              </Row> 
-              <Row className='form-group mt-4 mb-4 mx-2' >
-                <button type="submit" className="input-box" id="submit-btn">Sign-in</button> 
-              </Row> 
-              <Row className='form-group mt-4 mb-4 mx-2'> 
-                <p id="signin-option-line">
-                <span>or Sign-in With</span>
-              </p > 
-              </Row> 
-              <Row className='form-group mt-4 mb-4 mx-2'>
-                <button type="button" className="input-box" id="signin-others"><img id="microsoft-logo"/>Sign-in with Microsoft</button> 
-              </Row> 
-              <Row >
-                <Col><NavLink className='navlinks'>Forgot Password?</NavLink></Col>
-                <Col><NavLink className='navlinks'>Sign-Up for an account</NavLink></Col>
-              </Row> 
-            </Form> 
-          </Card>
-        </Col>
-      </Row>
-    </Container>
-    </> 
-    <footer className="container-fluid footer "> 
-      <img className='footer-logo' src={img} alt="fg" />
-      <p className='justify-content-center align-items-center font-face-gm footer-text'>Copyright @ 2020 Indium Software</p>
-    </footer> 
+            <Row className='form-group mt-4 mb-4 mx-2'>
+              <label className='input-lable'>Password</label> 
+              <input type="password" className=" form-control input-box" {...register("password")}/> 
+            </Row> 
+            <Row className='form-group mt-4 mb-4 mx-2' >
+              <button type="submit" className="input-box" id="submit-btn">Sign-in</button> 
+            </Row> 
+            <Row className='form-group mt-4 mb-4 mx-2'> 
+              <p id="signin-option-line">
+              <span>or Sign-in With</span>
+            </p > 
+            </Row> 
+            <Row className='form-group mt-4 mb-4 mx-2'>
+              <button type="button" className="input-box" id="signin-others"><img id="microsoft-logo"/>Sign-in with Microsoft</button> 
+            </Row> 
+            <Row >
+              <Col><NavLink className='navlinks'>Forgot Password?</NavLink></Col>
+              <Col><NavLink className='navlinks'>Sign-Up for an account</NavLink></Col>
+            </Row> 
+          </Form> 
+        </Card>
+      </Col>
+    </Row>
+  </Container>
+  </> 
+  <footer className="container-fluid footer "> 
+    <img className='footer-logo' src={img} alt="fg" />
+    <p className='justify-content-center align-items-center font-face-gm footer-text'>Copyright @ 2020 Indium Software</p>
+  </footer> 
 </>
-// <div className="Signin">
-// <h3 className="signInBookIt text-center">BOOKIT</h3>
-// <form className="signInForm" onSubmit={handleSubmit(onSubmit)}>
-// <h5 className="signInText">SIGN IN</h5>
-// <div className="mb-3">
-// <label className="emailLabel">Email address</label>
-// <input
-// type="email"
-// className="form-control"
-// placeholder="Enter email"
-// {...register("email")}
-// />
-// </div>
-// <div className="mb-3">
-// <label className="passwordLable">Password</label>
-// <input
-// type="password"
-// className="form-control"
-// placeholder="Enter password"
-// {...register("password")}
-// />
-// </div>
-// <p className="forgotPassword">
-// <a href="#">Forgot password</a>
-// </p>
-// <div className="d-grid">
-// <button type="submit" className="btn btn-primary signInButton">
-// Sign-in
-// </button>
-// </div>
-// <p className="signUpLink">
-// <a href="#">Sign-up</a>
-// </p>
-// </form>
-// </div>
 );
 };
 
