@@ -28,9 +28,9 @@ const MyBookings = () => {
                     overlay={
                       <Popover id={`popover-positioned-bottom`}>
                         <Popover.Body>
-                          <Dropdown.Item href="#/release" disabled>Release booked Room</Dropdown.Item>
+                          <Dropdown.Item href="#/release" >Release booked Room</Dropdown.Item>
                           <Dropdown.Item href="#/reschedule"> Reschedule Date & time</Dropdown.Item>
-                          <Dropdown.Item href="#/share" disabled> Share the Details</Dropdown.Item>
+                          <Dropdown.Item href="#/share" > Share the Details</Dropdown.Item>
                         </Popover.Body>
                       </Popover>
                     }
@@ -55,9 +55,9 @@ const MyBookings = () => {
                     overlay={
                       <Popover id={`popover-positioned-bottom`}>
                         <Popover.Body>
-                          <Dropdown.Item href="#/release" disabled>Release booked Room</Dropdown.Item>
+                          <Dropdown.Item href="#/release">Release booked Room</Dropdown.Item>
                           <Dropdown.Item href="#/reschedule"> Reschedule Date & time</Dropdown.Item>
-                          <Dropdown.Item href="#/share" disabled> Share the Details</Dropdown.Item>
+                          <Dropdown.Item href="#/share" > Share the Details</Dropdown.Item>
                         </Popover.Body>
                       </Popover>
                     }
