@@ -18,6 +18,26 @@ export const signin = createAsyncThunk(
   }
 );
 
+export const signup = createAsyncThunk(
+  "auth/sign-up",
+  async ({ formValues, navigate, toast }) => {
+    try {
+      const response = await api.signUp(formValues);
+      if (!response) {
+        toast.error("Failed to register");
+      } else {
+        toast.success("Registered Successfully");
+        navigate(`/`);
+      }
+    } catch (err) {
+      if (err.response.status !== 200 && err.response.status !== 201) {
+        console.log(err.response.data.message);
+      }
+      toast.error("User failed to register");
+    }
+  }
+);
+
 export const workspacebooking = createAsyncThunk(
   "auth/workspacebooking",
   async () => {
