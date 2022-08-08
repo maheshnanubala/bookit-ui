@@ -26,7 +26,7 @@ const MyBookings = () => {
                     trigger="click"
                     placement="bottom"
                     overlay={
-                      <Popover id={`popover-positioned-bottom`}>
+                      <Popover className={`popover-positioned-bottom`}>
                         <Popover.Body>
                           <Dropdown.Item href="#/release" >Release booked Room</Dropdown.Item>
                           <Dropdown.Item href="#/reschedule"> Reschedule Date & time</Dropdown.Item>
@@ -53,7 +53,7 @@ const MyBookings = () => {
                     trigger="click"
                     placement="bottom"
                     overlay={
-                      <Popover id={`popover-positioned-bottom`}>
+                      <Popover className={`popover-positioned-bottom`}>
                         <Popover.Body>
                           <Dropdown.Item href="#/release">Release booked Room</Dropdown.Item>
                           <Dropdown.Item href="#/reschedule"> Reschedule Date & time</Dropdown.Item>
@@ -85,7 +85,7 @@ const MyBookings = () => {
                     trigger="click"
                     placement="bottom"
                     overlay={
-                      <Popover id={`popover-positioned-bottom`}>
+                      <Popover className={`popover-positioned-bottom`}>
                         <Popover.Body className='p-0'>
                           <Dropdown.Item href="#/delete"> Delete the Record </Dropdown.Item>
                         </Popover.Body>
@@ -109,7 +109,7 @@ const MyBookings = () => {
                     trigger="click"
                     placement="bottom"
                     overlay={
-                      <Popover id={`popover-positioned-bottom`}>
+                      <Popover className={`popover-positioned-bottom`}>
                         <Popover.Body className='p-0'>
                           <Dropdown.Item href="#/delete"> Delete the Record </Dropdown.Item>
                         </Popover.Body>
@@ -133,7 +133,7 @@ const MyBookings = () => {
                     trigger="click"
                     placement="bottom"
                     overlay={
-                      <Popover id={`popover-positioned-bottom`}>
+                      <Popover className={`popover-positioned-bottom`}>
                         <Popover.Body className='p-0'>
                           <Dropdown.Item href="#/delete"> Delete the Record </Dropdown.Item>
                         </Popover.Body>
