@@ -31,19 +31,19 @@ const Signup = () => {
     <Container fluid className="sign-up-container">
       <section className="sign-up-page">
         <header>
-          <h1 className="text-center form-header mb-5"> Bookit</h1>
+          <h1 className="text-center form-signup-header  mb-5"> Bookit</h1>
         </header>
 
         {/* <section > */}
         <Row className="justify-content-center sign-up-row ">
           <Col xs={12} className="form-main-page px-4 py-5 px-sm-4 py-sm-5">
             <div className="internal-div">
-              <Form className="form-container " onSubmit={handleSubmit}>
+              <Form className="form-signup-container" onSubmit={handleSubmit}>
                 <h3 className="signup-text text-center">Sign-up</h3>
-                <label className="label-text mt-3">Name</label>
+                <label className="label-signup-text mt-3">Name</label>
                 <input
                   type="text"
-                  className="form-control input-form"
+                  className="form-control input-signup-input"
                   name="name"
                   onChange={handleChange}
                 />
@@ -51,10 +51,10 @@ const Signup = () => {
                   <span className="mt-1 mb-2 text-danger">{errors.name}</span>
                 )}
                 <br />
-                <label className="label-text">Email</label>
+                <label className="label-signup-text">Email</label>
                 <input
                   type="text"
-                  className="form-control input-form"
+                  className="form-control input-signup-input"
                   name="email"
                   onChange={handleChange}
                 />
@@ -62,10 +62,10 @@ const Signup = () => {
                   <span className="mt-1 mb-2 text-danger">{errors.email}</span>
                 )}
                 <br />
-                <label className="label-text">Password</label>
+                <label className="label-signup-text">Password</label>
                 <input
                   type="password"
-                  className="form-control input-form"
+                  className="form-control input-signup-input"
                   name="password"
                   onChange={handleChange}
                 />
@@ -81,7 +81,7 @@ const Signup = () => {
                   </Button>
                 </section>
                 <section>
-                  <p className="text-center m-3 p-area">
+                  <p className="text-center m-3 p-signup-area">
                     By Signing up you agree to our Terms & condition
                   </p>
                 </section>
@@ -93,7 +93,7 @@ const Signup = () => {
 
         <footer className="text-center footer-signup">
           <img className="footer-image" src={indiumLogo} alt="logo" />
-          {/* <p className="footer-text">Copyright @ 2020 Indium Software</p> */}
+          <p className="footer-text">Copyright @ 2020 Indium Software</p>
         </footer>
       </section>
     </Container>
