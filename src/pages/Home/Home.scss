@@ -1,49 +1,119 @@
-.home {
-    text-align:left;
-    width:auto;
+home {
+    text-align: left;
+    width: auto;
     margin-left: -5%;
-    // font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;   
-    font-family:"adobe-clean", sans-serif; 
+    font-family: "lato-Medium";
 }
-.hr{
-    border:solid 1px;
-    box-shadow: 15px 10px 8px #888888;    
-    width:auto;  
+
+.hr {
+    border: solid 1px;
+    box-shadow: 15px 10px 8px #888888;
+    width: auto;
 }
-.cardtext{
-    color:  #92979a;
+
+.cardtext {
+    color: #92979a;
+    font-size: 16px;
+    padding: 5px;
+    font-weight: bold
 }
-.cardheadings{
-    color: #41484f;    
+
+.card-headings {
+    font-weight: bold;
+    font-size: 15px;
 }
-.headings{
+
+.card-headers {
+    text-align: left;
+    color: black;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: "lato-Medium";
+
+}
+
+.icon-headings {
+    top: 258px;
+    left: 596px;
+    width: 40px;
+    height: 35px;
+    color: #000000;
+    opacity: 1;
+
+}
+
+.icon-dots {
+    float: right;
+    width: 35px;
+    height: 25px;
+}
+
+.booking-icon {
+    width: 154px;
+    height: 40px;
+    background: #F06A3E;
+    border-radius: 50px;
+    opacity: 1;
+    float: right;
+    font-family: "lato-Medium";
+    letter-spacing: 0px;
+    color: #FFFFFF;
+    border-color: #F06A3E;
+    box-shadow: none;
+    outline: none;
+}
+
+.booking-icon:hover {
+    background-color: #f06a3e;
+    color: white;
+    border-color: #f06a3e;
+
+}
+
+.booking-icon:focus {
+    background-color: #f06a3e;
+}
+
+.headings {
     margin-left: 3%;
-    color: #3396f1;
- }
- #welcomeName-row{
+    color: black;
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+
+}
+
+#welcomeName-row {
     margin-left: 4%;
- }
- #text-name{
-    color:  #3396f1;
- }
-.text-initial{
+    font-weight: normal
+}
+
+#text-name {
+    color: #F06A3E !important;
+    font-weight: bold;
+
+}
+
+.text-initial {
     margin-left: 8%;
-    margin-top: 2%;
-    height:fit-content;
-}
-.text-initial:hover{
-    cursor:pointer;
- }
-.custom-recentbooking-section{
-    height:auto;
+    margin-top: 3%;
+    height: fit-content;
+    width: 400px;
+    height: 160px;
 }
 
-.noBookingSPan {
-    color: rgb(221, 51, 8);
-    padding-left: 50px;
+.ub-border-left {
+    border-left: 2px solid #4fba46 !important
 }
 
-.participantModelPurpose {
-    font-size: initial;
-    font-weight: 400;
+.rb-border-left {
+    border-left: 2px solid #F06A3E !important;
+
+}
+
+.text-initial:hover {
+    cursor: pointer;
+}
+
+.custom-recentbooking-section {
+    height: auto;
 }

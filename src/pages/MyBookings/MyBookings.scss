@@ -1,1 +1,109 @@
-.MyBookings {}
+home {
+    text-align: left;
+    width: auto;
+    margin-left: -5%;
+    font-family: "lato-Medium";
+}
+
+.hr {
+    border: solid 1px;
+    box-shadow: 15px 10px 8px #888888;
+    width: auto;
+}
+
+.cardtext {
+    color: #92979a;
+    font-size: 16px;
+    padding: 5px;
+    font-weight: bold
+}
+
+.card-headings {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.card-headers {
+    text-align: left;
+    color: black;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: "lato-Medium"
+
+}
+
+.icon-headings {
+    top: 258px;
+    left: 596px;
+    width: 40px;
+    height: 35px;
+    color: #000000;
+    opacity: 1;
+
+}
+
+.icon-dots {
+    float: right;
+    width: 35px;
+    height: 25px;
+}
+
+
+.headings {
+    margin-left: 3%;
+    color: black;
+    font-size: 18px;
+    font-family: "lato-Medium";
+
+}
+
+#welcomeName-row {
+    margin-left: 4%;
+    font-weight: normal
+}
+
+#text-name {
+    color: #4588F0;
+    font-weight: bold;
+
+}
+
+.text-initial {
+    margin-left: 8%;
+    margin-top: 3%;
+    height: fit-content;
+    width: 400px;
+    height: 160px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #0000001A;
+    border: 1px solid #FFFFFF;
+    opacity: 1;
+
+}
+
+.ub-border-left {
+    border-left: 2px solid #4fba46 !important
+}
+
+.rb-border-left {
+    border-left: 2px solid #F06A3E !important;
+
+}
+
+.bh-border-left {
+    border-left: 2px solid #F06A3E !important
+}
+
+.text-initial:hover {
+    cursor: pointer;
+}
+
+.custom-recentbooking-section {
+    height: auto;
+}
+
+.book-label {
+    float: right;
+
+
+}

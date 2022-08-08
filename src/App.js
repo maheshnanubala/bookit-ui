@@ -20,6 +20,7 @@ import Layout from "./pages/Layout/Layout";
 import PrivateRoute from "./Authentication/PrivateRoutes";
 import { setUser } from "./redux/ActionReducer/authSlice";
 
+
 function App() {
   const [isAuth, setAuth] = useState(false);
   const { user: userAuthenticated } = useSelector((state) => ({
@@ -35,32 +36,31 @@ function App() {
     <div className="App">
       {/* Public Routes */}
 
-        <Routes>
-          <Route path="/" element={<Signin />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/forgot-password" element={<Forgotpassword />} />
-          <Route path="/reset-password" element={<Resetpassword />} />
-        </Routes>
-      
+      <Routes>
+        <Route path="/" element={<Signin />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/forgot-password" element={<Forgotpassword />} />
+        <Route path="/reset-password" element={<Resetpassword />} />
+      </Routes>
+
 
       {/* Private Routes */}
-     
-        <Layout>
-          <Routes>
-            <Route path="/home" element={<Home />} />
 
-            <Route path="/me" element={<MyProfile />} />
-            <Route path="/bookings" element={<MyBookings />} />
-            <Route path="/book-space" element={<BookSpace />} />
-            <Route path="/new-book-space" element={<BookSpaceForm />} />
-            <Route
-              path="/book-space-confirmation"
-              element={<BookSpaceConfirmation />}
-            />
-          </Routes>
-        </Layout>
-     
+      <Layout>
+        <Routes>
+          <Route path="/home" element={<Home />} />
+          <Route path="/me" element={<MyProfile />} />
+          <Route path="/bookings" element={<MyBookings />} />
+          <Route path="/book-space" element={<BookSpace />} />
+          <Route path="/new-book-space" element={<BookSpaceForm />} />
+          <Route
+            path="/book-space-confirmation"
+            element={<BookSpaceConfirmation />}
+          />
+        </Routes>
+      </Layout>
+
     </div>
   );
 }
