@@ -20,6 +20,9 @@ import Layout from "./pages/Layout/Layout";
 import PrivateRoute from "./Authentication/PrivateRoutes";
 import { setUser } from "./redux/ActionReducer/authSlice";
 
+
+import NewBooking from './pages/NewBooking/newBooking.js'
+
 function App() {
   const [isAuth, setAuth] = useState(false);
   const { user: userAuthenticated } = useSelector((state) => ({
@@ -54,6 +57,8 @@ function App() {
             <Route path="/bookings" element={<MyBookings />} />
             <Route path="/book-space" element={<BookSpace />} />
             <Route path="/new-book-space" element={<BookSpaceForm />} />
+            <Route path="/new-booking" element={<NewBooking />} />
+            
             <Route
               path="/book-space-confirmation"
               element={<BookSpaceConfirmation />}

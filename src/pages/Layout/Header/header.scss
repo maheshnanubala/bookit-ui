@@ -1,21 +1,14 @@
-.navbar{
-   background-color:white;
-   width:100%;
-   position:static;
-}
 .logo{
     width: 10%;
-    margin-left: 1.5%;
 }
 
 .logout-button{ 
-   font-size:large;
-   color:rgb(37, 150, 190);
-   font-family:'Courier New', monospace;
-   font-weight:100;
-   padding-right: 2%;
+   font-size:14px;
+   font-family:lato-regular;
+   padding-right:  2rem;
    border: none;
    background: none;
+   font-weight: 100;
   
 }
 .logout-button:hover{

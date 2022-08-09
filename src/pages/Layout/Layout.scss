@@ -1,4 +1,34 @@
-.layout{
- background-color: rgba(245,245,245,255);
- width: auto;
+.layout{ 
+ background-color:#F5F7FF;
+ background-image: url('../../assest/images/Indium-software-Logo.png');
+ background-blend-mode:color-burn;
+ background-repeat: no-repeat;
+ background-size: 280px;
+ background-position-x: right;
+ background-position-y:bottom;
+ background-attachment: fixed;
+ height: 100vh;
+}
+.header{
+z-index: 100;
+background-color:white;
+box-shadow: 1px 1px 10px #888888; 
+}
+.Asidebar{
+box-shadow: 2px 5px 10px #888888; 
+background-color:#2F3C7F;
+z-index: 99;
+height: 100%;
+}
+
+.do-fixed{
+position:fixed;
+}
+.cust-children{
+   margin-left:13rem;
+}
+@media only screen and (min-width:1400px){
+   .cust-children{
+      margin-left:19rem;
+   }
 }

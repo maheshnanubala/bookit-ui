@@ -16,16 +16,17 @@ const Layout = ({ children }) => {
       {user && (
         <Container fluid className="layout">
           <Row className="positon-sticky">
-            <Col md={12} className="pe-0 ps-0">
+            <Col md={12} className="pe-0 ps-0 header do-fixed">
               <Header />
             </Col>
           </Row>
           <Row>
-            <Col md={2} className="pe-0 ps-0">
-              <AsideBar />
+            <Col  xs={4} md={2} className="mt-5 Asidebar do-fixed">
+              <AsideBar />      
             </Col>
-            <Col md={10}>{children}</Col>
+            <Col  xs={10} md={10} className='mt-5 cust-children'>{children}</Col>
           </Row>
+          {/* {children} */}
         </Container>
       )}
     </>
