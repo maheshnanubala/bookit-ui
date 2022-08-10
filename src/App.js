@@ -44,6 +44,7 @@ function App() {
         <Route path="/forgot-password" element={<Forgotpassword />} />
         <Route path="/reset-password" element={<Resetpassword />} />
       </Routes>
+      <Layout>
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/me" element={<MyProfile />} />

@@ -1,7 +1,7 @@
 import React from "react";
 // import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { signin } from "../../redux/ActionReducer/authSlice";
@@ -60,7 +60,7 @@ return (
             </Row> 
             <Row >
               <Col><NavLink className='navlinks'>Forgot Password?</NavLink></Col>
-              <Col><NavLink className='navlinks'>Sign-Up for an account</NavLink></Col>
+              <Col><Link className='navlinks' to="/signup">Sign-Up for an account</Link></Col>
             </Row> 
           </Form> 
         </Card>
