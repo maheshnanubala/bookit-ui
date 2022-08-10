@@ -38,19 +38,7 @@ const Home = () => {
 
   return (
     <>
-      <Container fluid className='home' onBlur={() => setRootClose(false)} >
-        <section className=" pt-5 pb-2 ">
-          <Row>
-            <Col md={6}>
-              <h4 id="welcomeName-row">
-                Welcome back <span id="text-name">{userdetails?.user?.name} !</span>
-              </h4>
-            </Col>
-            <Col className='justify-content-end' md={6}>
-              <Button className='booking-icon' onClick={navigateToNewBookings}>New Booking</Button>
-            </Col>
-          </Row>
-        </section>
+      <Container fluid className='home'>
         <hr className='hr' />
         <section className="custom-upcomingbooking-section pt-3 pb-3">
           <Row>

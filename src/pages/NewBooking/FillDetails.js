@@ -6,11 +6,12 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import {Button, Modal} from 'react-bootstrap';
 import DateRangeComp from './DateRange.js';
 import {Time} from '../../constants/time';
-import {data} from '../../constants/mockdata';
+// import {data} from '../../constants/mockdata';
 import {NavLink} from 'react-bootstrap';
 import {useEffect, useRef,  useState } from 'react';
 import MultiSelect from  'react-multiple-select-dropdown-lite'
 import  'react-multiple-select-dropdown-lite/dist/index.css'
+import { ApiUtility } from '../../ApiUtility.js';
 
 function FillDetails() {
   const [value, setvalue] = useState('');
@@ -18,6 +19,7 @@ function FillDetails() {
   const [display_edit_val, setDisplay_edit_val] = useState('none');
   const [start_time, setStart_time] = useState('06:00 AM');
   const [end_time, setEnd_time] = useState('11:00 PM');
+  const [data, setData] = useState([])
   
   const assignStartTime = (e) => {
     setStart_time(e.target.value);
@@ -29,11 +31,19 @@ function FillDetails() {
 
   const [open, setOpen] = useState(false)
   const refOne = useRef(null)
+  const [floorData, setFloorData] = useState([])
   useEffect(() => {
     document.addEventListener("keydown", hideOnEscape, true)
     document.addEventListener("click", hideOnClickOutside, true)
+    getWorkSpaceDetails();
+    async function getWorkSpaceDetails() {
+      let response = await ApiUtility.getWorkSpaceDetails();
+      setData(response?.workspace_details)
+      setFloorData(response?.workspace_details?.FloorList)
+    }
   }, [])
 
+  
    const hideOnEscape = (e) => {
     if( e.key === "Escape" ) {
       setOpen(false)
@@ -49,16 +59,26 @@ function FillDetails() {
     setDisplay_add_val("none");
     setDisplay_edit_val("inline")
   }
-  const  options  = [
-    { label:  'me', value:  '1'  },
-    { label:  'you', value:  '2'  },
-    { label:  'she', value:  '3'  },
-    { label:  'he', value:  '4'  },    
-  ]
   const[show,popup]=useState(false);
   const modalOpen = () => popup(true);
   const modalClose = () => popup(false);
+  const setFloorRecord = (buildingId) => {
+    let florListArr = data?.FloorList.filter(val => {
+      return val.building_id === Number(buildingId);
+    })
+    setFloorData(florListArr)
+    setbuildingId(buildingId)
+  }
+  const [buildingId, setbuildingId] = useState(null)
+  const [floorId, setFloorId] = useState(null)
+  const [purpose, setPurpose] = useState('')
+  const [fromDate, setFromDate] = useState('2022-08-10')
+  const [toDate, setToDate] = useState('2022-08-10')
+  // const [userIds, setUserIds] = useState([])
 
+  const findConference = async () => {
+    let response = await ApiUtility.checkAvailableWorkSpace(floorId, fromDate, toDate, start_time, end_time, buildingId, value, purpose)
+  }
   return (
     <>    
     <Form>      
@@ -121,8 +141,11 @@ function FillDetails() {
         </Col>
         <Col >
          <Form.Group className="mb-3 inputBox">
-            <Form.Select className='building-selectionbox' size="sm">
-              {data.workspace_details.BuildingList.map((item) => (
+            <Form.Select onChange={(e) => { setFloorRecord(e.target.value) }} className='building-selectionbox' size="sm">
+              <option value=''>
+                Select
+              </option>
+              {data?.BuildingList?.map((item) => (
                 <option value={item.id} key={item.id}>
                   {item.name}
                 </option>
@@ -135,9 +158,12 @@ function FillDetails() {
           <Label>Floor</Label>
         </Col>
         <Col >
-        <Form.Group className="mb-3 inputBox">
+        <Form.Group onChange={(e) => setFloorId(e.target.value) } className="mb-3 inputBox">
           <Form.Select size="sm">
-            {data.workspace_details.FloorList.map((item) => (
+            <option value=''>
+              Select
+            </option>
+            {floorData?.map((item) => (
               <option value={item.id} key={item.id}>
                 {item.name}
               </option>
@@ -150,8 +176,11 @@ function FillDetails() {
         <Col lg="2"> <Label>Purpose</Label></Col>
         <Col>                
         <Form.Group className='mb-3 select-purpose-input'>
-            <Form.Select  >
-              {data.workspace_details.Purpose.map((item) => (
+            <Form.Select onChange={(e) => setPurpose(e.target.value) }>
+              <option value=''>
+                Select
+              </option>
+              {data?.Purpose?.map((item) => (
                 <option value={item} key={item}>
                   {item}
                 </option>
@@ -181,7 +210,9 @@ function FillDetails() {
             <Form.Group className="mb-3 ">
               <MultiSelect
                 onChange={handleOnchange}
-                options={options}
+                options={data?.UserList?.map((item) => (
+                  { label: item.name, value: item.id }
+                )) || []}
                 id='modal-card'
                 />                
             </Form.Group>
@@ -193,7 +224,7 @@ function FillDetails() {
       </Row>
       <Row className='mt-5'>
         <Col  md={{ span: 5, offset: 5 }}>
-         <Button type='submit' className='find-button'><i class="bi bi-search"></i>&nbsp;Find Conference Room</Button>
+         <Button type='submit' onClick={findConference} className='find-button'><i class="bi bi-search"></i>&nbsp;Find Conference Room</Button>
         </Col>        
       </Row>
     </Form>

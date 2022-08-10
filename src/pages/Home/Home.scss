@@ -19,23 +19,24 @@ home {
 }
 
 .card-headings {
-    font-weight: bold;
     font-size: 15px;
+    font-family: "lato-bold";
+    color: #262F36;
 }
 
 .card-headers {
     text-align: left;
-    color: black;
+    color: #262F36;
     font-size: 15px;
-    font-weight: bold;
-    font-family: "lato-Medium";
+    font-family: "lato-bold";
+    padding-left: 40px;
 }
 
 .icon-headings {
     top: 258px;
     left: 596px;
     width: 40px;
-    height: 35px;
+    height: 45px;
     color: #000000;
     opacity: 1;
 }
@@ -73,14 +74,16 @@ home {
 
 .headings {
     margin-left: 3%;
-    color: black;
+    color: #0A1656;
     font-size: 18px;
-    font-family: "Times New Roman", Times, serif;
+    font-family: "lato-heavy";
 }
 
 #welcomeName-row {
     margin-left: 4%;
-    font-weight: normal
+    // font-weight: normal;
+    font-family: "lato-Medium";
+    color: #262F36;
 }
 
 #text-name {
@@ -91,17 +94,18 @@ home {
 .text-initial {
     margin-left: 8%;
     margin-top: 3%;
-    height: fit-content;
-    width: 400px;
-    height: 160px;
 }
 
 .ub-border-left {
-    border-left: 2px solid #4fba46 !important
+    border-left: 5px solid #4fba46 !important
 }
 
 .rb-border-left {
-    border-left: 2px solid #F06A3E !important;
+    border-left: 5px solid #F06A3E !important;
+}
+
+.rrb-border-left {
+    border-left: 5px solid #DB2828 !important;
 }
 
 .text-initial:hover {
@@ -110,4 +114,15 @@ home {
 
 .custom-recentbooking-section {
     height: auto;
+}
+
+.card-list-item {
+    li {
+        list-style-type: none;
+    }
+}
+
+.not-founs-span {
+    padding-left: 50px;
+    color: red;
 }

@@ -38,7 +38,7 @@ const Home = () => {
 
   return (
     <>
-      <Container fluid className='home' onBlur={() => setRootClose(false)} >
+      <Container fluid className='home'>
         <section className=" pt-5 pb-2 ">
           <Row>
             <Col md={6}>
@@ -76,7 +76,7 @@ const Home = () => {
                       >
                         <span className="book-label"> <TbDotsVertical className='icon-dots' onClick={handleShow} /></span>
                       </OverlayTrigger>
-                      <Card.Title className='card-headings'> <img alt='img' src={image} className='icon-headings' /> {new Date(booking.from_datetime).toLocaleDateString()}| {new Date(booking.to_datetime).toLocaleDateString()}</Card.Title>
+                      <Card.Title className='card-headings'> <img alt='img' src={image} className='icon-headings' /><span>{new Date(booking.from_datetime).toLocaleDateString()}</span> <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span> | <span>{new Date(booking.to_datetime).toLocaleDateString()}</span></Card.Title>
                       <Card.Title className='card-headers'>{booking.purpose || ''}</Card.Title>
                       <Card.Text className='cardtext' >
                         <ul className='card-list-item'>
