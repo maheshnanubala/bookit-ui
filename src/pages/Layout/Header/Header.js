@@ -3,7 +3,6 @@ import "./header.scss";
 
 const Header = () => {
   const navigate = useNavigate();
-
   const handleLogout = () => {
     localStorage.clear("user");
     navigate(`/`);

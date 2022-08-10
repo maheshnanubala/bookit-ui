@@ -9,11 +9,8 @@ import {Time} from '../../constants/time';
 import {data} from '../../constants/mockdata';
 import {NavLink} from 'react-bootstrap';
 import {useEffect, useRef,  useState } from 'react';
-
 import MultiSelect from  'react-multiple-select-dropdown-lite'
 import  'react-multiple-select-dropdown-lite/dist/index.css'
-
-
 
 function FillDetails() {
   const [value, setvalue] = useState('');
@@ -38,42 +35,34 @@ function FillDetails() {
   }, [])
 
    const hideOnEscape = (e) => {
-
     if( e.key === "Escape" ) {
       setOpen(false)
     }
   }
-
   const hideOnClickOutside = (e) => {
     if( refOne.current && !refOne.current.contains(e.target) ) {
       setOpen(false)
     }
   }
-
   const  handleOnchange  =  val  => {
     setvalue(val);
     setDisplay_add_val("none");
     setDisplay_edit_val("inline")
-
   }
   const  options  = [
-    { label:  'me', value:  ' me'  },
-    { label:  'you', value:  ' you'  },
-    { label:  'she', value:  ' she'  },
-    { label:  'he', value:  ' he'  },
-    
+    { label:  'me', value:  '1'  },
+    { label:  'you', value:  '2'  },
+    { label:  'she', value:  '3'  },
+    { label:  'he', value:  '4'  },    
   ]
   const[show,popup]=useState(false);
   const modalOpen = () => popup(true);
   const modalClose = () => popup(false);
- 
+
   return (
-    <>
-    
-    <Form>
-      
-      <Row lg={6}>
-        
+    <>    
+    <Form>      
+      <Row lg={6}>        
         <Col>
           <Label >Date</Label>
         </Col>
@@ -102,10 +91,7 @@ function FillDetails() {
             <div ref={refOne}>
           {open && 
           <>
-          {/* <TimePicker start="00:00" end="24:00" step={30} /> */}
-
         <Form.Group className="mb-3 inputBox">
-          {/* <Form.Label>start_time</Form.Label> */}
               <Form.Select onChange={assignStartTime}  className='building-selectionbox' size="sm">
               {Time.map((item) => (
                         <option value={item.lable} key={item.key}>
@@ -115,7 +101,6 @@ function FillDetails() {
               </Form.Select>
           </Form.Group> 
             <Form.Group className="mb-3 inputBox">
-                {/* <Form.Label>end_time</Form.Label> */}
                 <Form.Select onChange={assignEndTime}  className='building-selectionbox' size="sm">
                   {Time.map((item) => (
                             <option value={item.lable} key={item.key}>
@@ -130,7 +115,6 @@ function FillDetails() {
           </Form.Group>        
         </Col>
       </Row>
-
       <Row lg={6} className='mt-4'>
         <Col>
           <Label >Building</Label>
@@ -176,8 +160,7 @@ function FillDetails() {
           </Form.Group>
         </Col>
       </Row>
-      <Row className='mt-4' >
-        
+      <Row className='mt-4' >        
         <p className="preview-values">
           <NavLink  style={ {display:display_add_val} } onClick={modalOpen}className='addmem-cust'>
             <p>
@@ -191,8 +174,7 @@ function FillDetails() {
               <small>&nbsp;&nbsp;&nbsp;Selected Members:&nbsp;&nbsp;&nbsp;</small>
             <span id='selected-members'>{value}  </span> 
             </p>
-          </NavLink>
-        
+          </NavLink>        
         </p>
        <Modal id='modal-card' show={show} onHide={modalClose} size="md" aria-labelledby="contained-modal-title-vcenter" centered>
           <Modal.Body id='modal-card'>
@@ -212,8 +194,7 @@ function FillDetails() {
       <Row className='mt-5'>
         <Col  md={{ span: 5, offset: 5 }}>
          <Button type='submit' className='find-button'><i class="bi bi-search"></i>&nbsp;Find Conference Room</Button>
-        </Col>
-        
+        </Col>        
       </Row>
     </Form>
    

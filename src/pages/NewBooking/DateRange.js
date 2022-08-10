@@ -7,7 +7,6 @@ import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
 
 const DateRangeComp = () => {
-  // date state
   const [range, setRange] = useState([
     {
       startDate: new Date(),
@@ -15,10 +14,7 @@ const DateRangeComp = () => {
       key: 'selection'
     }
   ])
-  // open close
   const [open, setOpen] = useState(false)
-
-  // get the target element to toggle 
   const refOne = useRef(null)
 
   useEffect(() => {
@@ -36,10 +32,8 @@ const DateRangeComp = () => {
     }
   }
   return (
-    <>
-             
-      <InputGroup >
-        
+    <>             
+      <InputGroup >        
         <input
           value={`${format(range[0].startDate, "dd MMM")} to ${format(range[0].endDate, "dd MMM")}` }
           className="inputBox"
@@ -59,7 +53,6 @@ const DateRangeComp = () => {
           />
         }
       </div>
-
     </>
   )
 }

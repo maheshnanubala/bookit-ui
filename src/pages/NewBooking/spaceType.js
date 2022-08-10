@@ -16,8 +16,7 @@ function SpaceType() {
                 label={`Conference Room`}
                 checked
                 />
-            </Col>
-            
+            </Col>            
           <Col className='spacetype-radio'> <Form.Check
             inline
             disabled

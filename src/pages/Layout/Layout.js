@@ -5,8 +5,6 @@ import { Container, Row, Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import Header from "./Header/Header";
 import AsideBar from "./AsideBar/AsideBar";
-import Signin from "../Signin/Signin.lazy";
-import Signup from "../Signup/Signup.lazy";
 
 const Layout = ({ children }) => {
   const { user } = useSelector((state) => ({ ...state.auth.user }));
@@ -26,7 +24,6 @@ const Layout = ({ children }) => {
             </Col>
             <Col  xs={10} md={10} className='mt-5 cust-children'>{children}</Col>
           </Row>
-          {/* {children} */}
         </Container>
       )}
     </>

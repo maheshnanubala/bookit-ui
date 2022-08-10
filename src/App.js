@@ -52,7 +52,6 @@ function App() {
         <Layout>
           <Routes>
             <Route path="/home" element={<Home />} />
-
             <Route path="/me" element={<MyProfile />} />
             <Route path="/bookings" element={<MyBookings />} />
             <Route path="/book-space" element={<BookSpace />} />

@@ -4,13 +4,11 @@
     text-decoration: none;
     padding: 20px 0px 20px 10px;
     align-content: left;
-    margin-bottom: 10%;
-    
+    margin-bottom: 10%;    
 } 
 .sidebar a.active {
-  // color: #F06A3E;
+  color: #F06A3E;
   background-color: #0A1656;
-  color:white;
 }
 .sidebar a:hover{
   background-color: #0A1656;
@@ -33,4 +31,15 @@
 .navlink i{
   font-family: lato-Medium;
   font-size: 20px;
+}
+@media only screen and (min-width:1400px){
+  #sidenav_title{
+     font-size:32px;   
+ }
+ .navlink{
+   font-size: 18px;
+ }
+ .navlink i{
+   font-size: 23px;
+ }
 }
