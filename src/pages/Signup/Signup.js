@@ -34,7 +34,6 @@ const Signup = () => {
           <h1 className="text-center form-signup-header  mb-5"> Bookit</h1>
         </header>
 
-        {/* <section > */}
         <Row className="justify-content-center sign-up-row ">
           <Col xs={12} className="form-main-page px-4 py-5 px-sm-4 py-sm-5">
             <div className="internal-div">
@@ -89,7 +88,6 @@ const Signup = () => {
             </div>
           </Col>
         </Row>
-        {/* </section> */}
 
         <footer className="text-center footer-signup">
           <img className="footer-image" src={indiumLogo} alt="logo" />
