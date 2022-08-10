@@ -19,6 +19,7 @@ import BookSpace from "./pages/BookSpace/BookSpace.lazy";
 import Layout from "./pages/Layout/Layout";
 import PrivateRoute from "./Authentication/PrivateRoutes";
 import { setUser } from "./redux/ActionReducer/authSlice";
+import NewBooking from './pages/NewBooking/newBooking.js'
 
 
 function App() {
@@ -35,7 +36,6 @@ function App() {
   return (
     <div className="App">
       {/* Public Routes */}
-
       <Routes>
         <Route path="/" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
@@ -43,10 +43,7 @@ function App() {
         <Route path="/forgot-password" element={<Forgotpassword />} />
         <Route path="/reset-password" element={<Resetpassword />} />
       </Routes>
-
-
       {/* Private Routes */}
-
       <Layout>
         <Routes>
           <Route path="/home" element={<Home />} />
@@ -54,15 +51,14 @@ function App() {
           <Route path="/bookings" element={<MyBookings />} />
           <Route path="/book-space" element={<BookSpace />} />
           <Route path="/new-book-space" element={<BookSpaceForm />} />
+             <Route path="/new-booking" element={<NewBooking />} />
           <Route
             path="/book-space-confirmation"
             element={<BookSpaceConfirmation />}
           />
         </Routes>
       </Layout>
-
     </div>
   );
 }
-
 export default App;

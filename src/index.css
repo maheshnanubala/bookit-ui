@@ -36,3 +36,9 @@ code {
   src: local("lato-Medium"),
   url("./assest/fonts/Lato-Medium.ttf") format("truetype");
 }
+@font-face {
+  font-family: "lato-bold";
+  src: local("lato-bold"),
+  url("./assest/fonts/Lato-Bold.ttf") format("truetype");
+}
+

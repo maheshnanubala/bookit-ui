@@ -1,39 +1,46 @@
-.sidebar {
-  width: 13.5%;
-  background-color:rgba(33, 32, 36);
-  position:absolute;
-  height: 100%;
-  text-align: left;
-  box-shadow: 5px 10px 8px #888888;
-}
 .sidebar a {
     display: block;
     color: whitesmoke;
-    padding: 16px;
     text-decoration: none;
-    padding: 20px 0px 20px 50px;
-    font-size: 130%;
-    font-weight: 400;
-    align-content: center;
-    margin-bottom: 10%;
-    
+    padding: 20px 0px 20px 10px;
+    align-content: left;
+    margin-bottom: 10%;    
 } 
 .sidebar a.active {
-  color: rgba(55,153,240,255);
+  color: #F06A3E;
+  background-color: #0A1656;
 }
 .sidebar a:hover{
-  background-color: rgba(245,245,245,255);
-  color:black;
+  background-color: #0A1656;
+  color: #F06A3E;
 }
 .sidebaricon{
-    margin-right: 5%;
+    margin-right: 10%;
+    color: #BCC5CC;
 }
 #sidenav_title{
     color: white;
-    font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size:xx-large;
-    font-style: bold;
-    font-weight: 1000;
-    font-stretch:ultra-expanded;
-    padding: 30px 20px 20px 60px;
+    font-family:norwester;
+    font-size:32px;
+    padding:25%;   
 }
+.navlink{
+  font-family: lato-Medium;
+  font-size: 14px;
+}
+.navlink i{
+  font-family: lato-Medium;
+  font-size: 20px;
+}
+@media only screen and (min-width:1400px){
+  #sidenav_title{
+     font-size:32px;   
+ }
+ .navlink{
+   font-size: 18px;
+ }
+ .navlink i{
+   font-size: 23px;
+ }
+}
+
