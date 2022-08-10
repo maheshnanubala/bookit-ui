@@ -16,11 +16,7 @@ const AsideBar  = () => {
          </Col>     
         </Row>
        </Container>);
-   
-    
 }
 AsideBar.propTypes = {};
-
 AsideBar.defaultProps = {};
-
 export default AsideBar;

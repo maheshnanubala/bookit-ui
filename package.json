@@ -17,6 +17,7 @@
     "react-date-range": "^1.4.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.33.1",
+    "react-icons": "^4.4.0",
     "react-multi-select-component": "^4.2.9",
     "react-multiple-select-dropdown-lite": "^2.0.5",
     "react-redux": "^8.0.2",
