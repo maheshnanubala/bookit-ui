@@ -1,0 +1,114 @@
+#page-title{
+    font-family:lato-heavy;
+    font-size: 16px;
+    color:#0A1656;
+    padding-top: 15px;
+    margin-top: 1rem;
+}
+.spacetype-radio{
+    font-family:lato-bold;
+    font-size: 16px;
+}
+.calander-icon{
+    color: #F06A3E;
+    background-color:transparent !important;
+    border:  none  !important;
+    font-size: 20px;
+    position: absolute;
+    padding-left: 10.5rem;
+}
+.calander-icon :hover{
+    cursor: pointer;
+}
+
+#time-input{
+    width: 12rem !important;
+}
+.inputBox{
+    border:none;
+    border-radius: 5px;
+    background-color: white;
+    width: 12rem;
+    border: 1px solid #DEDEDF;
+    border-radius: 4px;
+    text-align: left;
+    height: 30px;
+}
+.select-purpose-input{
+    width: 80%;
+}
+.addmem-cust{
+    color: green !important;
+    width:fit-content;
+}
+.find-button{
+    border-radius: 1.5rem !important;
+    border: none !important;
+    box-shadow: 0px 0px 3px 0px rgba(143, 209, 199, 0.757) !important;
+    height: 40px;
+    font-size:initial;
+    font-family: "lato-Medium";
+    background-color: #F06A3E !important;
+    color: white;
+  }
+  .hr{
+      opacity: 0.1;
+}
+#modal-save-btn{
+    border-radius: 1.5rem !important;
+    border: none !important;
+    box-shadow: 0px 0px 3px 0px rgba(143, 209, 199, 0.757) !important;
+    height: 40px;
+    font-size:initial;
+    font-family: "lato-Medium";
+    background-color: #F06A3E !important;
+    color: white;
+    width: 50rem;
+}
+
+#modal-card{
+ height: 25rem;
+ width:auto;
+}
+.select-members{
+    text-align: center;
+}
+.msl-vars {
+    --input-width:auto !important;
+    text-align: center;
+}
+small{
+    color: #9C9C9C;
+}
+#selected-members{
+color: black;
+}
+.msl-option-active{
+    color: #F06A3E !important;
+    background-color:white !important;
+    background-image: url('../../assest/images/member_selected.png')  !important;
+    background-size: 20px  !important;
+    background-repeat: no-repeat !important;
+    background-position-y:center  !important ;
+}
+.msl-option{
+    background-image: url('../../assest/images/employee.png');
+    color:#9C9C9C;
+    background-size: 20px  !important;
+    background-repeat: no-repeat !important;
+    background-position-y:center  !important ;
+    border-bottom: 2px solid whitesmoke;
+    border-width: 150%;
+    box-shadow: none !important;
+
+}
+.msl-chip{
+    display: none !important;
+}
+
+.time-icon{
+    color: #F06A3E !important;
+    font-size: 20px !important;
+    position: absolute !important;
+    padding-left: 10.5rem !important;
+}
