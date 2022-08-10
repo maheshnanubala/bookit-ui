@@ -2,20 +2,17 @@
   margin: 0px !important;
   padding: 0px !important;
 }
-
 .sign-up-row {
   width: 100%;
   max-width: 392px;
   min-width: 320px;
 }
-
 .form-main-page {
   background: #f6f6f6 0% 0% no-repeat padding-box;
   box-shadow: 3px 3px 12px #0000001f;
   border: 1px solid #b2d0ff;
   border-radius: 4px;
 }
-
 .sign-up-page {
   background: url("../../assest/images/background-image.png"),
     transparent linear-gradient(180deg, #2f3c7f 0%, #30396d 47%, #252b4b 100%)
@@ -31,7 +28,6 @@
   flex-direction: column;
   height: 100vh;
 }
-
 .form-signup-header {
   text-transform: uppercase;
   font-weight: bolder;
@@ -41,43 +37,35 @@
   margin-bottom: 30px;
   margin-top: 90px;
 }
-
 .form-signup-container {
   padding: 10px;
 }
-
 .input-signup-label{
   height: 40px;
   border-radius: 30px;
 }
-
 .p-signup-area {
   color: #aeaeae;
   font-size: 12px;
 }
-
 .signup-text {
   color: #f06a3e;
   font-size: 20px;
   font-family: "lato-Medium";
 }
-
 .label-signup-text {
   color: rgb(71, 70, 70);
   font-family: "lato-Medium";
   margin-left: 1rem;
 }
-
 .sign-up-btn {
   border-radius: 30px;
   background-color: #f06a3e;
   border: 1px solid #f06a3e;
 }
-
 .footer-image {
   width: 133px;
 }
-
 .footer-signup {
   position: fixed;
   left: 0;
@@ -86,7 +74,6 @@
   text-align: center;
   height: 100px;
 }
-
 .footer-text {
   color: white;
   font-size: 12px;
