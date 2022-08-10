@@ -41,8 +41,12 @@
   padding: 10px;
 }
 .input-signup-label{
-  height: 40px;
   border-radius: 30px;
+  margin-left: 10px;
+  font-size:14px;
+}
+.input-signup-input{
+  border-radius: 99px;
 }
 .p-signup-area {
   color: #aeaeae;
@@ -51,7 +55,7 @@
 .signup-text {
   color: #f06a3e;
   font-size: 20px;
-  font-family: "lato-Medium";
+  font-family: "lato-heavy";
 }
 .label-signup-text {
   color: rgb(71, 70, 70);
@@ -59,7 +63,7 @@
   margin-left: 1rem;
 }
 .sign-up-btn {
-  border-radius: 30px;
+  border-radius: 99px;
   background-color: #f06a3e;
   border: 1px solid #f06a3e;
 }
