@@ -1,6 +1,7 @@
 import './AsideBar.scss';
 import { NavLink } from 'react-router-dom';
 import { Container,Row,Col } from 'react-bootstrap';
+
 const AsideBar  = () => {
     return(
        <Container fluid className='sidebar'>  
@@ -21,11 +22,8 @@ const AsideBar  = () => {
      
         </Row>
        </Container>);
-   
-    
 }
+
 AsideBar.propTypes = {};
-
 AsideBar.defaultProps = {};
-
 export default AsideBar;
