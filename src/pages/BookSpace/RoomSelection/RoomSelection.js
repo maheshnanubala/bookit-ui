@@ -24,7 +24,6 @@ export const RoomSelection = () => {
     localStorage.getItem("availableworkspace")
   );
 
-  console.log(availableworkspace);
   const [roomInfo, setRoomInfo] = useState([]);
   const [bookSpace, setBookspace] = useState({
     city_id: 0,
@@ -59,9 +58,9 @@ export const RoomSelection = () => {
   setValue("selected_workspaces", [
     {
       date:
-        moment(availableworkspace?.data?.BookedWorkSpaces[0]?.date).format(
-          "YYYY-MM-DD"
-        ) || "",
+        moment(
+          availableworkspace?.data?.BookedWorkSpaces.slice(0, 1)?.date
+        ).format("YYYY-MM-DD") || "",
       seats:
         (roomInfo &&
           roomInfo.map((item) => {
@@ -75,6 +74,7 @@ export const RoomSelection = () => {
   };
   const handleSave = () => {
     setShow(false);
+    console.log(bookSpace, "inside room");
     dispatch(bookworkspace({ bookSpace, navigate, toast }));
   };
 
@@ -186,9 +186,9 @@ export const RoomSelection = () => {
                               type="radio"
                               id={item.id}
                               value={item.id}
-                              disabled={availableworkspace?.data?.BookedWorkSpaces[0]?.seats.includes(
-                                item.id
-                              )}
+                              disabled={availableworkspace?.data?.BookedWorkSpaces.find(
+                                (x) => x
+                              )?.seats.includes(item.id)}
                               {...register("selected_workspaces.seats")}
                               onChange={(e) => {
                                 if (e.target.checked) {
@@ -228,7 +228,8 @@ export const RoomSelection = () => {
                     {roomInfo.length > 0
                       ? ""
                       : errors.selected_workspaces &&
-                        errors.selected_workspaces[0]?.seats.message}
+                        errors.selected_workspaces.find((x) => x)?.seats
+                          .message}
                   </span>
                   <Row className="mt-3 mb-3 text-lg-end ">
                     <Col>
@@ -271,27 +272,27 @@ export const RoomSelection = () => {
                             <td>{item.name}</td>
                             <td>{item.capacity}</td>
                             <td>
-                              {item.amenities[0].is_present === true
+                              {item.amenities.slice(0, 1).is_present === true
                                 ? "Yes"
                                 : "No"}
                             </td>
                             <td>
-                              {item.amenities[1].is_present === true
+                              {item.amenities.slice(0, 2).is_present === true
                                 ? "Yes"
                                 : "No"}
                             </td>
                             <td>
-                              {item.amenities[2].is_present === true
+                              {item.amenities.slice(0, 3).is_present === true
                                 ? "Yes"
                                 : "No"}
                             </td>
                             <td>
-                              {item.amenities[3].is_present === true
+                              {item.amenities.slice(0, 4).is_present === true
                                 ? "Yes"
                                 : "No"}
                             </td>
                             <td>
-                              {item.amenities[4].is_present === true
+                              {item.amenities.slice(0, 5).is_present === true
                                 ? "Yes"
                                 : "No"}
                             </td>

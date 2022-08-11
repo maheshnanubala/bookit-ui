@@ -1,14 +1,8 @@
 import axios from "axios";
 
-const usertoken = JSON.parse(localStorage.getItem("user"));
+const apiHost = "http://localhost:4000";
 
-// const API = axios.create({
-//   baseURL: "http://localhost:4000",
-//   headers: {
-//     Authorization: "Bearer" + " " + usertoken?.token,
-//   },
-// });
-const API = axios.create({ baseURL: "http://localhost:4000" });
+const API = axios.create({ baseURL: apiHost });
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("user")) {

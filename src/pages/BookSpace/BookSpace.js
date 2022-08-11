@@ -1,14 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import './BookSpace.scss';
-import BookSpaceForm from './BookSpaceForm';
+import React from "react";
+import PropTypes from "prop-types";
+import "./BookSpace.scss";
 
-const BookSpace = () => (
-  <div className="BookSpace">
-    BookSpace Component
-    <BookSpaceForm />
-  </div>
-);
+const BookSpace = () => <div className="BookSpace">BookSpace Component</div>;
 
 BookSpace.propTypes = {};
 

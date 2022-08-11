@@ -13,7 +13,6 @@ import { useDispatch, useSelector } from "react-redux";
 import MyProfile from "./pages/MyProfile/MyProfile.lazy";
 import MyBookings from "./pages/MyBookings/MyBookings.lazy";
 import { BookSpaceConfirmation } from "./pages/BookSpace/BookSpaceConfirmation";
-import BookSpaceForm from "./pages/BookSpace/BookSpaceForm";
 import BookSpace from "./pages/BookSpace/BookSpace.lazy";
 import Layout from "./pages/Layout/Layout";
 import PrivateRoute from "./Authentication/PrivateRoutes";
@@ -51,7 +50,6 @@ function App() {
           <Route path="/me" element={<MyProfile />} />
           <Route path="/bookings" element={<MyBookings />} />
           <Route path="/book-space" element={<BookSpace />} />
-          <Route path="/new-book-space" element={<BookSpaceForm />} />
           <Route path="/new-booking" element={<NewBooking />} />
           <Route
             path="/book-space-confirmation"

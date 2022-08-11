@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Modal, Button, Col, Row } from "react-bootstrap";
-import { roomdata } from "../../constants/mockdata";
 import "./BookSpace.scss";
 
 const BookSpaceModal = ({
@@ -44,21 +43,24 @@ const BookSpaceModal = ({
           </Row>
           <Row className="confirm-content mb-2">
             <Col>
-              {roomdata.data.CityName} -{" "}
-              {roomdata.data.FloorDetails.building_name}
+              {formData.data.CityName} -{" "}
+              {formData.data.FloorDetails.building_name}
             </Col>
           </Row>
           <Row className="confirm-content mb-2">
             {/* <Col>Floor {formData.name} - AAR Room 20</Col> */}
             <Col>
-              {roomdata.data.FloorDetails.name} -{" "}
-              {individualRoomDetail && individualRoomDetail[0]?.name}
+              {formData.data.FloorDetails.name} -{" "}
+              {individualRoomDetail &&
+                individualRoomDetail.find((x) => x)?.name}
             </Col>
           </Row>
           <Row className="confirm-content mb-2">
             <Col>
               Room Capacity{" "}
-              {individualRoomDetail && individualRoomDetail[0]?.capacity} Seats
+              {individualRoomDetail &&
+                individualRoomDetail.find((x) => x)?.capacity}{" "}
+              Seats
             </Col>
           </Row>
         </Modal.Body>
