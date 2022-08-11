@@ -1,48 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Modal, Button } from "react-bootstrap";
-import { CustomFieldInput } from "./CustomFieldInput";
+import { Modal, Button, Col, Row } from "react-bootstrap";
+import { roomdata } from "../../constants/mockdata";
 import "./BookSpace.scss";
 
-const BookSpaceModal = ({ show, handleClose, formData, handleSave }) => {
-  const location = (val) => {
-    switch (val) {
-      case 1:
-        return "Ganesh Chambers";
-      case 2:
-        return "Olymbiya Tech Park";
-      case 3:
-        return "Electronics City";
-      case 4:
-        return "Madiwala";
-      case 5:
-        return "Koramangala";
-      case 6:
-        return "Tambaram";
-      case 7:
-        return "Trichy";
-      default:
-        return "Others";
-    }
-  };
-
-  const city = (val) => {
-    switch (val) {
-      case 1:
-        return "Chennai";
-      case 2:
-        return "Bangalore";
-      case 3:
-        return "Hyderabad";
-      case 4:
-        return "Kerala";
-      case 5:
-        return "Mumbai";
-      default:
-        return "Others";
-    }
-  };
-
+const BookSpaceModal = ({
+  show,
+  handleClose,
+  formData,
+  handleSave,
+  individualRoomDetail,
+}) => {
   return (
     <>
       <Modal
@@ -54,46 +22,49 @@ const BookSpaceModal = ({ show, handleClose, formData, handleSave }) => {
         className="bookspace-confirmation-section"
       >
         <Modal.Header className="border-0 pb-0">
-          <Modal.Title>
-            <b>CONFIRMATION</b>
-          </Modal.Title>
+          <Modal.Title>Booking Confirmation</Modal.Title>
+          <i className="bi bi-x-circle-fill close-icon" onClick={handleClose} />
         </Modal.Header>
         <Modal.Body className="justify-content-center">
-          <CustomFieldInput
-            label={"No . of workspaces booked"}
-            inputs={formData?.workspaces_booked}
-          />
-          <CustomFieldInput
-            label={"Location"}
-            inputs={
-              <>
-                <span className="ms-2">{location(formData?.location_id)}</span>{" "}
-                - <span className="me-2">{city(formData?.city_id)}</span>
-              </>
-            }
-          />
-          <CustomFieldInput
-            label={"Booked Dates"}
-            inputs={
-              <>
-                <span className="me-2">{formData?.from_date}</span> -
-                <span className="ms-2">{formData?.to_date}</span>
-              </>
-            }
-          />
+          <Row className="confirm-heading-content mb-2">
+            <Col md={12}>
+              <Row>
+                <Col md={6} className="confirm-heading-date">
+                  <span>
+                    {formData.from_date} - {formData.to_date}
+                  </span>
+                </Col>
+                <Col md={6} className="ps-3">
+                  <span>
+                    {formData.start_time} - {formData.end_time}
+                  </span>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <Row className="confirm-content mb-2">
+            <Col>
+              {roomdata.data.CityName} -{" "}
+              {roomdata.data.FloorDetails.building_name}
+            </Col>
+          </Row>
+          <Row className="confirm-content mb-2">
+            {/* <Col>Floor {formData.name} - AAR Room 20</Col> */}
+            <Col>
+              {roomdata.data.FloorDetails.name} -{" "}
+              {individualRoomDetail && individualRoomDetail[0]?.name}
+            </Col>
+          </Row>
+          <Row className="confirm-content mb-2">
+            <Col>
+              Room Capacity{" "}
+              {individualRoomDetail && individualRoomDetail[0]?.capacity} Seats
+            </Col>
+          </Row>
         </Modal.Body>
-        <Modal.Footer className="justify-content-center border-0">
-          <Button
-            className="bookspace-cancel-btn bookspace-btn bg-transparent border-secondary me-4"
-            onClick={handleClose}
-          >
-            Cancel
-          </Button>
-          <Button
-            className="bookspace-confirm-btn bookspace-btn"
-            onClick={handleSave}
-          >
-            Confirm
+        <Modal.Footer className="border-0 pt-0">
+          <Button className="confirm-booking-btn w-100" onClick={handleSave}>
+            Confirm Booking
           </Button>
         </Modal.Footer>
       </Modal>

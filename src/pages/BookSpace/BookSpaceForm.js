@@ -8,10 +8,10 @@ import { toast } from "react-toastify";
 import BookSpaceModal from "./BookSpaceModal";
 import { data } from "../../constants/mockdata";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  bookworkspace,
-  availableworkspace,
-} from "../../redux/ActionReducer/bookSlice";
+// import {
+//   bookworkspace,
+//   availableworkspace,
+// } from "../../redux/ActionReducer/bookSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { bookWorkSpaceSchema } from "../../services/ValidationSchema";
 import "./BookSpace.scss";
@@ -56,7 +56,7 @@ const BookSpaceForm = () => {
   };
   const handleSave = () => {
     setShow(false);
-    dispatch(bookworkspace({ bookSpace, navigate, toast }));
+    // dispatch(bookworkspace({ bookSpace, navigate, toast }));
   };
   const handleSelectChange = (data) => {
     setSelected(data);

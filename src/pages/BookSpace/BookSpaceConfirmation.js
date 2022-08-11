@@ -21,7 +21,7 @@ export const BookSpaceConfirmation = () => {
             <Col>
               <Alert variant={"success"} className="text-center p-5">
                 <i
-                  class="bi bi-check-circle text-success"
+                  className="bi bi-check-circle text-success"
                   style={{ fontSize: 50 }}
                 ></i>
                 <h3 className="mb-3">Congratulations!</h3>
