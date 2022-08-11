@@ -11,7 +11,7 @@ export const signin = createAsyncThunk(
       return response.data;
     } catch (err) {
       if (err.response.status !== 200 && err.response.status !== 201) {
-        console.log(err.response.data.message);
+        toast.error(err.response.data.message);
       }
       return err.response.data.message;
     }
@@ -31,25 +31,8 @@ export const signup = createAsyncThunk(
       }
     } catch (err) {
       if (err.response.status !== 200 && err.response.status !== 201) {
-        console.log(err.response.data.message);
+        toast.error(err.response.data.message);
       }
-      toast.error("User failed to register");
-    }
-  }
-);
-
-export const workspacebooking = createAsyncThunk(
-  "auth/workspacebooking",
-  async () => {
-    console.log("inside-workspace");
-    try {
-      const response = await api.workspaceDetails();
-      return response.data;
-    } catch (err) {
-      if (err.response.status !== 200 && err.response.status !== 201) {
-        console.log(err.response.data.message);
-      }
-      return err.response.data.message;
     }
   }
 );
@@ -58,7 +41,6 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: null,
-    workspace_details: null,
     error: "",
     loading: false,
   },
@@ -81,17 +63,6 @@ const authSlice = createSlice({
       state.user = action.payload;
     },
     [signin.rejected]: (state, action) => {
-      state.loading = false;
-      state.error = action.payload.message;
-    },
-    [workspacebooking.pending]: (state, action) => {
-      state.loading = true;
-    },
-    [workspacebooking.fulfilled]: (state, action) => {
-      state.loading = false;
-      state.workspace_details = action.payload;
-    },
-    [workspacebooking.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload.message;
     },

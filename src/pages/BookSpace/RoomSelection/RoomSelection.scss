@@ -1,0 +1,151 @@
+.room-selection-block {
+  .room-selection-title {
+    letter-spacing: 0.03px;
+    color: #0a1656;
+    font-size: 16px;
+    opacity: 1;
+    font-family: "lato-heavy";
+  }
+  .book-label {
+    font-family: "lato-regular";
+    font-size: 12px;
+    letter-spacing: 0px;
+    color: #828689;
+    opacity: 1;
+  }
+  .book-input-item {
+    font-family: "lato-heavy";
+    font-size: 12px;
+    letter-spacing: 0px;
+    color: #1a1d1f;
+    opacity: 1;
+    padding-left: 15px;
+  }
+  .room-seat-block {
+    h5 {
+      font-family: "lato-heavy";
+      font-size: 16px;
+      letter-spacing: 0.03px;
+      color: #f06a3e;
+      opacity: 1;
+    }
+  }
+  .book-conference-room-btn {
+    background-color: #f06a3e;
+    border-color: #f06a3e;
+    border-radius: 50px;
+    padding: 8.5px 24px 8.5px 24px;
+    color: white;
+    font-size: 14px;
+    font-family: "lato-medium";
+  }
+  .book-conference-room-btn:hover {
+    background-color: #f06a3e;
+    color: white;
+    border-color: #f06a3e;
+  }
+  .book-conference-room-btn:focus {
+    background-color: #f06a3e;
+  }
+  .booking-property-block {
+    border: 1px solid #4c5861 !important;
+    font-family: "lato-regular";
+    thead {
+      th:first-child {
+        color: white;
+      }
+      background-color: #4c5861;
+      border-color: #4c5861;
+      color: #a4aaaf;
+      border-bottom: #4c5861;
+      font-size: 14px;
+    }
+    tbody {
+      color: #828a91;
+    }
+  }
+  .seat-toolbar-block {
+    span {
+      font-family: "lato-medium";
+      font-size: 14px;
+      color: #191919;
+    }
+    .box {
+      height: 12px;
+      width: 12px;
+      margin-top: 5px;
+      margin-right: 5px;
+    }
+
+    .booking-available {
+      background-color: #ffffff;
+      border: 1px solid #21ba45;
+      border-radius: 3px;
+    }
+
+    .booking-selected-seats {
+      background-color: #21ba45;
+      border: 1px solid #21ba45;
+      border-radius: 3px;
+    }
+
+    .booking-booked-seats {
+      background-color: #dddddd;
+      border: 1px solid #dddddd;
+      border-radius: 3px;
+    }
+  }
+}
+.seat {
+  padding-bottom: 15px;
+  position: relative;
+  input[type="radio"] {
+    display: none;
+  }
+  input[type="radio"]:checked {
+    + label {
+      background: #21ba45;
+      color: white;
+    }
+  }
+  input[type="radio"]:disabled {
+    + label {
+      background: #dddddd;
+      color: #b9b9b9;
+      border-color: #dddddd;
+      cursor: not-allowed;
+      font-size: 16px;
+      font-family: "lato-Medium";
+      &:after {
+        text-indent: 0;
+        position: absolute;
+        top: 4px;
+        left: 50%;
+        transform: translate(-50%, 0%);
+      }
+      &:hover {
+        box-shadow: none;
+        cursor: not-allowed;
+      }
+    }
+  }
+  label {
+    display: block;
+    position: relative;
+    text-align: center;
+    font-size: 16px;
+    font-family: "lato-Medium";
+    font-weight: bold;
+    line-height: 1.5rem;
+    padding: 13px 0;
+    color: #21ba45;
+    //width: 89px;
+    border: 1px solid #21ba45;
+    border-radius: 5px;
+    cursor: pointer;
+    div {
+      font-size: 16px;
+      font-family: "lato-Medium";
+    }
+  }
+}

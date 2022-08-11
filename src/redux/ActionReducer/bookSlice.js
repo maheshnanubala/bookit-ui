@@ -1,6 +1,40 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as api from "../api";
 
+export const availableWorkspace = createAsyncThunk(
+  "bookworkspace/availableWorkspace",
+  async ({
+    floorId,
+    fromDate,
+    toDate,
+    start_time,
+    end_time,
+    buildingId,
+    value,
+    purpose,
+    navigate,
+  }) => {
+    try {
+      const response = await api.availableworkspace(
+        floorId,
+        fromDate,
+        toDate,
+        start_time,
+        end_time,
+        buildingId,
+        value,
+        purpose
+      );
+      navigate(`/room-selection`);
+      return response.data;
+    } catch (err) {
+      if (err.response.status !== 200 && err.response.status !== 201) {
+        console.log(err.response.data.message);
+      }
+    }
+  }
+);
+
 export const bookworkspace = createAsyncThunk(
   "bookworkspace/bookworkspace",
   async ({ bookSpace, navigate, toast }) => {
@@ -11,24 +45,8 @@ export const bookworkspace = createAsyncThunk(
       return response.data;
     } catch (err) {
       if (err.response.status !== 200 && err.response.status !== 201) {
-        console.log(err.message);
+        toast.error(err.response.data.message);
       }
-      return err.response.data.message;
-    }
-  }
-);
-
-export const availableworkspace = createAsyncThunk(
-  "bookworkspace/availableworkspace",
-  async ({ availableBookSpaceValue }) => {
-    try {
-      const response = await api.availableworkSpace(availableBookSpaceValue);
-      return response.data;
-    } catch (err) {
-      if (err.response.status !== 200 && err.response.status !== 201) {
-        console.log(err.message);
-      }
-      return err.response.data.message;
     }
   }
 );
@@ -36,32 +54,26 @@ export const availableworkspace = createAsyncThunk(
 const bookSlice = createSlice({
   name: "bookworkspace",
   initialState: {
-    workspace: null,
-    availableworkspace: null,
+    workspacedetails: null,
+    availableworkspace: {},
+    bookworkspaceDetails: null,
     error: "",
     loading: false,
   },
   reducers: {},
   extraReducers: {
-    [bookworkspace.pending]: (state, action) => {
+    [availableWorkspace.pending]: (state, action) => {
       state.loading = true;
     },
-    [bookworkspace.fulfilled]: (state, action) => {
+    [availableWorkspace.fulfilled]: (state, action) => {
       state.loading = false;
-      state.workspace_details = action.payload;
-    },
-    [bookworkspace.rejected]: (state, action) => {
-      state.loading = false;
-      state.error = action.payload.message;
-    },
-    [availableworkspace.pending]: (state, action) => {
-      state.loading = true;
-    },
-    [availableworkspace.fulfilled]: (state, action) => {
-      state.loading = false;
+      localStorage.setItem(
+        "availableworkspace",
+        JSON.stringify({ ...action.payload })
+      );
       state.availableworkspace = action.payload;
     },
-    [availableworkspace.rejected]: (state, action) => {
+    [availableWorkspace.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload.message;
     },
