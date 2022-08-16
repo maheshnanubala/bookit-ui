@@ -26,7 +26,11 @@ const Signin = () => {
 
   const onSubmit = (formValues, e) => {
     e.preventDefault();
-    if (formValues.email && formValues.password) {
+    if (formValues.email === null || formValues.email === undefined || formValues.email === ''){
+      toast.error('Please enter email')
+    } else if(formValues.password === null || formValues.password === undefined || formValues.password === ''){
+      toast.error('Please enter password')
+    }else if (formValues.email && formValues.password) {
       dispatch(signin({ formValues, navigate, toast }));
     }
   };

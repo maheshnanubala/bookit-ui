@@ -4,37 +4,36 @@ import Row from 'react-bootstrap/Row';
 import Label from 'react-bootstrap/FormLabel'
 import InputGroup from 'react-bootstrap/InputGroup'
 import {Button, Modal} from 'react-bootstrap';
-import DateRangeComp from './DateRange.js';
 import {Time} from '../../constants/time';
-// import {data} from '../../constants/mockdata';
-import {NavLink} from 'react-bootstrap';
 import {useEffect, useRef,  useState } from 'react';
 import MultiSelect from  'react-multiple-select-dropdown-lite'
 import  'react-multiple-select-dropdown-lite/dist/index.css'
 import { ApiUtility } from '../../ApiUtility.js';
+import { DateRange } from 'react-date-range'
+import format from 'date-fns/format'
+import 'react-date-range/dist/styles.css'
+import 'react-date-range/dist/theme/default.css'
+import "react-datetime/css/react-datetime.css";
+import './newBooking.scss'
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { availableWorkspace } from "../../redux/ActionReducer/bookSlice.js";
+import { useNavigate } from "react-router-dom";
 
-function FillDetails() {
-  const [value, setvalue] = useState('');
+const FillDetails = () => {
+  const UserObj = JSON.parse(localStorage.getItem("user"))?.user || {}
+  const [value, setvalue] = useState([UserObj.id]);
   const [display_add_val, setDisplay_add_val] = useState('');
   const [display_edit_val, setDisplay_edit_val] = useState('none');
-  const [start_time, setStart_time] = useState('06:00 AM');
-  const [end_time, setEnd_time] = useState('11:00 PM');
   const [data, setData] = useState([])
-  
-  const assignStartTime = (e) => {
-    setStart_time(e.target.value);
-    console.log("mt test data", e.target.key);
-  }
-  const assignEndTime = (e) => {
-    setEnd_time(e.target.value);
-  }
-
-  const [open, setOpen] = useState(false)
-  const refOne = useRef(null)
+  const [selectedUser, setSelectedUser] = useState([UserObj.name] || []);
+  const [defaultUser, setDefaultUser] = useState([{ label: UserObj.name, value: UserObj.id }]);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [floorData, setFloorData] = useState([])
   useEffect(() => {
-    document.addEventListener("keydown", hideOnEscape, true)
-    document.addEventListener("click", hideOnClickOutside, true)
+    document.addEventListener("keydown", hideOnEscapeCal, true)
+    document.addEventListener("click", hideOnClickOutsideCal, true)
     getWorkSpaceDetails();
     async function getWorkSpaceDetails() {
       let response = await ApiUtility.getWorkSpaceDetails();
@@ -43,21 +42,26 @@ function FillDetails() {
     }
   }, [])
 
-  
-   const hideOnEscape = (e) => {
-    if( e.key === "Escape" ) {
-      setOpen(false)
-    }
-  }
-  const hideOnClickOutside = (e) => {
-    if( refOne.current && !refOne.current.contains(e.target) ) {
-      setOpen(false)
-    }
-  }
-  const  handleOnchange  =  val  => {
-    setvalue(val);
+  const  handleOnchange  =  (val)  => {
+    let userIds = val.split(',').map((uId) => {return Number(uId)})
+    setvalue(userIds);
     setDisplay_add_val("none");
     setDisplay_edit_val("inline")
+    let newArr = []
+    let userObjArr = []
+    let userRecords = data?.UserList
+    userIds.map((userId) => {
+      userRecords?.find((u) => {
+        if (u.id === Number(userId)){
+          newArr.push(u.name);
+          userObjArr.push({ label: u.name, value: u.id })
+        }
+        return null;
+      })
+      return userId
+    })
+    setSelectedUser(newArr.join(','))
+    setDefaultUser(userObjArr)
   }
   const[show,popup]=useState(false);
   const modalOpen = () => popup(true);
@@ -72,12 +76,78 @@ function FillDetails() {
   const [buildingId, setbuildingId] = useState(null)
   const [floorId, setFloorId] = useState(null)
   const [purpose, setPurpose] = useState('')
-  const [fromDate, setFromDate] = useState('2022-08-10')
-  const [toDate, setToDate] = useState('2022-08-10')
-  // const [userIds, setUserIds] = useState([])
+  const [startTime, setStartTime] = useState('')
+  const [endTime, setEndTime] = useState('')
+  const [hideToTime, setHideToTime] = useState('')
+
+  const setToTime = (sTime) => {
+    setStartTime(sTime);
+    var disabledTime = []
+    var isBreak = false
+    Time.map((item) => {
+      if(item.label !== sTime && !isBreak){
+        disabledTime.push(item.label)
+      }else{
+        isBreak = true
+      }
+      return null;
+    })
+    setHideToTime(disabledTime)
+  }
 
   const findConference = async () => {
-    let response = await ApiUtility.checkAvailableWorkSpace(floorId, fromDate, toDate, start_time, end_time, buildingId, value, purpose)
+    let fDate = new Date(calRange[0].startDate)
+    let tDate = new Date(calRange[0].endDate)
+    const fromDate = format(fDate, "yyyy-MM-dd")
+    const toDate = format(tDate, "yyyy-MM-dd")
+    if(fromDate !== toDate){
+      toast.error("Currently single date booking only available");
+    }else if(startTime === '' || startTime === undefined){
+      toast.error("Please select Start Time");
+    }else if(endTime === '' || endTime === undefined){
+      toast.error("Please select End Time");
+    }else if(startTime === endTime){
+      toast.error("End time should be greater than start time");
+    }else if(buildingId === null || buildingId === undefined){
+      toast.error("Please select Building");
+    }else if(floorId === null || floorId === undefined){
+      toast.error("Please select Floor");
+    }else if(purpose === '' || purpose === undefined){
+      toast.error("Please select Purpose");
+    }else{
+      dispatch(
+        availableWorkspace({
+          floorId,
+          fromDate,
+          toDate,
+          startTime,
+          endTime,
+          buildingId,
+          value,
+          purpose,
+          navigate,
+        })
+      );
+    }
+  }
+  const [calRange, setCalRange] = useState([
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: 'selection'
+    }
+  ])
+  const [openCal, setOpenCal] = useState(false)
+  const refOneCal = useRef(null)
+  const hideOnEscapeCal = (e) => {
+    if( e.key === "Escape" ) {
+      setOpenCal(false)
+    }
+  }
+  const hideOnClickOutsideCal = (e) => {
+    if( refOneCal.current && !refOneCal.current.contains(e.target) ) {
+      setOpenCal(false)
+    }
   }
   return (
     <>    
@@ -88,56 +158,67 @@ function FillDetails() {
         </Col>
         <Col >
           <Form.Group className="mb-3">
-            <DateRangeComp></DateRangeComp>  
-          </Form.Group>
-        </Col>        
-        <Col></Col>        
-        <Col>
-          <Label>Time</Label>
-        </Col>
-        <Col >
-          <Form.Group className="mb-3">
             <InputGroup >
-            
-              <input 
-                value={`${start_time} to ${end_time}` }
+              <input
+                value={`${format(calRange[0]?.startDate, "dd MMM")} to ${format(calRange[0]?.endDate, "dd MMM")}` }
                 className="inputBox"
                 disabled
-                id='time-input'
               /> 
-              <i className="bi bi-clock time-icon"   onClick={ () => setOpen(open => !open) } ></i>
-              
+              <i className="bi-calendar-check calander-icon "  onClick={ () => setOpenCal(open => !open) }></i>
             </InputGroup>
-            <div ref={refOne}>
-          {open && 
-          <>
-        <Form.Group className="mb-3 inputBox">
-              <Form.Select onChange={assignStartTime}  className='building-selectionbox' size="sm">
+            <div className='calander-div' ref={refOneCal}>
+              {openCal &&
+                <DateRange
+                  onChange={(item) => setCalRange([item.selection])}
+                  editableDateInputs={true}
+                  ranges={calRange}
+                  months={1}
+                  minDate={new Date()}
+                  direction="horizontal"
+                  className="calendarElement"
+                />
+              }
+            </div>
+          </Form.Group>
+        </Col>
+        <Col>
+          <Label className='start-time-label'>Start Time <span className='mandate-item'>*</span></Label>
+        </Col>
+        <Col>
+          <Form.Group className="mb-3 inputBox">
+            <Form.Select onChange={(e) => setToTime(e.target.value)}  className='building-selectionbox' size="sm">
+              <option value='' key=''>
+                Select
+              </option>
               {Time.map((item) => (
-                        <option value={item.lable} key={item.key}>
-                          {item.label}
-                        </option>
-                ))}
-              </Form.Select>
-          </Form.Group> 
-            <Form.Group className="mb-3 inputBox">
-                <Form.Select onChange={assignEndTime}  className='building-selectionbox' size="sm">
-                  {Time.map((item) => (
-                            <option value={item.lable} key={item.key}>
-                              {item.label}
-                            </option>
-                    ))}
-                </Form.Select>
-            </Form.Group> 
-            </>
-          }
-        </div>
-          </Form.Group>        
+                <option value={item.label} key={item.key}>
+                  {item.label}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+        </Col>
+        <Col>
+          <Label className='end-time-label'>End Time <span className='mandate-item'>*</span></Label>
+        </Col>
+        <Col>
+          <Form.Group className="mb-3 inputBox">
+            <Form.Select onChange={(e) => setEndTime(e.target.value)}  className='building-selectionbox' size="sm">
+              <option value='' key=''>
+                Select
+              </option>
+              {Time.map((item) => (
+                <option value={item.lable} disabled={hideToTime.includes(item.label)} key={item.key}>
+                  {item.label}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
         </Col>
       </Row>
       <Row lg={6} className='mt-4'>
         <Col>
-          <Label >Building</Label>
+          <Label >Building <span className='mandate-item'>*</span></Label>
         </Col>
         <Col >
          <Form.Group className="mb-3 inputBox">
@@ -153,9 +234,8 @@ function FillDetails() {
             </Form.Select>
           </Form.Group>  
         </Col>
-        <Col></Col>
         <Col>
-          <Label>Floor</Label>
+          <Label className='floor-label'>Floor <span className='mandate-item'>*</span></Label>
         </Col>
         <Col >
         <Form.Group onChange={(e) => setFloorId(e.target.value) } className="mb-3 inputBox">
@@ -173,10 +253,10 @@ function FillDetails() {
         </Col>
       </Row>
       <Row className='mt-4' >
-        <Col lg="2"> <Label>Purpose</Label></Col>
+        <Col lg="2"> <Label>Purpose <span className='mandate-item'>*</span></Label></Col>
         <Col>                
         <Form.Group className='mb-3 select-purpose-input'>
-            <Form.Select onChange={(e) => setPurpose(e.target.value) }>
+            <Form.Select className='purpose-select' onChange={(e) => setPurpose(e.target.value) }>
               <option value=''>
                 Select
               </option>
@@ -191,25 +271,27 @@ function FillDetails() {
       </Row>
       <Row className='mt-4' >        
         <p className="preview-values">
-          <NavLink  style={ {display:display_add_val} } onClick={modalOpen}className='addmem-cust'>
-            <p>
+          <span className='addmem-cust' style={ {display:display_add_val, cursor: "pointer"} }>
+            <span onClick={modalOpen}>
               <i class="bi bi-plus-circle">&nbsp;&nbsp;&nbsp;</i>
                 <u>Add Members</u>
-          </p>
-          </NavLink>
-          <NavLink  style={ {display:display_edit_val }}  onClick={modalOpen}className='addmem-cust'>
-            <p>
+            </span>
+          </span>
+          <span className='addmem-cust' style={ {display: (selectedUser?.length > 0 ? 'inline' : display_edit_val)} }>
+            <span style={{cursor: "pointer", display:display_edit_val}} onClick={modalOpen}>
               <i class="bi bi-plus-circle">&nbsp;&nbsp;&nbsp;<u>Edit Members</u> </i>
-              <small>&nbsp;&nbsp;&nbsp;Selected Members:&nbsp;&nbsp;&nbsp;</small>
-            <span id='selected-members'>{value}  </span> 
-            </p>
-          </NavLink>        
+            </span>
+            <small>&nbsp;&nbsp;&nbsp;Selected Members:&nbsp;&nbsp;&nbsp;</small>
+            <span id='selected-members'>{selectedUser}  </span>
+          </span>
         </p>
        <Modal id='modal-card' show={show} onHide={modalClose} size="md" aria-labelledby="contained-modal-title-vcenter" centered>
           <Modal.Body id='modal-card'>
             <Form.Group className="mb-3 ">
               <MultiSelect
+                showArrow
                 onChange={handleOnchange}
+                defaultValue={defaultUser}
                 options={data?.UserList?.map((item) => (
                   { label: item.name, value: item.id }
                 )) || []}
@@ -224,7 +306,7 @@ function FillDetails() {
       </Row>
       <Row className='mt-5'>
         <Col  md={{ span: 5, offset: 5 }}>
-         <Button type='submit' onClick={findConference} className='find-button'><i class="bi bi-search"></i>&nbsp;Find Conference Room</Button>
+         <Button onClick={findConference} className='find-button'><i class="bi bi-search"></i>&nbsp;Find Conference Room</Button>
         </Col>        
       </Row>
     </Form>

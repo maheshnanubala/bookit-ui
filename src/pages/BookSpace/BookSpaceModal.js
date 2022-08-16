@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Modal, Button, Col, Row } from "react-bootstrap";
 import "./BookSpace.scss";
+import format from 'date-fns/format'
 
 const BookSpaceModal = ({
   show,
@@ -10,6 +11,8 @@ const BookSpaceModal = ({
   handleSave,
   individualRoomDetail,
 }) => {
+  const fDateString = formData?.from_date !== '' ? format(new Date(formData?.from_date), "dd MMM yyy") : ''
+  const tDateString = formData?.to_date !== '' ? format(new Date(formData?.to_date), "dd MMM yyy") : ''
   return (
     <>
       <Modal
@@ -30,12 +33,12 @@ const BookSpaceModal = ({
               <Row>
                 <Col md={6} className="confirm-heading-date">
                   <span>
-                    {formData.from_date} - {formData.to_date}
+                    {fDateString} - {tDateString}
                   </span>
                 </Col>
                 <Col md={6} className="ps-3">
                   <span>
-                    {formData.start_time} - {formData.end_time}
+                    {formData?.start_time} - {formData?.end_time}
                   </span>
                 </Col>
               </Row>
@@ -43,14 +46,14 @@ const BookSpaceModal = ({
           </Row>
           <Row className="confirm-content mb-2">
             <Col>
-              {formData.data.CityName} -{" "}
-              {formData.data.FloorDetails.building_name}
+              {formData?.data?.CityName} -{" "}
+              {formData?.data?.FloorDetails?.building_name}
             </Col>
           </Row>
           <Row className="confirm-content mb-2">
-            {/* <Col>Floor {formData.name} - AAR Room 20</Col> */}
+            {/* <Col>Floor {formData?.name} - AAR Room 20</Col> */}
             <Col>
-              {formData.data.FloorDetails.name} -{" "}
+              {formData?.data?.FloorDetails?.name} -{" "}
               {individualRoomDetail &&
                 individualRoomDetail.find((x) => x)?.name}
             </Col>

@@ -1,8 +1,8 @@
-home {
+.home {
     text-align: left;
     width: auto;
-    margin-left: -5%;
     font-family: "lato-Medium";
+    margin-top: 4% !important;
 }
 
 .hr {
@@ -93,7 +93,7 @@ home {
 
 .text-initial {
     margin-left: 8%;
-    margin-top: 3%;
+    margin-top: 10%;
 }
 
 .ub-border-left {
@@ -122,7 +122,54 @@ home {
     }
 }
 
-.not-founs-span {
+.not-found-span {
     padding-left: 50px;
-    color: red;
+    color: red !important;
+}
+
+.time-header {
+    text-align: left;
+    color: #262F36;
+    font-size: 15px;
+    font-family: "lato-bold";
+    padding-left: 40px;
+}
+
+.participant-model-title {
+    background-color: #4557b3;
+    color: #fdf8f6;
+}
+
+.participant-model-header {
+    background-color: #F06A3E;
+    color: #fdf8f6;
+}
+
+.model-close-button {
+    text-align: center;
+}
+
+.booking-participant-modal {
+    font-family: "lato-bold";
+}
+
+.booking-participant-body {
+    background: url("../../assest/images/Indium-software-Logo.png");
+    background-color:#F5F7FF;
+    background-blend-mode:color-burn;
+    background-repeat: no-repeat;
+    background-position-x: right;
+    background-position-y:bottom;
+    width: 100%;
+}
+
+.booking-participant-table {
+    background-color: transparent;
+    // overflow-y: scroll;
+}
+
+.footer-block {
+    margin: 0px;
+    padding: 10px;
+    background-color:#F5F7FF;
 }
