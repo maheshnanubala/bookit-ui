@@ -17,6 +17,7 @@ const userdetails = JSON.parse(localStorage.getItem('user'));
 
 
 const Home = () => {
+  const UserObj = JSON.parse(localStorage.getItem("user"))?.user || {}
   const navigate = useNavigate();
   const navigateToNewBookings = () => {
     navigate('/new-booking');
@@ -40,9 +41,11 @@ const Home = () => {
   const oneDay = 1000*60*60*24;
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const handleShow = (participants) => {
+  const [bookedByUser, setBookedByUser] = useState('')
+  const handleShow = (participants, bookedByUserName) => {
     setShow(true)
     setParticipants(participants)
+    setBookedByUser(bookedByUserName)
   }
   return (
     <Container fluid className='home'>
@@ -65,7 +68,7 @@ const Home = () => {
           {
             (upCommingBooking?.length > 0 ?
             upCommingBooking.map((booking) => (
-              <Col md={4} onClick={() => { handleShow(booking.BookingParticipant) } }>
+              <Col md={4} onClick={() => { handleShow(booking.BookingParticipant, booking.user_name) } }>
                 <Card className="text-initial ub-border-left">
                   <Card.Body className='card-body-item'>
                     {/* <OverlayTrigger
@@ -109,7 +112,7 @@ const Home = () => {
           {
             (recentBooking?.length > 0 ?
             recentBooking.map((booking) => (
-                <Col md={4} onClick={() => { handleShow(booking.BookingParticipant) } }>
+                <Col md={4} onClick={() => { handleShow(booking.BookingParticipant, booking.user_name) } }>
                   <Card className={(Math.ceil((new Date().getTime() - new Date(booking.from_datetime).getTime())/(oneDay))) <= 7 ? "text-initial rb-border-left" : "text-initial rrb-border-left"}>
                     <Card.Body className='card-body-item'>
                       {/* <OverlayTrigger
@@ -160,6 +163,11 @@ const Home = () => {
         </Modal.Header>
         <div className="booking-participant-body" style={{height: participants.length > 5 ? '' : "300px"}}>
           <Modal.Body>
+            <Row className='booked-by-row'>
+              <Col>
+                <span className='booked-by-col'>Booked By</span> : <span>{bookedByUser} {UserObj.name === bookedByUser ? '(you)' : ''}</span>
+              </Col>
+            </Row>
             <Table striped bordered hover className='booking-participant-table'>
               <thead closeButton className='participant-model-header'>
                 <tr>
@@ -174,7 +182,7 @@ const Home = () => {
                     participants.map((participant, index) => (
                       <tr>
                         <td>{index + 1}</td>
-                        <td>{participant.user_name}</td>
+                        <td>{participant.user_name}  {UserObj.name === participant.user_name ? '(you)' : ''}</td>
                         <td>{participant.user_email}</td>
                       </tr>
                     ))
