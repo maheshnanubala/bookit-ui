@@ -105,6 +105,9 @@ color: black;
 .msl-chip{
     display: none !important;
 }
+.msl-active~.msl-options{
+    max-height: 300px !important;
+}
 
 .time-icon{
     color: #F06A3E !important;
@@ -112,3 +115,35 @@ color: black;
     position: absolute !important;
     padding-left: 10.5rem !important;
 }
+
+.calander-div {
+    .rdrCalendarWrapper{
+        position: absolute;
+        z-index: 999;
+    }
+}
+
+.start-time-label {
+    padding-left: 40%;
+}
+
+.end-time-label {
+    padding-left: 40%;
+}
+
+.floor-label {
+    padding-left: 40%;
+}
+
+.purpose-select {
+    width: 77% !important;
+}
+
+.mandate-item {
+    color: red;
+}
+
+
+.tooltip > div.tooltip-inner {
+    background-color: #2F3C7F !important;
+  }

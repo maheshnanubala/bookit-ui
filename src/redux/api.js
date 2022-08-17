@@ -26,8 +26,8 @@ export const availableworkspace = (
   floorId,
   fromDate,
   toDate,
-  start_time,
-  end_time,
+  startTime,
+  endTime,
   buildingId,
   value,
   purpose
@@ -35,7 +35,7 @@ export const availableworkspace = (
   API.get(
     `/api/available_workspace?floor_id=${Number(
       floorId
-    )}&from_date=${fromDate}&to_date=${toDate}&start_time=${start_time}&end_time=${end_time}&building_id=${Number(
+    )}&from_date=${fromDate}&to_date=${toDate}&start_time=${startTime}&end_time=${endTime}&building_id=${Number(
       buildingId
     )}&user_ids=${[value]}&purpose=${purpose}`
   );

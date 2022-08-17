@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Form, Row, Col, Table, Button, Container } from "react-bootstrap";
+import { Form, Row, Col, Table, Button, Container, Card } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -11,7 +11,7 @@ import { bookWorkSpaceSchema } from "../../../services/ValidationSchema";
 import BookSpaceModal from "../BookSpaceModal";
 import "./RoomSelection.scss";
 import { bookworkspace } from "../../../redux/ActionReducer/bookSlice";
-
+import format from 'date-fns/format'
 export const RoomSelection = () => {
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
@@ -42,6 +42,7 @@ export const RoomSelection = () => {
     ],
     user_id: user?.id,
     user_ids: [],
+    data: [],
   });
   const {
     register,
@@ -79,21 +80,29 @@ export const RoomSelection = () => {
   };
 
   const onSubmit = (formValue) => {
+    let fd = new Date(availableworkspace?.data?.FromDate)
+    let td = new Date(availableworkspace?.data?.ToDate)
+    let fDate = new Date(fd.getTime() - (fd.getTimezoneOffset() * 60000 )).toISOString().split("T")[0];
+    let tDate = new Date(td.getTime() - (td.getTimezoneOffset() * 60000 )).toISOString().split("T")[0];
     setBookspace({
       city_id: availableworkspace?.data?.CityId || 0,
       building_id: availableworkspace?.data?.FloorDetails?.building_id || 0,
       floor_id: availableworkspace?.data?.FloorDetails?.id || 0,
-      from_date: availableworkspace?.data?.FromDate || "",
-      to_date: availableworkspace?.data?.ToDate || "",
+      from_date: fDate || "",
+      to_date: tDate || "",
       start_time: availableworkspace?.data?.StartTime || "",
       end_time: availableworkspace?.data?.EndTime || "",
       purpose: availableworkspace?.data?.Purpose || "",
       user_id: user?.id,
       user_ids: availableworkspace?.user_ids.split(",").map(Number) || [],
       selected_workspaces: formValue.selected_workspaces || [],
+      data: availableworkspace?.data || [],
     });
     setShow(true);
   };
+
+  const ConferenceRooms = availableworkspace?.data?.FloorDetails?.workspaces
+  .filter((item) => item.type === "conference")
 
   return (
     <Container>
@@ -109,11 +118,11 @@ export const RoomSelection = () => {
                   <span className="book-label">Date</span>
                   <span className="book-input-item">
                     <span className="me-2">
-                      {availableworkspace?.data?.FromDate}
+                      {new Date(availableworkspace?.data?.FromDate).toDateString()}
                     </span>{" "}
                     -
                     <span className="ms-2">
-                      {availableworkspace?.data?.ToDate}
+                      {new Date(availableworkspace?.data?.ToDate).toDateString()}
                     </span>
                   </span>
                 </Col>
@@ -178,9 +187,8 @@ export const RoomSelection = () => {
                   </Row>
                   <Form.Group>
                     <Row className="seats">
-                      {availableworkspace?.data?.FloorDetails?.workspaces
-                        .filter((item) => item.type === "conference")
-                        .map((item) => (
+                      { ConferenceRooms?.length > 0 ?
+                        ConferenceRooms.map((item) => (
                           <Col xs={3} className="seat" key={item.id}>
                             <input
                               type="radio"
@@ -221,7 +229,13 @@ export const RoomSelection = () => {
                               </div>
                             </label>
                           </Col>
-                        ))}
+                        ))
+                        : <Card className="conf-not-available">
+                            <span className="conf-not-available-text">
+                              Conference room not avalilable for - <b>{availableworkspace?.data?.FloorDetails?.name}</b>
+                            </span>
+                          </Card>
+                      }
                     </Row>
                   </Form.Group>
                   <span className="text-danger">
@@ -264,7 +278,7 @@ export const RoomSelection = () => {
                       <th>White Board with Pens</th>
                     </tr>
                   </thead>
-                  {individualRoomDetail.length > 0 ? (
+                  {individualRoomDetail?.length > 0 ? (
                     <tbody>
                       {individualRoomDetail &&
                         individualRoomDetail.map((item) => (

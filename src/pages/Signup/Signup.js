@@ -17,6 +17,7 @@ const Signup = () => {
   const handleChange = ({ target: { name, value } }) => {
     let updateValues = { ...values, [name]: value };
     setValues(updateValues);
+    setErrors('');
   };
 
   const handleSubmit = async (e) => {
@@ -74,9 +75,12 @@ const Signup = () => {
                   </span>
                 )}
                 <br />
-                <section className="d-grid gap-2">
+                <section className="d-grid gap-2 button-item">
                   <Button type="submit" className="btn btn-color sign-up-btn">
                     Sign-up
+                  </Button>
+                  <Button onClick={() => navigate('/')} className="btn btn-color sign-in-btn">
+                    Back to Sign-in
                   </Button>
                 </section>
                 <section>

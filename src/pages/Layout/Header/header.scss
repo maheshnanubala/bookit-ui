@@ -1,9 +1,10 @@
 .logo{
     width: 10%;
+    margin-left: 2%;
 }
 
 .logout-button{ 
-   font-size:14px;
+   font-size:20px !important;
    font-family:lato-regular;
    padding-right:  2rem;
    border: none;
@@ -18,3 +19,6 @@
     margin-bottom: 2px;   
  }
 
+#icon_text {
+   padding-left: 10px;
+}

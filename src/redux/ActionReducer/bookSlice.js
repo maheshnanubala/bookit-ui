@@ -7,8 +7,8 @@ export const availableWorkspace = createAsyncThunk(
     floorId,
     fromDate,
     toDate,
-    start_time,
-    end_time,
+    startTime,
+    endTime,
     buildingId,
     value,
     purpose,
@@ -19,13 +19,13 @@ export const availableWorkspace = createAsyncThunk(
         floorId,
         fromDate,
         toDate,
-        start_time,
-        end_time,
+        startTime,
+        endTime,
         buildingId,
         value,
         purpose
       );
-      navigate(`/room-selection`);
+      navigate(`/new-booking/room-selection`);
       return response.data;
     } catch (err) {
       if (err.response.status !== 200 && err.response.status !== 201) {
@@ -75,7 +75,7 @@ const bookSlice = createSlice({
     },
     [availableWorkspace.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.payload?.message;
     },
   },
 });

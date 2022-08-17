@@ -55,7 +55,7 @@ function App() {
             path="/book-space-confirmation"
             element={<BookSpaceConfirmation />}
           />
-          <Route path="/room-selection" element={<RoomSelection />} />
+          <Route path="/new-booking/room-selection" element={<RoomSelection />} />
         </Routes>
       </Layout>
     </div>
