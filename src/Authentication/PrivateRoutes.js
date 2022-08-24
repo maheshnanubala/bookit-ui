@@ -1,10 +1,18 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { Navigate, Outlet } from "react-router-dom";
+import Layout from "../pages/Layout/Layout";
 import Signin from "../pages/Signin/Signin.lazy";
 
-export const PrivateRoute = ({ children }) => {
+export const PrivateRoutes = () => {
   const { user } = useSelector((state) => ({
     ...state.auth.user,
   }));
-  return <div> {user !== null ? children : <Signin />} </div>;
+  return user !== null ? (
+    <Layout>
+      <Outlet />
+    </Layout>
+  ) : (
+    <Navigate to="/" />
+  );
 };

@@ -12,6 +12,7 @@ export const signin = createAsyncThunk(
     } catch (err) {
       if (err.response.status !== 200 && err.response.status !== 201) {
         toast.error(err.response.data.message);
+        navigate(`/`);
       }
       return err.response.data.message;
     }
@@ -59,8 +60,10 @@ const authSlice = createSlice({
     },
     [signin.fulfilled]: (state, action) => {
       state.loading = false;
-      localStorage.setItem("user", JSON.stringify({ ...action.payload }));
       state.user = action.payload;
+      if (state.user?.message === "Successfully login") {
+        localStorage.setItem("user", JSON.stringify({ ...action.payload }));
+      }
     },
     [signin.rejected]: (state, action) => {
       state.loading = false;

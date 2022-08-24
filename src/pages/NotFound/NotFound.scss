@@ -1,0 +1,38 @@
+.notfound-block {
+  background-color: #f5f7ff;
+  h1 {
+    color: #2f3c7f;
+  }
+  .try-again-btn {
+    background-color: #f06a3e;
+    border-color: #f06a3e;
+    border-radius: 50px;
+    padding: 8.5px 24px 8.5px 24px;
+    color: white;
+    font-size: 14px;
+    font-family: "lato-Medium";
+  }
+  .try-again-btn:hover {
+    background-color: #f06a3e;
+    color: white;
+    border-color: #f06a3e;
+  }
+  .try-again-btn:focus {
+    background-color: #f06a3e;
+  }
+}
+.generic-not-foundblock {
+  height: 100vh;
+  h1 {
+    color: #2f3c7f;
+    font-size: 55px;
+  }
+  h2 {
+    color: #f06a3e;
+    font-size: 85px;
+  }
+  p {
+    color: #2f3c7f;
+    font-size: 35px;
+  }
+}

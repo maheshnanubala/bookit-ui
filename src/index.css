@@ -1,4 +1,4 @@
-@import './toastr.min.css';
+@import "./toastr.min.css";
 
 body {
   margin: 0;
@@ -7,7 +7,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color:rgba(252, 252, 245, 0.533);
+  background-color: rgba(252, 252, 245, 0.533);
+  overflow: hidden;
 }
 
 code {
@@ -18,27 +19,26 @@ code {
 @font-face {
   font-family: "norwester";
   src: local("norwester"),
-  url("./assest/fonts/norwester.ttf") format("truetype");
+    url("./assest/fonts/norwester.ttf") format("truetype");
   font-weight: bold;
 }
 @font-face {
   font-family: "lato-regular";
   src: local("lato-regular"),
-  url("./assest/fonts/Lato-Regular.ttf") format("truetype");
+    url("./assest/fonts/Lato-Regular.ttf") format("truetype");
 }
 @font-face {
   font-family: "lato-heavy";
   src: local("lato-heavy"),
-  url("./assest/fonts/Lato-Heavy.ttf") format("truetype");
+    url("./assest/fonts/Lato-Heavy.ttf") format("truetype");
 }
 @font-face {
   font-family: "lato-Medium";
   src: local("lato-Medium"),
-  url("./assest/fonts/Lato-Medium.ttf") format("truetype");
+    url("./assest/fonts/Lato-Medium.ttf") format("truetype");
 }
 @font-face {
   font-family: "lato-bold";
   src: local("lato-bold"),
-  url("./assest/fonts/Lato-Bold.ttf") format("truetype");
+    url("./assest/fonts/Lato-Bold.ttf") format("truetype");
 }
-

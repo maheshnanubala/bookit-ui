@@ -1,94 +1,181 @@
-.sign-up-container {
-  margin: 0px !important;
-  padding: 0px !important;
+/*------- background----------*/
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
 }
-.sign-up-row {
-  width: 100%;
-  max-width: 392px;
-  min-width: 320px;
-}
-.form-main-page {
-  background: #f6f6f6 0% 0% no-repeat padding-box;
-  box-shadow: 3px 3px 12px #0000001f;
-  border: 1px solid #b2d0ff;
-  border-radius: 4px;
-}
-.sign-up-page {
+.login-block {
   background: url("../../assest/images/background-image.png"),
     transparent linear-gradient(180deg, #2f3c7f 0%, #30396d 47%, #252b4b 100%)
       0% 0% no-repeat padding-box;
   background-color: #374179 0% 0% no-repeat padding-box;
   background-size: cover;
-  background-position: 50% 50%;
   background-repeat: no-repeat;
-  text-align: left;
-  display: flex;
-  // padding: 10px;
-  align-items: center;
-  flex-direction: column;
+  width: 100%;
   height: 100vh;
-}
-.form-signup-header {
-  text-transform: uppercase;
-  font-weight: bolder;
-  font-family: "norwester";
-  color: #ffffff;
-  position: sticky;
-  margin-bottom: 0px;
-  margin-top: 0px;
-}
-.form-signup-container {
-  padding: 0px;
-}
-.input-signup-label{
-  border-radius: 30px;
-  margin-left: 10px;
-  font-size:14px;
-}
-.input-signup-input{
-  border-radius: 99px;
-}
-.p-signup-area {
-  color: #aeaeae;
-  font-size: 12px;
-}
-.signup-text {
-  color: #f06a3e;
-  font-size: 20px;
-  font-family: "lato-heavy";
-}
-.label-signup-text {
-  color: rgb(71, 70, 70);
-  font-family: "lato-Medium";
-  margin-left: 1rem;
-}
-.sign-up-btn {
-  border-radius: 99px;
-  background-color: #f06a3e;
-  border: 1px solid #f06a3e;
-}
-.footer-image {
-  width: 133px;
-}
-.footer-signup {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  text-align: center;
-  height: 100px;
-}
-.footer-text {
-  color: white;
-  font-size: 12px;
+  opacity: 1;
+  overflow-y: auto;
+  /*------- form----------*/
+
+  .login-form-block {
+    background-color: #f6f6f6;
+    border-radius: 4px;
+    box-shadow: 3px 3px 12px #0000001f;
+    border: 1px solid #b2d0ff;
+  }
+  .required::after {
+    content: " *";
+    color: red;
+  }
+  .signin-text {
+    font-family: "lato-heavy";
+    text-align: center;
+    font-size: 18px;
+    color: #f06a3e;
+  }
+  .input-label {
+    font-family: "lato-Medium";
+    text-align: left;
+    font-size: 14px;
+    padding-bottom: 3px;
+    color: rgb(75, 68, 68, 0.798);
+    font-weight: 600;
+  }
+  .input-box {
+    border-radius: 1.5rem;
+    border: none;
+    box-shadow: 0px 0px 3px 0px rgba(143, 209, 199, 0.757);
+    font-size: initial;
+    font-family: "lato-Medium";
+    color: grey;
+  }
+  .inner-addon {
+    position: relative;
+  }
+  .inner-addon .bi-eye-fill {
+    position: absolute;
+    padding: 8px;
+    color: #f06a3e;
+    cursor: pointer;
+  }
+  .inner-addon .bi-eye-slash-fill {
+    position: absolute;
+    padding: 8px;
+    color: #f06a3e;
+    cursor: pointer;
+  }
+  .right-addon .bi-eye-fill {
+    right: 14px;
+    top: 33px;
+  }
+  .right-addon .bi-eye-slash-fill {
+    right: 14px;
+    top: 33px;
+  }
+  .right-addon input {
+    padding-right: 30px;
+  }
+  .submit-btn {
+    background-color: #f06a3e;
+    color: white;
+    font-family: "lato-Medium";
+    border-radius: 99px;
+    border-color: #f06a3e;
+  }
+  .submit-btn:hover {
+    background-color: #f06a3e;
+    color: white;
+    border-color: #f06a3e;
+  }
+  .submit-btn:focus {
+    background-color: #f06a3e;
+  }
+  .signin-option-line {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid #000;
+    line-height: 0.1em;
+    margin: 10px 0 20px;
+  }
+  .signin-option-line span {
+    background: #f6f6f6;
+    padding: 0 10px;
+    color: rgb(75, 68, 68, 0.798);
+    font-size: 12px;
+    font-family: "lato-Medium";
+    font-weight: 600;
+  }
+  .heading-text {
+    font-family: "norwester";
+    font-size: 32px;
+    color: white;
+    padding-top: 90px;
+  }
+  .sigin-back-btn {
+    border-radius: 99px;
+    background-color: #2f3c7f;
+    border: 1px solid #2f3c7f;
+  }
+  .p-signup-area {
+    color: #aeaeae;
+    font-size: 13px;
+    font-family: "lato-regular";
+    letter-spacing: 0px;
+    color: #aeaeae;
+    opacity: 1;
+  }
+  /*--------footer----------*/
+  .footer-block {
+    padding-top: 100px;
+    .footer-logo {
+      width: 130px;
+      padding-top: 10px;
+    }
+    .font-face-gm {
+      font-family: "lato-regular";
+      color: white;
+    }
+    .footer-text {
+      font-size: 12px;
+      margin: 0rem;
+    }
+  }
 }
 
-.sign-in-btn {
-  border-radius: 99px;
-  background-color: #2F3C7F;
-  border: 1px solid #2F3C7F;
+/*--------for large screens----------*/
+@media only screen and (min-device-width: 1440px) {
+  .footer-block {
+    padding-top: 80px !important;
+  }
 }
 
-.button-item {
-  margin-top: 15px;
+/*--------for tablets screens----------*/
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
+  .heading-text {
+    font-size: 32px;
+  }
+  #navlinks {
+    padding: 5px 50px 20px 50px;
+  }
+}
+
+/*--------for mobile screens----------*/
+@media only screen and (min-width: 100px) and (max-width: 450px) {
+  .input-box {
+    font-size: initial;
+    font-family: "lato-Medium";
+    color: grey;
+  }
+  .footer {
+    height: 70px;
+  }
+  .footer-logo {
+    width: 100px;
+    padding-top: 5px;
+  }
+  .footer-text {
+    font-size: x-small;
+  }
+  .heading-text {
+    margin-bottom: 10vh;
+  }
 }
