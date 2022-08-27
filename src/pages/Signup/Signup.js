@@ -1,109 +1,166 @@
 import React, { useState } from "react";
-import "./Signup.scss";
-import { validateForm } from "../../services/Validation";
+// import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import indiumLogo from "../../assest/images/footerlogo.png";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Card,
+  Spinner,
+  Button,
+} from "react-bootstrap";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { signup } from "../../redux/ActionReducer/authSlice";
+import "./Signup.scss";
+import img from "../../assest/images/footerlogo.png";
+import { signUpValidationSchema } from "../../services/ValidationSchema";
 
-const Signup = () => {
-  const [values, setValues] = useState({});
-  const [errors, setErrors] = useState({ error: "No value" });
-  const navigate = useNavigate();
+const Signin = () => {
+  const { loading } = useSelector((state) => ({ ...state.auth }));
+  const [passwordShown, setPasswordShown] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleChange = ({ target: { name, value } }) => {
-    let updateValues = { ...values, [name]: value };
-    setValues(updateValues);
-    setErrors('');
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(signUpValidationSchema) });
 
-  const handleSubmit = async (e) => {
+  const onSubmit = (formValues, e) => {
     e.preventDefault();
-    setErrors(validateForm(values));
-    if (!Object.values(validateForm(values)).some((v) => v)) {
-      dispatch(signup({ formValues: values, navigate, toast }));
+    if (formValues.email && formValues.password && formValues.name) {
+      dispatch(signup({ formValues, navigate, toast }));
     }
   };
 
   return (
-    <Container fluid className="sign-up-container">
-      <section className="sign-up-page">
-        <header>
-          <h1 className="text-center form-signup-header  mb-5"> Bookit</h1>
-        </header>
-
-        <Row className="justify-content-center sign-up-row ">
-          <Col xs={12} className="form-main-page px-4 py-5 px-sm-4 py-sm-5">
-            <div className="internal-div">
-              <Form className="form-signup-container" onSubmit={handleSubmit}>
-                <h3 className="signup-text text-center">Sign-up</h3>
-                <label className="label-signup-text mt-3">Name</label>
-                <input
-                  type="text"
-                  className="form-control input-signup-input"
-                  name="name"
-                  onChange={handleChange}
-                />
+    <Container fluid className="login-block ">
+      <Row className="justify-content-center align-items-center">
+        <Col sm={8} md={6} lg={4} xl={4} xxl={3}>
+          <Row className="justify-content-center align-items-center">
+            <Col className="text-center">
+              <h1 className="heading-text">BOOKIT</h1>
+            </Col>
+          </Row>
+          <Card className="login-form-block p-4 mt-3 mb-5">
+            <Form onSubmit={handleSubmit(onSubmit)} className="p-3">
+              <Row>
+                <p className="signin-text">Sign-up</p>
+              </Row>
+              <Row className="mt-0 mb-1">
+                <Form.Group className="mb-2">
+                  <Form.Label className="input-label required ms-2">
+                    Name
+                  </Form.Label>
+                  <Form.Control
+                    className="input-box"
+                    type="text"
+                    {...register("name")}
+                  />
+                </Form.Group>
                 {errors.name && (
-                  <span className="mt-1 mb-2 text-danger">{errors.name}</span>
+                  <div className="text-danger ms-2 mb-2">
+                    {errors.name?.message}
+                  </div>
                 )}
-                <br />
-                <label className="label-signup-text">Email</label>
-                <input
-                  type="text"
-                  className="form-control input-signup-input"
-                  name="email"
-                  onChange={handleChange}
-                />
+              </Row>
+              <Row className="mt-0 mb-1">
+                <Form.Group className="mb-2">
+                  <Form.Label className="input-label required ms-2">
+                    Email
+                  </Form.Label>
+                  <Form.Control
+                    className="input-box"
+                    type="email"
+                    {...register("email")}
+                  />
+                </Form.Group>
                 {errors.email && (
-                  <span className="mt-1 mb-2 text-danger">{errors.email}</span>
+                  <div className="text-danger ms-2">
+                    {errors.email?.message}
+                  </div>
                 )}
-                <br />
-                <label className="label-signup-text">Password</label>
-                <input
-                  type="password"
-                  className="form-control input-signup-input"
-                  name="password"
-                  onChange={handleChange}
-                />
-                {errors.password && (
-                  <span className=" mt-1 mb-2 text-danger">
-                    {errors.password}
+              </Row>
+              <Row className="mt-2 mb-1">
+                <Form.Group className="mb-2 password-field inner-addon right-addon">
+                  <Form.Label className="input-label required ms-2">
+                    Password
+                  </Form.Label>
+                  <span onClick={() => setPasswordShown(!passwordShown)}>
+                    {passwordShown ? (
+                      <i className="bi bi-eye-fill" />
+                    ) : (
+                      <i className="bi bi-eye-slash-fill" />
+                    )}
                   </span>
+                  <Form.Control
+                    className="input-box"
+                    type={passwordShown ? "text" : "password"}
+                    {...register("password")}
+                  />
+                </Form.Group>
+                {errors.password && (
+                  <div className="text-danger mb-4 ms-2">
+                    {errors.password?.message}
+                  </div>
                 )}
-                <br />
-                <section className="d-grid gap-2 button-item">
-                  <Button type="submit" className="btn btn-color sign-up-btn">
+              </Row>
+              <Row className="mt-0 mb-4">
+                <Col>
+                  <Button
+                    type="submit"
+                    className="submit-btn w-100 shadow-none"
+                  >
                     Sign-up
+                    {loading && (
+                      <Spinner
+                        animation="border"
+                        size="sm"
+                        variant="light"
+                        className="ms-2"
+                      />
+                    )}
                   </Button>
-                  <Button onClick={() => navigate('/')} className="btn btn-color sign-in-btn">
+                  <Button
+                    type="submit"
+                    className="sigin-back-btn w-100 shadow-none mt-3"
+                    onClick={() => navigate("/")}
+                  >
+                    <i className="bi bi-caret-left-fill me-2" />
                     Back to Sign-in
                   </Button>
-                </section>
-                <section>
-                  <p className="text-center m-3 p-signup-area">
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <p className="text-center p-signup-area">
                     By Signing up you agree to our Terms & condition
                   </p>
-                </section>
-              </Form>
-            </div>
-          </Col>
-        </Row>
-
-        <footer className="text-center footer-signup">
-          <img className="footer-image" src={indiumLogo} alt="logo" />
-          <p className="footer-text">Copyright @ 2020 Indium Software</p>
-        </footer>
-      </section>
+                </Col>
+              </Row>
+            </Form>
+          </Card>
+        </Col>
+      </Row>
+      <Row className="footer-block mb-3">
+        <Col className="text-center">
+          <img className="footer-logo" src={img} alt="fg" />
+          <p className="justify-content-center align-items-center font-face-gm footer-text">
+            Copyright @ 2020 Indium Software
+          </p>
+        </Col>
+      </Row>
     </Container>
   );
 };
 
-Signup.propTypes = {};
+Signin.propTypes = {};
 
-Signup.defaultProps = {};
+Signin.defaultProps = {};
 
-export default Signup;
+export default Signin;

@@ -12,52 +12,54 @@ import Resetpassword from "./pages/Resetpassword/Resetpassword.lazy";
 import { useDispatch, useSelector } from "react-redux";
 import MyProfile from "./pages/MyProfile/MyProfile.lazy";
 import MyBookings from "./pages/MyBookings/MyBookings.lazy";
-import { BookSpaceConfirmation } from "./pages/BookSpace/BookSpaceConfirmation";
-import BookSpace from "./pages/BookSpace/BookSpace.lazy";
-import Layout from "./pages/Layout/Layout";
-import PrivateRoute from "./Authentication/PrivateRoutes";
+import { PrivateRoutes } from "./Authentication/PrivateRoutes";
 import { setUser } from "./redux/ActionReducer/authSlice";
 import { RoomSelection } from "./pages/BookSpace/RoomSelection/RoomSelection";
 import NewBooking from "./pages/NewBooking/newBooking.js";
+import { NotFound } from "./pages/NotFound/NotFound.js";
+import { GenericNotFound } from "./pages/NotFound/GenericNotFound";
 
 function App() {
-  const [isAuth, setAuth] = useState(false);
   const { user: userAuthenticated } = useSelector((state) => ({
     ...state.auth.user,
   }));
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
-    dispatch(setUser(user));
+    dispatch(setUser(userAuthenticated));
   }, []);
 
   return (
     <div className="App">
       {/* Public Routes */}
       <ToastContainer />
-
       <Routes>
-        <Route path="/" element={<Signin />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/forgot-password" element={<Forgotpassword />} />
-        <Route path="/reset-password" element={<Resetpassword />} />
+        {user !== null ? (
+          <Route element={<PrivateRoutes />}>
+            <Route exact path="/home" element={<Home />} />
+            <Route exact path="/me" element={<MyProfile />} />
+            <Route exact path="/bookings" element={<MyBookings />} />
+            <Route exact path="/new-booking" element={<NewBooking />} />
+            <Route
+              exact
+              path="/new-booking/room-selection"
+              element={<RoomSelection />}
+            />
+            <Route path="/" element={<Home />} />
+            <Route exact path="*" element={<NotFound />} />
+          </Route>
+        ) : (
+          <Route>
+            <Route path="/signin" element={<Signin />} />
+            <Route path="/" element={<Signin />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/forgot-password" element={<Forgotpassword />} />
+            <Route path="/reset-password" element={<Resetpassword />} />
+            <Route path="*" element={<GenericNotFound />} />
+          </Route>
+        )}
       </Routes>
-
-      <Layout>
-        <Routes>
-          <Route path="/home" element={<Home />} />
-          <Route path="/me" element={<MyProfile />} />
-          <Route path="/bookings" element={<MyBookings />} />
-          <Route path="/book-space" element={<BookSpace />} />
-          <Route path="/new-booking" element={<NewBooking />} />
-          <Route
-            path="/book-space-confirmation"
-            element={<BookSpaceConfirmation />}
-          />
-          <Route path="/new-booking/room-selection" element={<RoomSelection />} />
-        </Routes>
-      </Layout>
     </div>
   );
 }
