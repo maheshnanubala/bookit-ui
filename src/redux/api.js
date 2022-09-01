@@ -18,10 +18,9 @@ export const signIn = (data) => API.post("/api/sign-in", data);
 export const signUp = (data) => API.post("/api/sign-up", data);
 
 // Workspace
-export const workspaceDetails = () => API.get("/api/workspace_details");
-
+export const getMyBookingDetails = () => API.get("/api/my_bookings");
 export const bookworkSpace = (data) => API.post("/api/book_workspace", data);
-
+export const getworkspaceDetails = () => API.get("/api/workspace_details");
 export const availableworkspace = (
   floorId,
   fromDate,

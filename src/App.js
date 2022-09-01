@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
@@ -18,6 +18,8 @@ import { RoomSelection } from "./pages/BookSpace/RoomSelection/RoomSelection";
 import NewBooking from "./pages/NewBooking/newBooking.js";
 import { NotFound } from "./pages/NotFound/NotFound.js";
 import { GenericNotFound } from "./pages/NotFound/GenericNotFound";
+import { PrivateRouteConfig } from "./routes/PrivateRouteConfig";
+import { PublicRouteConfig } from "./routes/PublicRouteConfig";
 
 function App() {
   const { user: userAuthenticated } = useSelector((state) => ({
@@ -31,32 +33,19 @@ function App() {
 
   return (
     <div className="App">
-      {/* Public Routes */}
       <ToastContainer />
       <Routes>
         {user !== null ? (
           <Route element={<PrivateRoutes />}>
-            <Route exact path="/home" element={<Home />} />
-            <Route exact path="/me" element={<MyProfile />} />
-            <Route exact path="/bookings" element={<MyBookings />} />
-            <Route exact path="/new-booking" element={<NewBooking />} />
-            <Route
-              exact
-              path="/new-booking/room-selection"
-              element={<RoomSelection />}
-            />
-            <Route path="/" element={<Home />} />
-            <Route exact path="*" element={<NotFound />} />
+            {PrivateRouteConfig.map(({ name, path, exact, element }) => (
+              <Route key={name} exact={exact} path={path} element={element} />
+            ))}
           </Route>
         ) : (
           <Route>
-            <Route path="/signin" element={<Signin />} />
-            <Route path="/" element={<Signin />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/forgot-password" element={<Forgotpassword />} />
-            <Route path="/reset-password" element={<Resetpassword />} />
-            <Route path="*" element={<GenericNotFound />} />
+            {PublicRouteConfig.map(({ name, path, element }) => (
+              <Route key={name} path={path} element={element} />
+            ))}
           </Route>
         )}
       </Routes>

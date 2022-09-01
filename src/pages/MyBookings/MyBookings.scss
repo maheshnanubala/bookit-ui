@@ -1,100 +1,157 @@
-home {
-    text-align: left;
+.home {
+  text-align: left;
+  width: auto;
+  font-family: "lato-Medium";
+  margin-top: 4% !important;
+  padding-left: 2%;
+  .home-newbooking-btn {
+    justify-content: end;
+  }
+  .hr {
+    border: solid 1px #888888;
     width: auto;
-    margin-left: -5%;
-    font-family: "lato-Medium";
-}
-
-.hr {
-    border: solid 1px;
-    box-shadow: 15px 10px 8px #888888;
-    width: auto;
-}
-
-.cardtext {
+  }
+  .cardtext {
     color: #92979a;
     font-size: 16px;
     padding: 5px;
-    font-weight: bold
-}
-
-.card-headings {
     font-weight: bold;
+  }
+  .card-headings {
     font-size: 15px;
-}
-
-.card-headers {
+    font-family: "lato-bold";
+    color: #262f36;
+  }
+  .card-headers {
     text-align: left;
-    color: black;
+    color: #262f36;
     font-size: 15px;
-    font-weight: bold;
-    font-family: "lato-Medium"
-}
-
-.icon-headings {
+    font-family: "lato-bold";
+    padding-left: 40px;
+  }
+  .icon-headings {
     top: 258px;
     left: 596px;
     width: 40px;
-    height: 35px;
+    height: 45px;
     color: #000000;
     opacity: 1;
-}
-
-.icon-dots {
+  }
+  .icon-dots {
     float: right;
     width: 35px;
     height: 25px;
-}
-
-.headings {
-    margin-left: 3%;
-    color: black;
+  }
+  .headings {
+    color: #0a1656;
     font-size: 18px;
+    font-family: "lato-heavy";
+  }
+  #welcomeName-row {
     font-family: "lato-Medium";
-}
-
-#welcomeName-row {
-    margin-left: 4%;
-    font-weight: normal
-}
-
-#text-name {
-    color: #4588F0;
+    color: #262f36;
+  }
+  #text-name {
+    color: #f06a3e !important;
     font-weight: bold;
-}
-
-.text-initial {
-    margin-left: 8%;
-    margin-top: 3%;
-    height: fit-content;
-    width: 400px;
-    height: 160px;
-    background: #FFFFFF 0% 0% no-repeat padding-box;
-    box-shadow: 0px 3px 6px #0000001A;
-    border: 1px solid #FFFFFF;
-    opacity: 1;
-}
-
-.ub-border-left {
-    border-left: 2px solid #4fba46 !important
-}
-
-.rb-border-left {
-    border-left: 2px solid #F06A3E !important;
-}
-
-.bh-border-left {
-    border-left: 2px solid #F06A3E !important
-}
-
-.text-initial:hover {
+  }
+  .text-initial {
+    margin-top: 10%;
+  }
+  .ub-border-left {
+    border-left: 5px solid #4fba46 !important;
+  }
+  .rb-border-left {
+    border-left: 5px solid #f06a3e !important;
+  }
+  .rrb-border-left {
+    border-left: 5px solid #db2828 !important;
+  }
+  .text-initial:hover {
     cursor: pointer;
-}
-
-.custom-recentbooking-section {
+  }
+  .custom-recentbooking-section {
     height: auto;
+  }
+  .card-list-item {
+    li {
+      list-style-type: none;
+    }
+  }
+  .not-found-span {
+    padding-left: 50px;
+    color: red !important;
+  }
+  .time-header {
+    text-align: left;
+    color: #262f36;
+    font-size: 15px;
+    font-family: "lato-bold";
+    padding-left: 40px;
+  }
 }
 
-.book-label {
-    float: right;
+.booking-participant-modal {
+  font-family: "lato-bold";
+  .participant-model-title {
+    background-color: #4557b3;
+    color: #fdf8f6;
+  }
+  .participant-model-header {
+    background-color: #f06a3e;
+    color: #fdf8f6;
+  }
+  .model-close-button {
+    text-align: center;
+  }
+  .booking-participant-body {
+    background: url("../../assest/images/Indium-software-Logo.png");
+    background-color: #f5f7ff;
+    background-blend-mode: color-burn;
+    background-repeat: no-repeat;
+    background-position-x: right;
+    background-position-y: bottom;
+    width: 100%;
+  }
+  .booking-participant-table {
+    background-color: transparent;
+  }
+  .footer-block {
+    margin: 0px;
+    padding: 10px;
+    background-color: #f5f7ff;
+  }
+  .booked-by-col {
+    font-family: "lato-heavy";
+    color: #0a1656;
+  }
+  .booked-by-row {
+    padding: 15px;
+  }
+  .modal-close-btn {
+    outline: none;
+    box-shadow: none;
+    border: none;
+    font-size: 25px;
+    color: white;
+  }
+  .close-btn {
+    border-radius: 50px;
+    width: 20%;
+  }
+  .close-btn:hover {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+  .close-btn:focus {
+    background-color: #dc3545;
+  }
+}
+
+@media only screen and (max-width: 575px) {
+  .booking-icon {
+    margin-top: 1rem;
+    float: left !important;
+  }
 }

@@ -1,28 +1,75 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Form, Row, Col, Table, Button, Container, Card } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  Form,
+  Row,
+  Col,
+  Table,
+  Button,
+  Container,
+  Card,
+  Spinner,
+} from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import moment from "moment";
 import { toast } from "react-toastify";
-import image from "../../../assest/images/conference-ion.png";
 import { bookWorkSpaceSchema } from "../../../services/ValidationSchema";
 import BookSpaceModal from "../BookSpaceModal";
 import "./RoomSelection.scss";
-import { bookworkspace } from "../../../redux/ActionReducer/bookSlice";
-import format from 'date-fns/format'
+import {
+  bookworkspace,
+  availableWorkspace,
+} from "../../../redux/ActionReducer/bookSlice";
+import format from "date-fns/format";
+
 export const RoomSelection = () => {
+  const {
+    floorId,
+    fromDate,
+    toDate,
+    startTime,
+    endTime,
+    buildingId,
+    value,
+    purpose,
+  } = useParams();
+
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useSelector((state) => ({
-    ...state.auth.user,
+  const user = JSON.parse(localStorage.getItem("user"));
+  const { loading, availableworkspace } = useSelector((state) => ({
+    ...state.bookworkspace,
   }));
 
-  const availableworkspace = JSON.parse(
-    localStorage.getItem("availableworkspace")
-  );
+  useEffect(() => {
+    if (
+      floorId !== "" &&
+      fromDate !== "" &&
+      toDate !== "" &&
+      startTime !== "" &&
+      endTime !== "" &&
+      buildingId !== "" &&
+      value !== "" &&
+      purpose !== ""
+    ) {
+      dispatch(
+        availableWorkspace({
+          floorId,
+          fromDate,
+          toDate,
+          startTime,
+          endTime,
+          buildingId,
+          value,
+          purpose,
+          navigate,
+        })
+      );
+    }
+  }, []);
 
   const [roomInfo, setRoomInfo] = useState([]);
   const [bookSpace, setBookspace] = useState({
@@ -40,7 +87,7 @@ export const RoomSelection = () => {
         seats: [],
       },
     ],
-    user_id: user?.id,
+    user_id: user?.user?.id,
     user_ids: [],
     data: [],
   });
@@ -75,15 +122,18 @@ export const RoomSelection = () => {
   };
   const handleSave = () => {
     setShow(false);
-    console.log(bookSpace, "inside room");
     dispatch(bookworkspace({ bookSpace, navigate, toast }));
   };
 
   const onSubmit = (formValue) => {
-    let fd = new Date(availableworkspace?.data?.FromDate)
-    let td = new Date(availableworkspace?.data?.ToDate)
-    let fDate = new Date(fd.getTime() - (fd.getTimezoneOffset() * 60000 )).toISOString().split("T")[0];
-    let tDate = new Date(td.getTime() - (td.getTimezoneOffset() * 60000 )).toISOString().split("T")[0];
+    let fd = new Date(availableworkspace?.data?.FromDate);
+    let td = new Date(availableworkspace?.data?.ToDate);
+    let fDate = new Date(fd.getTime() - fd.getTimezoneOffset() * 60000)
+      .toISOString()
+      .split("T")[0];
+    let tDate = new Date(td.getTime() - td.getTimezoneOffset() * 60000)
+      .toISOString()
+      .split("T")[0];
     setBookspace({
       city_id: availableworkspace?.data?.CityId || 0,
       building_id: availableworkspace?.data?.FloorDetails?.building_id || 0,
@@ -93,7 +143,7 @@ export const RoomSelection = () => {
       start_time: availableworkspace?.data?.StartTime || "",
       end_time: availableworkspace?.data?.EndTime || "",
       purpose: availableworkspace?.data?.Purpose || "",
-      user_id: user?.id,
+      user_id: user?.user?.id,
       user_ids: availableworkspace?.user_ids.split(",").map(Number) || [],
       selected_workspaces: formValue.selected_workspaces || [],
       data: availableworkspace?.data || [],
@@ -101,8 +151,10 @@ export const RoomSelection = () => {
     setShow(true);
   };
 
-  const ConferenceRooms = availableworkspace?.data?.FloorDetails?.workspaces
-  .filter((item) => item.type === "conference")
+  const ConferenceRooms =
+    availableworkspace?.data?.FloorDetails?.workspaces.filter(
+      (item) => item.type === "conference"
+    );
 
   return (
     <Container>
@@ -118,11 +170,15 @@ export const RoomSelection = () => {
                   <span className="book-label">Date</span>
                   <span className="book-input-item">
                     <span className="me-2">
-                      {new Date(availableworkspace?.data?.FromDate).toDateString()}
+                      {new Date(
+                        availableworkspace?.data?.FromDate
+                      ).toDateString()}
                     </span>{" "}
                     -
                     <span className="ms-2">
-                      {new Date(availableworkspace?.data?.ToDate).toDateString()}
+                      {new Date(
+                        availableworkspace?.data?.ToDate
+                      ).toDateString()}
                     </span>
                   </span>
                 </Col>
@@ -187,7 +243,7 @@ export const RoomSelection = () => {
                   </Row>
                   <Form.Group>
                     <Row className="seats">
-                      { ConferenceRooms?.length > 0 ?
+                      {ConferenceRooms?.length > 0 ? (
                         ConferenceRooms.map((item) => (
                           <Col xs={3} className="seat" key={item.id}>
                             <input
@@ -216,26 +272,23 @@ export const RoomSelection = () => {
                             />
                             <label htmlFor={item.id}>
                               <div className="mb-1">{item.name}</div>
-                              <span>
-                                <img
-                                  src={image}
-                                  alt="conference room"
-                                  className="img-fluid"
-                                  style={{ height: "35px" }}
-                                />
-                              </span>
+                              <div className="workspace-conferenceroom-icon" />
                               <div className="mt-1 seat-label-contents">
                                 Capacity - {item.capacity}
                               </div>
                             </label>
                           </Col>
                         ))
-                        : <Card className="conf-not-available">
-                            <span className="conf-not-available-text">
-                              Conference room not avalilable for - <b>{availableworkspace?.data?.FloorDetails?.name}</b>
-                            </span>
-                          </Card>
-                      }
+                      ) : (
+                        <Card className="conf-not-available">
+                          <span className="conf-not-available-text">
+                            Conference room not avalilable for -{" "}
+                            <b>
+                              {availableworkspace?.data?.FloorDetails?.name}
+                            </b>
+                          </span>
+                        </Card>
+                      )}
                     </Row>
                   </Form.Group>
                   <span className="text-danger">
@@ -245,13 +298,31 @@ export const RoomSelection = () => {
                         errors.selected_workspaces.find((x) => x)?.seats
                           .message}
                   </span>
-                  <Row className="mt-3 mb-3 text-lg-end ">
-                    <Col>
+                  <Row className="mt-4 mb-3 text-lg-end">
+                    <Col className="text-end">
+                      <Button
+                        type="submit"
+                        className="book-conference-room-btn shadow-none"
+                        onClick={() => navigate(`/new-booking`)}
+                      >
+                        <i className="bi bi-pencil-square me-2" />
+                        Modify
+                      </Button>
+                    </Col>
+                    <Col className="text-start">
                       <Button
                         type="submit"
                         className="book-conference-room-btn shadow-none"
                       >
                         Book Conference Room
+                        {loading && (
+                          <Spinner
+                            animation="border"
+                            size="sm"
+                            variant="light"
+                            className="ms-2"
+                          />
+                        )}
                       </Button>
                     </Col>
                   </Row>
@@ -286,29 +357,59 @@ export const RoomSelection = () => {
                             <td>{item.name}</td>
                             <td>{item.capacity}</td>
                             <td>
-                              {item.amenities.slice(0, 1).is_present === true
-                                ? "Yes"
-                                : "No"}
+                              {item.amenities
+                                ?.slice(0, 1)
+                                .map((item, index) => {
+                                  return (
+                                    <div key={index}>
+                                      {item.is_present === true ? "Yes" : "No"}
+                                    </div>
+                                  );
+                                })}
                             </td>
                             <td>
-                              {item.amenities.slice(0, 2).is_present === true
-                                ? "Yes"
-                                : "No"}
+                              {item.amenities
+                                ?.slice(1, 2)
+                                .map((item, index) => {
+                                  return (
+                                    <div key={index}>
+                                      {item.is_present === true ? "Yes" : "No"}
+                                    </div>
+                                  );
+                                })}
                             </td>
                             <td>
-                              {item.amenities.slice(0, 3).is_present === true
-                                ? "Yes"
-                                : "No"}
+                              {item.amenities
+                                ?.slice(2, 3)
+                                .map((item, index) => {
+                                  return (
+                                    <div key={index}>
+                                      {item.is_present === true ? "Yes" : "No"}
+                                    </div>
+                                  );
+                                })}
                             </td>
                             <td>
-                              {item.amenities.slice(0, 4).is_present === true
-                                ? "Yes"
-                                : "No"}
+                              {item.amenities
+                                ?.slice(3, 4)
+                                .map((item, index) => {
+                                  return (
+                                    <div key={index}>
+                                      {item.is_present === true ? "Yes" : "No"}
+                                    </div>
+                                  );
+                                })}
                             </td>
                             <td>
-                              {item.amenities.slice(0, 5).is_present === true
-                                ? "Yes"
-                                : "No"}
+                              {item.amenities
+                                ?.slice(4, 5)
+                                .map((item, index) => {
+                                  return (
+                                    <div key={index}>
+                                      {item.is_present === true ? "Yes" : "No"}
+                                    </div>
+                                  );
+                                })}
                             </td>
                           </tr>
                         ))}
@@ -325,7 +426,6 @@ export const RoomSelection = () => {
                 </Table>
               </Col>
             </Row>
-
             <BookSpaceModal
               show={show}
               handleClose={handleClose}

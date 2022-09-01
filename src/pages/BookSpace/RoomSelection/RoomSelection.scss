@@ -99,13 +99,27 @@
 .seat {
   padding-bottom: 15px;
   position: relative;
+  .workspace-conferenceroom-icon {
+    background-image: url("../../../assest/images/Conf_green\ icon.svg");
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 25px;
+    margin: 10% 0% 5% 40%;
+    display: block;
+  }
   input[type="radio"] {
     display: none;
+    span {
+      background-image: url("../../../assest/images/Conf_White\ icon.svg");
+    }
   }
   input[type="radio"]:checked {
     + label {
       background: #21ba45;
       color: white;
+      .workspace-conferenceroom-icon {
+        background-image: url("../../../assest/images/Conf_White\ icon.svg");
+      }
     }
   }
   input[type="radio"]:disabled {
@@ -116,6 +130,9 @@
       cursor: not-allowed;
       font-size: 16px;
       font-family: "lato-Medium";
+      .workspace-conferenceroom-icon {
+        background-image: url("../../../assest/images/Conf_grey\ icon.svg");
+      }
       &:after {
         text-indent: 0;
         position: absolute;
@@ -139,7 +156,6 @@
     line-height: 1.5rem;
     padding: 13px 0;
     color: #21ba45;
-    //width: 89px;
     border: 1px solid #21ba45;
     border-radius: 5px;
     cursor: pointer;
@@ -149,13 +165,11 @@
     }
   }
 }
-
-.conf-not-available{
+.conf-not-available {
   padding-bottom: 5%;
   align-items: center;
 }
-
-.conf-not-available-text{
+.conf-not-available-text {
   color: red;
   padding-top: 30px;
 }

@@ -1,149 +1,141 @@
-#page-title{
-    font-family:lato-heavy;
-    font-size: 16px;
-    color:#0A1656;
-    padding-top: 15px;
-    margin-top: 1rem;
+.new-booking-block {
+  position: relative;
 }
-.spacetype-radio{
-    font-family:lato-bold;
-    font-size: 16px;
+#page-title {
+  font-family: "lato-heavy";
+  font-size: 16px;
+  color: #0a1656;
+  padding-top: 15px;
+  margin-top: 1rem;
 }
-.calander-icon{
-    color: #F06A3E;
-    background-color:transparent !important;
-    border:  none  !important;
-    font-size: 20px;
-    position: absolute;
-    padding-left: 10.5rem;
+.spacetype-radio {
+  font-family: "lato-bold";
+  font-size: 16px;
 }
-.calander-icon :hover{
-    cursor: pointer;
+.calander-icon {
+  color: #f06a3e;
+  background-color: transparent !important;
+  border: none !important;
+  font-size: 20px;
+  position: absolute;
+  padding-left: 10.5rem;
 }
-
-#time-input{
-    width: 12rem !important;
-}
-.inputBox{
-    border:none;
-    border-radius: 5px;
-    background-color: white;
-    width: 12rem;
-    border: 1px solid #DEDEDF;
-    border-radius: 4px;
-    text-align: left;
-    height: 30px;
-}
-.select-purpose-input{
-    width: 80%;
-}
-.addmem-cust{
-    color: green !important;
-    width:fit-content;
-}
-.find-button{
-    border-radius: 1.5rem !important;
-    border: none !important;
-    box-shadow: 0px 0px 3px 0px rgba(143, 209, 199, 0.757) !important;
-    height: 40px;
-    font-size:initial;
-    font-family: "lato-Medium";
-    background-color: #F06A3E !important;
-    color: white;
-  }
-  .hr{
-      opacity: 0.1;
-}
-#modal-save-btn{
-    border-radius: 1.5rem !important;
-    border: none !important;
-    box-shadow: 0px 0px 3px 0px rgba(143, 209, 199, 0.757) !important;
-    height: 40px;
-    font-size:initial;
-    font-family: "lato-Medium";
-    background-color: #F06A3E !important;
-    color: white;
-    width: 50rem;
+.calander-icon :hover {
+  cursor: pointer;
 }
 
-#modal-card{
- height: 25rem;
- width:auto;
+#time-input {
+  width: 12rem !important;
 }
-.select-members{
-    text-align: center;
+.inputBox {
+  border: none;
+  border-radius: 5px;
+  background-color: white;
+  width: 12rem;
+  border: 1px solid #dededf;
+  border-radius: 4px;
+  text-align: left;
+  height: 30px;
+}
+.select-purpose-input {
+  width: 80%;
+}
+.addmem-cust {
+  color: green !important;
+  width: fit-content;
+}
+.find-button {
+  border-radius: 1.5rem !important;
+  border: none !important;
+  box-shadow: 0px 0px 3px 0px rgba(143, 209, 199, 0.757) !important;
+  height: 40px;
+  font-size: initial;
+  font-family: "lato-Medium";
+  background-color: #f06a3e !important;
+  color: white;
+}
+.hr {
+  opacity: 0.1;
+}
+#modal-save-btn {
+  border-radius: 1.5rem !important;
+  border: none !important;
+  box-shadow: 0px 0px 3px 0px rgba(143, 209, 199, 0.757) !important;
+  height: 40px;
+  font-size: initial;
+  font-family: "lato-Medium";
+  background-color: #f06a3e !important;
+  color: white;
+  width: 50rem;
+}
+#modal-card {
+  height: 25rem;
+  width: auto;
+}
+.select-members {
+  text-align: center;
 }
 .msl-vars {
-    --input-width:auto !important;
-    text-align: center;
+  --input-width: auto !important;
+  text-align: center;
 }
-small{
-    color: #9C9C9C;
+small {
+  color: #9c9c9c;
 }
-#selected-members{
-color: black;
+#selected-members {
+  color: black;
 }
-.msl-option-active{
-    color: #F06A3E !important;
-    background-color:white !important;
-    background-image: url('../../assest/images/member_selected.png')  !important;
-    background-size: 20px  !important;
-    background-repeat: no-repeat !important;
-    background-position-y:center  !important ;
+.msl-option-active {
+  color: #f06a3e !important;
+  background-color: white !important;
+  background-image: url("../../assest/images/member_selected.png") !important;
+  background-size: 20px !important;
+  background-repeat: no-repeat !important;
+  background-position-y: center !important ;
 }
-.msl-option{
-    background-image: url('../../assest/images/employee.png');
-    color:#9C9C9C;
-    background-size: 20px  !important;
-    background-repeat: no-repeat !important;
-    background-position-y:center  !important ;
-    border-bottom: 2px solid whitesmoke;
-    border-width: 150%;
-    box-shadow: none !important;
-
+.msl-option {
+  background-image: url("../../assest/images/employee.png");
+  color: #9c9c9c;
+  background-size: 20px !important;
+  background-repeat: no-repeat !important;
+  background-position-y: center !important ;
+  border-bottom: 2px solid whitesmoke;
+  border-width: 150%;
+  box-shadow: none !important;
 }
-.msl-chip{
-    display: none !important;
+.msl-chip {
+  display: none !important;
 }
-.msl-active~.msl-options{
-    max-height: 300px !important;
+.msl-active ~ .msl-options {
+  max-height: 300px !important;
 }
-
-.time-icon{
-    color: #F06A3E !important;
-    font-size: 20px !important;
-    position: absolute !important;
-    padding-left: 10.5rem !important;
+.time-icon {
+  color: #f06a3e !important;
+  font-size: 20px !important;
+  position: absolute !important;
+  padding-left: 10.5rem !important;
 }
-
 .calander-div {
-    .rdrCalendarWrapper{
-        position: absolute;
-        z-index: 999;
-    }
-}
-
-.start-time-label {
-    padding-left: 40%;
-}
-
-.end-time-label {
-    padding-left: 40%;
-}
-
-.floor-label {
-    padding-left: 40%;
-}
-
-.purpose-select {
-    width: 77% !important;
-}
-
-.mandate-item {
-    color: red;
-}
-
-
-.tooltip > div.tooltip-inner {
-    background-color: #2F3C7F !important;
+  .rdrCalendarWrapper {
+    position: absolute;
+    z-index: 999;
   }
+}
+.start-time-label {
+  padding-left: 40%;
+}
+.end-time-label {
+  padding-left: 40%;
+}
+.floor-label {
+  padding-left: 40%;
+}
+.purpose-select {
+  width: 77% !important;
+}
+.mandate-item {
+  color: red;
+}
+.tooltip > div.tooltip-inner {
+  background-color: #2f3c7f !important;
+}

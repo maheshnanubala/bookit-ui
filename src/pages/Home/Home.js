@@ -1,175 +1,136 @@
-
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import './Home.scss';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom';
-import { TbDotsVertical } from 'react-icons/tb'
-import image from '../../images/conference-icon.png'
-import { ApiUtility } from '../../ApiUtility';
-import Modal from 'react-bootstrap/Modal';
-import Table from 'react-bootstrap/Table';
-// import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-// import Popover from 'react-bootstrap/Popover';
-// import Dropdown from 'react-bootstrap/Dropdown';
-
-const userdetails = JSON.parse(localStorage.getItem('user'));
-
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { Container, Row, Col, Button, Modal, Table } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getMyBookingDetails } from "../../redux/ActionReducer/bookSlice";
+import "./Home.scss";
+import { UpcomingBookingCardItem } from "./UpcomingBookingCard";
+import { RecentBookingCardItem } from "./RecentBookingCardItem";
 
 const Home = () => {
-  const UserObj = JSON.parse(localStorage.getItem("user"))?.user || {}
-  const navigate = useNavigate();
-  const navigateToNewBookings = () => {
-    navigate('/new-booking');
-  };
-  // const [show, setShow] = useState(false);
-  // const handleShow = () => { setShow(true) }
-  const [upCommingBooking, setUpCommingBooking] = useState([]);
-  const [recentBooking, setRecentBooking] = useState([]);
+  const userdetails = JSON.parse(localStorage.getItem("user"));
+  const UserObj = JSON.parse(localStorage.getItem("user"))?.user || {};
+  const [bookedByUser, setBookedByUser] = useState("");
   const [participants, setParticipants] = useState([]);
+  const oneDay = 1000 * 60 * 60 * 24;
+  const [show, setShow] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { workspaceBookingDetails } = useSelector((state) => ({
+    ...state.bookworkspace,
+  }));
 
   useEffect(() => {
-    getMyBookingDetails();
-  }, [])
+    dispatch(getMyBookingDetails());
+  }, [dispatch]);
 
-  const getMyBookingDetails = async () => {
-    let response = await ApiUtility.getMyBookingsRecords();
-    setUpCommingBooking(response.upcoming_booking_details)
-    setRecentBooking(response.past_booking_details.slice(0, 3))
-  }
-
-  const oneDay = 1000*60*60*24;
-  const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const [bookedByUser, setBookedByUser] = useState('')
   const handleShow = (participants, bookedByUserName) => {
-    setShow(true)
-    setParticipants(participants)
-    setBookedByUser(bookedByUserName)
-  }
+    setShow(true);
+    setParticipants(participants);
+    setBookedByUser(bookedByUserName);
+  };
+  const upcomingBookings = workspaceBookingDetails?.upcoming_booking_details;
+
   return (
-    <Container fluid className='home'>
-      <section className=" pt-5 pb-2 ">
+    <Container fluid className="home">
+      <section className="pt-3 pb-2">
         <Row>
-          <Col md={6}>
+          <Col xs={12} sm={6} md={6} lg={6}>
             <h4 id="welcomeName-row">
-              Welcome back <span id="text-name">{userdetails?.user?.name} !</span>
+              Welcome back
+              <span id="text-name" className="ms-2">
+                {userdetails?.user?.name} !
+              </span>
             </h4>
           </Col>
-          <Col className='justify-content-end' md={6}>
-            <Button className='booking-icon' onClick={navigateToNewBookings}>New Booking</Button>
+          <Col className="home-newbooking-btn" xs={12} sm={6} md={6} lg={6}>
+            <Button
+              className="booking-icon"
+              onClick={() => navigate("/new-booking")}
+            >
+              New Booking
+            </Button>
           </Col>
         </Row>
       </section>
-      <hr className='hr' />
-      <section className="custom-upcomingbooking-section pt-3 pb-3">
-        <Row>
+      <section>
+        <Row className="custom-upcomingbooking-section pt-5 pb-3">
           <h4 className="headings">Upcoming Bookings</h4>
-          {
-            (upCommingBooking?.length > 0 ?
-            upCommingBooking.map((booking) => (
-              <Col md={4} onClick={() => { handleShow(booking.BookingParticipant, booking.user_name) } }>
-                <Card className="text-initial ub-border-left">
-                  <Card.Body className='card-body-item'>
-                    {/* <OverlayTrigger
-                      trigger="click"
-                      placement="bottom"
-                      overlay={
-                        <Popover className={`popover-positioned-bottom`}>
-                          <Popover.Body>
-                            <Dropdown.Item href="#/release" >Release booked Room</Dropdown.Item>
-                            <Dropdown.Item href="#/reschedule"> Reschedule Date & time</Dropdown.Item>
-                            <Dropdown.Item href="#/share" > Share the Details</Dropdown.Item>
-                          </Popover.Body>
-                        </Popover>
-                      }
-                    >
-                      <span className="book-label"> <TbDotsVertical className='icon-dots' onClick={handleShow} /></span>
-                    </OverlayTrigger> */}
-                    <span className="book-label"> <TbDotsVertical className='icon-dots'/></span>
-                    <Card.Title className='card-headings'> <img alt='img' src={image} className='icon-headings' /><span>{new Date(booking.from_datetime).toLocaleDateString()}</span> | <span>{new Date(booking.to_datetime).toLocaleDateString()}</span></Card.Title>
-                    <Card.Title className='time-header'>{new Date(booking.from_datetime).toLocaleTimeString('en-US', {timeZone:'UTC',hour12:true,hour:'numeric',minute:'numeric'}) || ''} - {new Date(booking.to_datetime).toLocaleTimeString('en-US', {timeZone:'UTC',hour12:true,hour:'numeric',minute:'numeric'}) || ''}</Card.Title>
-                    <Card.Title className='card-headers'>{booking.purpose || ''}</Card.Title>
-                    <Card.Text className='cardtext' >
-                      <ul className='card-list-item'>
-                        <li>{booking.city_name} - {booking.building_name}</li>
-                        <li>{booking.floor_name} - {booking.BookingWorkspace?.[0]?.workspace_name}</li>
-                        <li>Room Capacity {[0, 1].includes(booking.BookingWorkspace?.[0]?.workspace_capacity) ? `${booking.BookingWorkspace?.[0]?.workspace_capacity} Seat` : `${booking.BookingWorkspace?.[0]?.workspace_capacity} Seats`}</li>
-                      </ul>
-                    </Card.Text >
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))
-            : <span className='not-found-span'>No upcoming bookings</span>)
-          }
+          {upcomingBookings?.length > 0 ? (
+            upcomingBookings
+              .slice()
+              .sort((a, b) => (a.from_datetime > b.from_datetime ? 1 : -1))
+              .map((booking) => (
+                <UpcomingBookingCardItem
+                  booking={booking}
+                  handleShow={handleShow}
+                />
+              ))
+          ) : (
+            <span className="not-found-span">No upcoming bookings</span>
+          )}
         </Row>
       </section>
-      <hr className='hr' />
-      <section className="custom-recentbooking-section pt-3 pb-3">
-        <Row>
+      <hr className="hr" />
+      <section>
+        <Row className="custom-recentbooking-section pt-3 pb-3">
           <h4 className="headings"> Booking History</h4>
-          {
-            (recentBooking?.length > 0 ?
-            recentBooking.map((booking) => (
-                <Col md={4} onClick={() => { handleShow(booking.BookingParticipant, booking.user_name) } }>
-                  <Card className={(Math.ceil((new Date().getTime() - new Date(booking.from_datetime).getTime())/(oneDay))) <= 7 ? "text-initial rb-border-left" : "text-initial rrb-border-left"}>
-                    <Card.Body className='card-body-item'>
-                      {/* <OverlayTrigger
-                        trigger="click"
-                        placement="bottom"
-                        overlay={
-                          <Popover className={`popover-positioned-bottom`}>
-                            <Popover.Body>
-                              <Dropdown.Item href="#/release" >Release booked Room</Dropdown.Item>
-                              <Dropdown.Item href="#/reschedule"> Reschedule Date & time</Dropdown.Item>
-                              <Dropdown.Item href="#/share" > Share the Details</Dropdown.Item>
-                            </Popover.Body>
-                          </Popover>
-                        }
-                      >
-                        <span className="book-label"> <TbDotsVertical className='icon-dots' onClick={handleShow} /></span>
-                      </OverlayTrigger> */}
-                      <span className="book-label"> <TbDotsVertical className='icon-dots' /></span>
-                      <Card.Title className='card-headings'> <img alt='img' src={image} className='icon-headings' /> {new Date(booking.from_datetime).toLocaleDateString()} | {new Date(booking.to_datetime).toLocaleDateString()}</Card.Title>
-                      <Card.Title className='time-header'>{new Date(booking.from_datetime).toLocaleTimeString('en-US', {timeZone:'UTC',hour12:true,hour:'numeric',minute:'numeric'}) || ''} - {new Date(booking.to_datetime).toLocaleTimeString('en-US', {timeZone:'UTC',hour12:true,hour:'numeric',minute:'numeric'}) || ''}</Card.Title>
-                      <Card.Title className='card-headers'>{booking.purpose || ''}</Card.Title>
-                      <Card.Text className='cardtext' >
-                        <ul className='card-list-item'>
-                          <li>{booking.city_name} - {booking.building_name}</li>
-                          <li>{booking.floor_name} - {booking.BookingWorkspace?.[0]?.workspace_name}</li>
-                          <li>Room Capacity {[0, 1].includes(booking.BookingWorkspace?.[0]?.workspace_capacity) ? `${booking.BookingWorkspace?.[0]?.workspace_capacity} Seat` : `${booking.BookingWorkspace?.[0]?.workspace_capacity} Seats`}</li>
-                        </ul>
-                      </Card.Text >
-                    </Card.Body>
-                  </Card>
-                </Col>
-            ))
-            : <span className='not-found-span'>No recent bookings</span>)
-          }
+          {workspaceBookingDetails?.past_booking_details?.length > 0 ? (
+            workspaceBookingDetails?.past_booking_details
+              ?.slice(0, 3)
+              .map((booking) => (
+                <RecentBookingCardItem
+                  booking={booking}
+                  oneDay={oneDay}
+                  handleShow={handleShow}
+                />
+              ))
+          ) : (
+            <span className="not-found-span">No recent bookings</span>
+          )}
         </Row>
       </section>
-      <hr className='hr' />
+      <hr className="hr" />
       <Modal
         show={show}
-        onHide={handleClose}
         backdrop="static"
         keyboard={false}
         size="lg"
         className="booking-participant-modal"
       >
-        <Modal.Header closeButton className='participant-model-title'>
-          <Modal.Title>Participants Details</Modal.Title>
+        <Modal.Header className="participant-model-title">
+          <Col md={6}>
+            <Modal.Title>Participants Details</Modal.Title>
+          </Col>
+          <Col md={6} className="text-end">
+            <button
+              className="bg-transparent modal-close-btn"
+              onClick={handleClose}
+            >
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </Col>
         </Modal.Header>
-        <div className="booking-participant-body" style={{height: participants.length > 5 ? '' : "300px"}}>
+        <div
+          className="booking-participant-body"
+          style={{
+            height: participants.length > 5 ? "" : "300px",
+            overflow: "auto",
+          }}
+        >
           <Modal.Body>
-            <Row className='booked-by-row'>
-              <Col>
-                <span className='booked-by-col'>Booked By</span> : <span>{bookedByUser} {UserObj.name === bookedByUser ? '(you)' : ''}</span>
+            <Row className="booked-by-row">
+              <Col className="ps-0">
+                <span className="booked-by-col">Booked By</span> :{" "}
+                <span>
+                  {bookedByUser} {UserObj.name === bookedByUser ? "(you)" : ""}
+                </span>
               </Col>
             </Row>
-            <Table striped bordered hover className='booking-participant-table'>
-              <thead closeButton className='participant-model-header'>
+            <Table striped bordered hover className="booking-participant-table">
+              <thead closeButton className="participant-model-header">
                 <tr>
                   <th>S.No</th>
                   <th>User Name</th>
@@ -177,26 +138,38 @@ const Home = () => {
                 </tr>
               </thead>
               <tbody>
-                {
-                  participants?.length > 0 ?
-                    participants.map((participant, index) => (
-                      <tr>
-                        <td>{index + 1}</td>
-                        <td>{participant.user_name}  {UserObj.name === participant.user_name ? '(you)' : ''}</td>
-                        <td>{participant.user_email}</td>
-                      </tr>
-                    ))
-                  : <tr><td colSpan={3} className='not-found-span text-center'>No participants found</td></tr>
-                }
+                {participants?.length > 0 ? (
+                  participants.map((participant, index) => (
+                    <tr>
+                      <td>{index + 1}</td>
+                      <td>
+                        {participant.user_name}{" "}
+                        {UserObj.name === participant.user_name ? "(you)" : ""}
+                      </td>
+                      <td>{participant.user_email}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={3} className="not-found-span text-center">
+                      No participants found
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </Table>
           </Modal.Body>
         </div>
-        <Modal.Footer className='p-0'>
-          <Row className='footer-block w-100'>
+        <Modal.Footer className="p-0">
+          <Row className="footer-block w-100">
             <Col className="text-center">
-              <Button size="lg" variant="danger" onClick={handleClose}>
-              Close
+              <Button
+                size="lg"
+                variant="danger"
+                className="close-btn"
+                onClick={handleClose}
+              >
+                Close
               </Button>
             </Col>
           </Row>
