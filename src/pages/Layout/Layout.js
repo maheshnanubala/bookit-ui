@@ -18,10 +18,14 @@ const Layout = ({ children }) => {
           </Col>
         </Row>
         <Row>
-          <Col xs={4} md={2} className="mt-5 Asidebar do-fixed">
+          <Col
+            className="mt-5 Asidebar d-none d-lg-block"
+            lg={2}
+            id="sticky-sidebar"
+          >
             <AsideBar />
           </Col>
-          <Col xs={10} md={10} className="mt-5 cust-children">
+          <Col className="mt-5 col offset-lg-2" md={12} lg={10} id="main">
             {children}
           </Col>
         </Row>

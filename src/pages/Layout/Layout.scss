@@ -1,42 +1,31 @@
-.layout{ 
-   background-color:#F5F7FF;
-   background-image: url('../../assest/images/Indium-software-Logo.png');
-   background-blend-mode:color-burn;
-   background-repeat: no-repeat;
-   background-size: 280px;
-   background-position-x: right;
-   background-position-y:bottom;
-   background-attachment: fixed;
-   height: 100vh;
-   overflow-y: auto;
+.layout {
+  background-color: #f5f7ff;
+  background-image: url("../../assest/images/Indium-software-Logo.png");
+  background-blend-mode: color-burn;
+  background-repeat: no-repeat;
+  background-size: 280px;
+  background-position-x: right;
+  background-position-y: bottom;
+  background-attachment: fixed;
+  height: 100vh;
+  overflow-y: auto;
 }
-
-.header{
-   z-index: 100;
-   background-color:white;
-   box-shadow: 1px 1px 10px #888888;
-   box-shadow: 1px 1px 10px #888888;
-   box-shadow: 1px 1px 10px #888888;
+.header {
+  z-index: 100;
+  background-color: white;
+  box-shadow: 1px 1px 10px #888888;
+  box-shadow: 1px 1px 10px #888888;
+  box-shadow: 1px 1px 10px #888888;
 }
-.Asidebar{
-   box-shadow: 2px 5px 10px #888888;
-   box-shadow: 2px 5px 10px #888888;
-   box-shadow: 2px 5px 10px #888888;
-   background-color:#2F3C7F;
-   z-index: 99;
-   height: 100%;
-   padding: 0px !important;
+.Asidebar {
+  box-shadow: 2px 5px 10px #888888;
+  box-shadow: 2px 5px 10px #888888;
+  box-shadow: 2px 5px 10px #888888;
+  background-color: #2f3c7f;
+  height: 100%;
+  padding: 0px !important;
+  position: fixed;
 }
-
-.do-fixed{
-   position:fixed;
+.do-fixed {
+  position: fixed;
 }
-.cust-children{
-   margin-left:13rem;
-}
-@media only screen and (min-width:1400px){
-   .cust-children{
-      margin-left:17rem;
-   }
-}
-

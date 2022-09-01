@@ -1,30 +1,26 @@
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
+import React, { useEffect, useRef, useState } from "react";
+import { Col, Row, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import Label from "react-bootstrap/FormLabel";
 import InputGroup from "react-bootstrap/InputGroup";
 import { Button, Modal } from "react-bootstrap";
 import { Time } from "../../constants/time";
-import { useEffect, useRef, useState } from "react";
 import MultiSelect from "react-multiple-select-dropdown-lite";
 import "react-multiple-select-dropdown-lite/dist/index.css";
-import { ApiUtility } from "../../ApiUtility.js";
 import { DateRange } from "react-date-range";
 import format from "date-fns/format";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import "./newBooking.scss";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
-import { availableWorkspace } from "../../redux/ActionReducer/bookSlice.js";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getworkspaceDetails } from "../../redux/ActionReducer/bookSlice.js";
 
 const FillDetails = () => {
   const UserObj = JSON.parse(localStorage.getItem("user"))?.user || {};
   const [value, setvalue] = useState([UserObj.id]);
   const [display_add_val, setDisplay_add_val] = useState("");
   const [display_edit_val, setDisplay_edit_val] = useState("none");
-  const [data, setData] = useState([]);
   const [selectedUser, setSelectedUser] = useState([UserObj.name] || []);
   const [defaultUser, setDefaultUser] = useState([
     { label: UserObj.name, value: UserObj.id },
@@ -32,16 +28,15 @@ const FillDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [floorData, setFloorData] = useState([]);
+  const { workspacedetails } = useSelector((state) => ({
+    ...state.bookworkspace,
+  }));
+
   useEffect(() => {
     document.addEventListener("keydown", hideOnEscapeCal, true);
     document.addEventListener("click", hideOnClickOutsideCal, true);
-    getWorkSpaceDetails();
-    async function getWorkSpaceDetails() {
-      let response = await ApiUtility.getWorkSpaceDetails();
-      setData(response?.workspace_details);
-      setFloorData(response?.workspace_details?.FloorList);
-    }
-  }, []);
+    dispatch(getworkspaceDetails());
+  }, [dispatch]);
 
   const handleOnchange = (val) => {
     let userIds = val.split(",").map((uId) => {
@@ -52,7 +47,7 @@ const FillDetails = () => {
     setDisplay_edit_val("inline");
     let newArr = [];
     let userObjArr = [];
-    let userRecords = data?.UserList;
+    let userRecords = workspacedetails?.workspace_details?.UserList;
     userIds.map((userId) => {
       userRecords?.find((u) => {
         if (u.id === Number(userId)) {
@@ -70,9 +65,11 @@ const FillDetails = () => {
   const modalOpen = () => popup(true);
   const modalClose = () => popup(false);
   const setFloorRecord = (buildingId) => {
-    let florListArr = data?.FloorList.filter((val) => {
-      return val.building_id === Number(buildingId);
-    });
+    let florListArr = workspacedetails?.workspace_details?.FloorList.filter(
+      (val) => {
+        return val.building_id === Number(buildingId);
+      }
+    );
     setFloorData(florListArr);
     setbuildingId(buildingId);
   };
@@ -99,6 +96,7 @@ const FillDetails = () => {
   };
 
   const findConference = async () => {
+    console.log(startTime, "startTime");
     let fDate = new Date(calRange[0].startDate);
     let tDate = new Date(calRange[0].endDate);
     const fromDate = format(fDate, "yyyy-MM-dd");
@@ -118,21 +116,12 @@ const FillDetails = () => {
     } else if (purpose === "" || purpose === undefined) {
       toast.error("Please select Purpose");
     } else {
-      dispatch(
-        availableWorkspace({
-          floorId,
-          fromDate,
-          toDate,
-          startTime,
-          endTime,
-          buildingId,
-          value,
-          purpose,
-          navigate,
-        })
+      navigate(
+        `/new-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${value}/${purpose}`
       );
     }
   };
+
   const [calRange, setCalRange] = useState([
     {
       startDate: new Date(),
@@ -257,11 +246,13 @@ const FillDetails = () => {
                 size="sm"
               >
                 <option value="">Select</option>
-                {data?.BuildingList?.map((item) => (
-                  <option value={item.id} key={item.id}>
-                    {item.name}
-                  </option>
-                ))}
+                {workspacedetails?.workspace_details?.BuildingList?.map(
+                  (item) => (
+                    <option value={item.id} key={item.id}>
+                      {item.name}
+                    </option>
+                  )
+                )}
               </Form.Select>
             </Form.Group>
           </Col>
@@ -300,7 +291,7 @@ const FillDetails = () => {
                 onChange={(e) => setPurpose(e.target.value)}
               >
                 <option value="">Select</option>
-                {data?.Purpose?.map((item) => (
+                {workspacedetails?.workspace_details?.Purpose?.map((item) => (
                   <option value={item} key={item}>
                     {item}
                   </option>
@@ -355,10 +346,12 @@ const FillDetails = () => {
                   onChange={handleOnchange}
                   defaultValue={defaultUser}
                   options={
-                    data?.UserList?.map((item) => ({
-                      label: item.name,
-                      value: item.id,
-                    })) || []
+                    workspacedetails?.workspace_details?.UserList?.map(
+                      (item) => ({
+                        label: item.name,
+                        value: item.id,
+                      })
+                    ) || []
                   }
                   id="modal-card"
                 />

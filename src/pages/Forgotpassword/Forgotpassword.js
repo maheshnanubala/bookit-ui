@@ -16,7 +16,6 @@ const Forgotpassword = () => {
   };
 
   const handleSubmit = (e) => {
-    console.log(errors);
     e.preventDefault();
   };
 
