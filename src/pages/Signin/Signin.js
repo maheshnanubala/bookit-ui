@@ -101,7 +101,7 @@ const Signin = () => {
                     type="submit"
                     className="submit-btn w-100 shadow-none"
                   >
-                    Sign-in
+                    {loading ? "Signing in..." : "Sign-in"}
                     {loading && (
                       <Spinner
                         animation="border"

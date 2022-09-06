@@ -9,6 +9,7 @@ import {
   Container,
   Card,
   Spinner,
+  Breadcrumb,
 } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
@@ -158,10 +159,25 @@ export const RoomSelection = () => {
 
   return (
     <Container>
+      <Row className="mt-5">
+        <Col>
+          <Breadcrumb>
+            <Breadcrumb.Item
+              className="newbooking-breadcrumb-item"
+              onClick={() => navigate(`/new-booking`)}
+            >
+              New Booking
+            </Breadcrumb.Item>
+            <Breadcrumb.Item className="conference-breadcrumb-item">
+              Conference Room Selection{" "}
+            </Breadcrumb.Item>
+          </Breadcrumb>
+        </Col>
+      </Row>
       <Row>
         <Col>
           <div className="room-selection-block">
-            <h5 className="room-selection-title mt-5 mb-4">
+            <h5 className="room-selection-title mt-3 mb-4">
               Booking Information
             </h5>
             <Form onSubmit={handleSubmit(onSubmit)}>
@@ -313,8 +329,9 @@ export const RoomSelection = () => {
                       <Button
                         type="submit"
                         className="book-conference-room-btn shadow-none"
+                        disabled={roomInfo.length > 0 ? false : true}
                       >
-                        Book Conference Room
+                        {loading ? "Booking..." : "Book Conference Room"}
                         {loading && (
                           <Spinner
                             animation="border"

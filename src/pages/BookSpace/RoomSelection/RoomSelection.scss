@@ -1,3 +1,27 @@
+.breadcrumb-item + .breadcrumb-item::before {
+  float: left;
+  padding-right: 0.5rem;
+  color: #6c757d;
+  content: var(--bs-breadcrumb-divider, ">") !important;
+  font-weight: bold;
+}
+.newbooking-breadcrumb-item a {
+  color: #1a1d1f;
+  font-family: "lato-regular";
+  font-size: 14px;
+  text-decoration: none;
+  font-weight: bold;
+}
+.conference-breadcrumb-item a {
+  color: #f06a3e;
+  font-family: "lato-regular";
+  font-size: 14px;
+  text-decoration: none;
+  font-weight: bold;
+}
+.conference-breadcrumb-item a:hover {
+  color: #f06a3e;
+}
 .room-selection-block {
   .room-selection-title {
     letter-spacing: 0.03px;
@@ -43,6 +67,11 @@
     background-color: #f06a3e;
     color: white;
     border-color: #f06a3e;
+  }
+  .book-conference-room-btn:disabled {
+    background-color: #b9b9b9;
+    color: white;
+    border-color: #b9b9b9;
   }
   .book-conference-room-btn:focus {
     background-color: #f06a3e;

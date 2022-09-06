@@ -11,7 +11,7 @@ export const GenericNotFound = () => {
         <Row className="pt-5 text-center">
           <Col>
             <h1>
-              <i class="bi bi-exclamation-triangle-fill " />
+              <i className="bi bi-exclamation-triangle-fill " />
             </h1>
             <h2>404</h2>
             <p className="mt-5">Error Occured, Page not Found</p>

@@ -17,7 +17,7 @@ const Header = () => {
           alt=""
         />
         <button className="logout-button" onClick={handleLogout}>
-          <i class="bi bi-box-arrow-right"></i>
+          <i className="bi bi-box-arrow-right" />
           <b id="icon_text">Logout</b>
         </button>
       </nav>
