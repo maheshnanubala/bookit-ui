@@ -11,7 +11,7 @@ export const NotFound = () => {
       <Row className="mt-5">
         <Col>
           <h1>
-            <i class="bi bi-emoji-frown-fill me-3" />
+            <i className="bi bi-emoji-frown-fill me-3" />
             Sorry !!!!
           </h1>
           <p className="mt-4">Error Occured, kindly try again.</p>

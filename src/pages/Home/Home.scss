@@ -29,13 +29,12 @@
     font-family: "lato-bold";
     padding-left: 40px;
   }
-  .icon-headings {
-    top: 258px;
-    left: 596px;
-    width: 40px;
-    height: 45px;
-    color: #000000;
-    opacity: 1;
+  .home-conferenceroom-icon {
+    background-image: url("../../assest/images/Conf_grey\ icon.svg");
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+    display: block;
   }
   .icon-dots {
     float: right;
@@ -101,7 +100,6 @@
     }
   }
   .not-found-span {
-    padding-left: 50px;
     color: red !important;
   }
   .time-header {

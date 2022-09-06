@@ -42,10 +42,13 @@ const MyBookings = () => {
               .slice()
               .sort((a, b) => (a.from_datetime > b.from_datetime ? 1 : -1))
               .map((booking) => (
-                <UpcomingBookingCardItem
-                  booking={booking}
-                  handleShow={handleShow}
-                />
+                <React.Fragment key={booking.id}>
+                  <UpcomingBookingCardItem
+                    booking={booking}
+                    handleShow={handleShow}
+                    uniqueKey={booking.id}
+                  />
+                </React.Fragment>
               ))
           ) : (
             <span className="not-found-span">No upcoming bookings</span>
@@ -58,11 +61,14 @@ const MyBookings = () => {
           <h4 className="headings"> Booking History</h4>
           {workspaceBookingDetails?.past_booking_details?.length > 0 ? (
             workspaceBookingDetails?.past_booking_details.map((booking) => (
-              <RecentBookingCardItem
-                booking={booking}
-                oneDay={oneDay}
-                handleShow={handleShow}
-              />
+              <React.Fragment key={booking.id}>
+                <RecentBookingCardItem
+                  booking={booking}
+                  oneDay={oneDay}
+                  handleShow={handleShow}
+                  uniqueKey={booking.id}
+                />
+              </React.Fragment>
             ))
           ) : (
             <span className="not-found-span">No recent bookings</span>
@@ -86,7 +92,7 @@ const MyBookings = () => {
               className="bg-transparent modal-close-btn"
               onClick={handleClose}
             >
-              <i class="bi bi-x-lg"></i>
+              <i className="bi bi-x-lg" />
             </button>
           </Col>
         </Modal.Header>
@@ -104,7 +110,7 @@ const MyBookings = () => {
               </Col>
             </Row>
             <Table striped bordered hover className="booking-participant-table">
-              <thead closeButton className="participant-model-header">
+              <thead className="participant-model-header">
                 <tr>
                   <th>S.No</th>
                   <th>User Name</th>
@@ -114,7 +120,7 @@ const MyBookings = () => {
               <tbody>
                 {participants?.length > 0 ? (
                   participants.map((participant, index) => (
-                    <tr>
+                    <tr key={participants.id}>
                       <td>{index + 1}</td>
                       <td>
                         {participant.user_name}{" "}

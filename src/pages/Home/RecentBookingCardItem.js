@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Card } from "react-bootstrap";
 import { TbDotsVertical } from "react-icons/tb";
-import image from "../../images/conference-icon.png";
+import image from "../../assest/images/Group 1562.svg";
 
 export const RecentBookingCardItem = ({ booking, handleShow, oneDay }) => {
   return (
@@ -27,7 +27,11 @@ export const RecentBookingCardItem = ({ booking, handleShow, oneDay }) => {
             <TbDotsVertical className="icon-dots" />
           </span>
           <Card.Title className="card-headings">
-            <img alt="conference" src={image} className="icon-headings" />
+            <img
+              alt="conference-room"
+              src={image}
+              className="icon-headings me-3"
+            />
             {new Date(booking.from_datetime).toLocaleDateString()} |{" "}
             {new Date(booking.to_datetime).toLocaleDateString()}
           </Card.Title>

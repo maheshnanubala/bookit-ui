@@ -18,24 +18,56 @@ import { getworkspaceDetails } from "../../redux/ActionReducer/bookSlice.js";
 
 const FillDetails = () => {
   const UserObj = JSON.parse(localStorage.getItem("user"))?.user || {};
-  const [value, setvalue] = useState([UserObj.id]);
+  const { workspacedetails, bookworkspaceDetails, availableworkspace } =
+    useSelector((state) => ({
+      ...state.bookworkspace,
+    }));
+
+  const UserObjItem = JSON.parse(sessionStorage.getItem("userWorkItem")) || [];
+
+  console.log(UserObjItem?.workspace_details?.Purpose);
+  let testUserIds = availableworkspace?.user_ids?.split(",").map((uId) => {
+    return Number(uId);
+  });
+
+  var workspaceUserLists = workspacedetails?.workspace_details?.UserList;
+  let availableUserIds = availableworkspace?.user_ids?.split(",").map((uId) => {
+    return { id: Number(uId) };
+  });
+
+  const individualRoomDetail = workspaceUserLists?.filter((array) =>
+    availableUserIds?.some((filter) => filter.id === array.id)
+  );
+
+  const [value, setvalue] = useState(testUserIds || [UserObj.id]);
   const [display_add_val, setDisplay_add_val] = useState("");
   const [display_edit_val, setDisplay_edit_val] = useState("none");
-  const [selectedUser, setSelectedUser] = useState([UserObj.name] || []);
-  const [defaultUser, setDefaultUser] = useState([
-    { label: UserObj.name, value: UserObj.id },
-  ]);
+  const [selectedUser, setSelectedUser] = useState(
+    individualRoomDetail?.map((x) => x.name).join(",") || [UserObj.name]
+  );
+  const [defaultUser, setDefaultUser] = useState(
+    individualRoomDetail?.map((x) => {
+      return { label: x.name, value: x.id };
+    }) || [{ label: UserObj.name, value: UserObj.id }]
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [floorData, setFloorData] = useState([]);
-  const { workspacedetails } = useSelector((state) => ({
-    ...state.bookworkspace,
-  }));
 
   useEffect(() => {
     document.addEventListener("keydown", hideOnEscapeCal, true);
     document.addEventListener("click", hideOnClickOutsideCal, true);
     dispatch(getworkspaceDetails());
+    let florListArr = workspacedetails?.workspace_details?.FloorList?.filter(
+      (val) => {
+        return val.building_id === Number(buildingId);
+      }
+    );
+    setFloorData(florListArr);
+
+    if (bookworkspaceDetails?.success === true) {
+      navigate(0);
+    }
   }, [dispatch]);
 
   const handleOnchange = (val) => {
@@ -61,6 +93,7 @@ const FillDetails = () => {
     setSelectedUser(newArr.join(","));
     setDefaultUser(userObjArr);
   };
+
   const [show, popup] = useState(false);
   const modalOpen = () => popup(true);
   const modalClose = () => popup(false);
@@ -73,11 +106,21 @@ const FillDetails = () => {
     setFloorData(florListArr);
     setbuildingId(buildingId);
   };
-  const [buildingId, setbuildingId] = useState(null);
+
+  const [purpose, setPurpose] = useState(
+    availableworkspace?.data?.Purpose || ""
+  );
+  const [buildingId, setbuildingId] = useState(
+    parseInt(availableworkspace?.data?.FloorDetails?.building_id) || null
+  );
   const [floorId, setFloorId] = useState(null);
-  const [purpose, setPurpose] = useState("");
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
+
+  const [startTime, setStartTime] = useState(
+    availableworkspace?.data?.StartTime || ""
+  );
+  const [endTime, setEndTime] = useState(
+    availableworkspace?.data?.EndTime || ""
+  );
   const [hideToTime, setHideToTime] = useState("");
 
   const setToTime = (sTime) => {
@@ -96,7 +139,6 @@ const FillDetails = () => {
   };
 
   const findConference = async () => {
-    console.log(startTime, "startTime");
     let fDate = new Date(calRange[0].startDate);
     let tDate = new Date(calRange[0].endDate);
     const fromDate = format(fDate, "yyyy-MM-dd");
@@ -124,11 +166,15 @@ const FillDetails = () => {
 
   const [calRange, setCalRange] = useState([
     {
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate:
+        new Date(availableworkspace?.data?.FromDate || new Date()) ||
+        new Date(),
+      endDate:
+        new Date(availableworkspace?.data?.ToDate || new Date()) || new Date(),
       key: "selection",
     },
   ]);
+
   const [openCal, setOpenCal] = useState(false);
   const refOneCal = useRef(null);
   const hideOnEscapeCal = (e) => {
@@ -141,6 +187,7 @@ const FillDetails = () => {
       setOpenCal(false);
     }
   };
+
   return (
     <>
       <Form>
@@ -190,6 +237,7 @@ const FillDetails = () => {
                 onChange={(e) => setToTime(e.target.value)}
                 className="building-selectionbox"
                 size="sm"
+                defaultValue={startTime}
               >
                 <option value="" key="">
                   Select
@@ -213,6 +261,7 @@ const FillDetails = () => {
                 onChange={(e) => setEndTime(e.target.value)}
                 className="building-selectionbox"
                 size="sm"
+                defaultValue={endTime}
               >
                 <option value="" key="">
                   Select
@@ -244,6 +293,7 @@ const FillDetails = () => {
                 }}
                 className="building-selectionbox"
                 size="sm"
+                defaultValue={buildingId}
               >
                 <option value="">Select</option>
                 {workspacedetails?.workspace_details?.BuildingList?.map(
@@ -262,11 +312,12 @@ const FillDetails = () => {
             </Label>
           </Col>
           <Col>
-            <Form.Group
-              onChange={(e) => setFloorId(e.target.value)}
-              className="mb-3 inputBox"
-            >
-              <Form.Select size="sm">
+            <Form.Group className="mb-3 inputBox">
+              <Form.Select
+                size="sm"
+                onChange={(e) => setFloorId(e.target.value)}
+                defaultValue={floorId}
+              >
                 <option value="">Select</option>
                 {floorData?.map((item) => (
                   <option value={item.id} key={item.id}>
@@ -289,9 +340,10 @@ const FillDetails = () => {
               <Form.Select
                 className="purpose-select"
                 onChange={(e) => setPurpose(e.target.value)}
+                defaultValue={purpose}
               >
                 <option value="">Select</option>
-                {workspacedetails?.workspace_details?.Purpose?.map((item) => (
+                {UserObjItem?.workspace_details?.Purpose?.map((item) => (
                   <option value={item} key={item}>
                     {item}
                   </option>
@@ -307,7 +359,7 @@ const FillDetails = () => {
               style={{ display: display_add_val, cursor: "pointer" }}
             >
               <span onClick={modalOpen}>
-                <i class="bi bi-plus-circle">&nbsp;&nbsp;&nbsp;</i>
+                <i className="bi bi-plus-circle">&nbsp;&nbsp;&nbsp;</i>
                 <u>Add Members</u>
               </span>
             </span>
@@ -321,7 +373,7 @@ const FillDetails = () => {
                 style={{ cursor: "pointer", display: display_edit_val }}
                 onClick={modalOpen}
               >
-                <i class="bi bi-plus-circle">
+                <i className="bi bi-plus-circle">
                   &nbsp;&nbsp;&nbsp;<u>Edit Members</u>{" "}
                 </i>
               </span>
@@ -367,7 +419,7 @@ const FillDetails = () => {
         <Row className="mt-5">
           <Col md={{ span: 5, offset: 5 }}>
             <Button onClick={findConference} className="find-button">
-              <i class="bi bi-search"></i>&nbsp;Find Conference Room
+              <i className="bi bi-search"></i>&nbsp;Find Conference Room
             </Button>
           </Col>
         </Row>
