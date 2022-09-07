@@ -158,7 +158,7 @@ export const RoomSelection = () => {
     );
 
   return (
-    <Container>
+    <Container fluid>
       <Row className="mt-5">
         <Col>
           <Breadcrumb>
@@ -261,7 +261,7 @@ export const RoomSelection = () => {
                     <Row className="seats">
                       {ConferenceRooms?.length > 0 ? (
                         ConferenceRooms.map((item) => (
-                          <Col xs={3} className="seat" key={item.id}>
+                          <Col xs={4} className="seat" key={item.id}>
                             <input
                               type="radio"
                               id={item.id}
