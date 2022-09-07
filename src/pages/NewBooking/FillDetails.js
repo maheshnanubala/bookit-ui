@@ -23,9 +23,6 @@ const FillDetails = () => {
       ...state.bookworkspace,
     }));
 
-  const UserObjItem = JSON.parse(sessionStorage.getItem("userWorkItem")) || [];
-
-  console.log(UserObjItem?.workspace_details?.Purpose);
   let testUserIds = availableworkspace?.user_ids?.split(",").map((uId) => {
     return Number(uId);
   });
@@ -188,6 +185,15 @@ const FillDetails = () => {
     }
   };
 
+  const handleUserModalClose = () => {
+    setSelectedUser([UserObj.name]);
+    setDefaultUser([{ label: UserObj.name, value: UserObj.id }]);
+    setvalue([UserObj.id]);
+    setDisplay_add_val("none");
+    setDisplay_edit_val("inline");
+    popup(false);
+  };
+
   return (
     <>
       <Form>
@@ -343,7 +349,7 @@ const FillDetails = () => {
                 defaultValue={purpose}
               >
                 <option value="">Select</option>
-                {UserObjItem?.workspace_details?.Purpose?.map((item) => (
+                {workspacedetails?.workspace_details?.Purpose?.map((item) => (
                   <option value={item} key={item}>
                     {item}
                   </option>
@@ -388,6 +394,8 @@ const FillDetails = () => {
             show={show}
             onHide={modalClose}
             size="md"
+            backdrop="static"
+            keyboard={false}
             aria-labelledby="contained-modal-title-vcenter"
             centered
           >
@@ -412,6 +420,13 @@ const FillDetails = () => {
             <Modal.Footer>
               <Button onClick={modalClose} id="modal-save-btn" type="submit">
                 Add
+              </Button>
+              <Button
+                onClick={handleUserModalClose}
+                id="modal-save-btn"
+                type="submit"
+              >
+                Close
               </Button>
             </Modal.Footer>
           </Modal>
