@@ -423,7 +423,7 @@ const FillDetails = () => {
               </Button>
               <Button
                 onClick={handleUserModalClose}
-                id="modal-save-btn"
+                className="modal-close-user-btn"
                 type="submit"
               >
                 Close

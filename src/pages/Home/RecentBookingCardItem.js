@@ -5,13 +5,7 @@ import image from "../../assest/images/Group 1562.svg";
 
 export const RecentBookingCardItem = ({ booking, handleShow, oneDay }) => {
   return (
-    <Col
-      md={6}
-      lg={4}
-      onClick={() => {
-        handleShow(booking.BookingParticipant, booking.user_name);
-      }}
-    >
+    <Col md={6} lg={4}>
       <Card
         className={
           Math.ceil(
@@ -21,6 +15,9 @@ export const RecentBookingCardItem = ({ booking, handleShow, oneDay }) => {
             ? "text-initial rb-border-left"
             : "text-initial rrb-border-left"
         }
+        onClick={() => {
+          handleShow(booking.BookingParticipant, booking.user_name);
+        }}
       >
         <Card.Body className="card-body-item">
           <span className="book-label">

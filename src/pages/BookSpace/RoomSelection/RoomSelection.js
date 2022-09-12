@@ -107,9 +107,7 @@ export const RoomSelection = () => {
   setValue("selected_workspaces", [
     {
       date:
-        moment(
-          availableworkspace?.data?.BookedWorkSpaces.slice(0, 1)?.date
-        ).format("YYYY-MM-DD") || "",
+        moment(availableworkspace?.data?.FromDate).format("YYYY-MM-DD") || "",
       seats:
         (roomInfo &&
           roomInfo.map((item) => {
