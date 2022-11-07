@@ -39,7 +39,7 @@ const Home = () => {
         <Row>
           <Col xs={12} sm={6} md={6} lg={6}>
             <h4 id="welcomeName-row">
-              Welcome back
+              Welcome
               <span id="text-name" className="ms-2">
                 {userdetails?.user?.name} !
               </span>

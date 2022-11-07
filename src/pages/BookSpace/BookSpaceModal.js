@@ -11,8 +11,9 @@ const BookSpaceModal = ({
   handleSave,
   individualRoomDetail,
 }) => {
-  const fDateString = formData?.from_date !== '' ? format(new Date(formData?.from_date), "dd MMM yyy") : ''
-  const tDateString = formData?.to_date !== '' ? format(new Date(formData?.to_date), "dd MMM yyy") : ''
+  // const fDateString = formData?.from_date !== '' ? format(new Date(formData?.from_date), "MMM dd yyy") : ''
+  // const tDateString = formData?.to_date !== '' ? format(new Date(formData?.to_date), "MMM dd yyy") : ''
+  const fDateString = formData?.from_date !== '' ? new Date(formData?.from_date).toDateString() : ''
   return (
     <>
       <Modal
@@ -33,12 +34,13 @@ const BookSpaceModal = ({
               <Row>
                 <Col md={6} className="confirm-heading-date">
                   <span>
-                    {fDateString} - {tDateString}
+                    {/* {fDateString} - {tDateString} */}
+                    {fDateString}
                   </span>
                 </Col>
                 <Col md={6} className="ps-3">
                   <span>
-                    {formData?.start_time} - {formData?.end_time}
+                    {formData?.start_time}  - {formData?.end_time}
                   </span>
                 </Col>
               </Row>

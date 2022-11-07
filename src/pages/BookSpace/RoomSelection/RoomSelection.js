@@ -188,12 +188,12 @@ export const RoomSelection = () => {
                         availableworkspace?.data?.FromDate
                       ).toDateString()}
                     </span>{" "}
-                    -
+                    {/* -
                     <span className="ms-2">
                       {new Date(
                         availableworkspace?.data?.ToDate
                       ).toDateString()}
-                    </span>
+                    </span> */}
                   </span>
                 </Col>
                 <Col md={4}>
@@ -240,8 +240,8 @@ export const RoomSelection = () => {
               <hr className="mt-0 mb-0" />
               <Row className="room-seat-block mt-3">
                 <Col lg={6}>
-                  <h5 className="mb-3">Select Conference Room</h5>
                   <Row className="seat-toolbar-block mb-3">
+                    <h5 className="mb-3">Select Conference Room</h5>
                     <Col className="d-flex">
                       <span className="box booking-available"></span>
                       <span>Available Room</span>
