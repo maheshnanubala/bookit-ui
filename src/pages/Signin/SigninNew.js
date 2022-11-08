@@ -1,26 +1,28 @@
 import React, { useState } from "react";
 // import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   Container,
   Row,
   Col,
   Form,
   Card,
+  NavLink,
   Spinner,
   Button,
 } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
-import { signup } from "../../redux/ActionReducer/authSlice";
-import "./Signup.scss";
+import { signin } from "../../redux/ActionReducer/authSlice";
+import "./Signin.scss";
 import img from "../../assest/images/footerlogo.png";
-import { signUpValidationSchema } from "../../services/ValidationSchema";
-import VerifyOtp from "./VerifyOtp";
+import { signInValidationSchema } from "../../services/ValidationSchema";
+import microsoftLogo from "../../assest/images/732221.png";
+import VerifyOtp from "../Signup/VerifyOtp";
 
-const Signin = () => {
+const SigninNew = () => {
   const { loading } = useSelector((state) => ({ ...state.auth }));
   const [passwordShown, setPasswordShown] = useState(false);
   const [userEmailId, setUserEmailId] = useState('');
@@ -31,17 +33,17 @@ const Signin = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(signUpValidationSchema) });
+  } = useForm({ resolver: yupResolver(signInValidationSchema) });
 
   const onSubmit = (formValues, e) => {
     e.preventDefault();
-    if (formValues.email && formValues.password && formValues.name) {
-      dispatch(signup({ formValues, toast, setUserEmailId }));
+    if (formValues.email && formValues.password) {
+      dispatch(signin({ formValues, navigate, toast, setUserEmailId }));
     }
   };
 
   return (
-    <Container fluid className="login-block ">
+    <Container fluid className="login-block">
       <Row className="justify-content-center align-items-center">
         <Col sm={8} md={6} lg={4} xl={4} xxl={3}>
           <Row className="justify-content-center align-items-center">
@@ -53,24 +55,7 @@ const Signin = () => {
             {!userEmailId ?
               <Form onSubmit={handleSubmit(onSubmit)} className="p-3">
                 <Row>
-                  <p className="signin-text">Sign-up</p>
-                </Row>
-                <Row className="mt-0 mb-1">
-                  <Form.Group className="mb-2">
-                    <Form.Label className="input-label required ms-2">
-                      Name
-                    </Form.Label>
-                    <Form.Control
-                      className="input-box"
-                      type="text"
-                      {...register("name")}
-                    />
-                  </Form.Group>
-                  {errors.name && (
-                    <div className="text-danger ms-2 mb-2">
-                      {errors.name?.message}
-                    </div>
-                  )}
+                  <p className="signin-text"> Sign-in</p>
                 </Row>
                 <Row className="mt-0 mb-1">
                   <Form.Group className="mb-2">
@@ -89,7 +74,7 @@ const Signin = () => {
                     </div>
                   )}
                 </Row>
-                <Row className="mt-2 mb-1">
+                <Row className="mt-2 mb-2">
                   <Form.Group className="mb-2 password-field inner-addon right-addon">
                     <Form.Label className="input-label required ms-2">
                       Password
@@ -119,7 +104,7 @@ const Signin = () => {
                       type="submit"
                       className="submit-btn w-100 shadow-none"
                     >
-                      {loading ? "Signing up..." : "Sign-up"}
+                      {loading ? "Signing in..." : "Sign-in"}
                       {loading && (
                         <Spinner
                           animation="border"
@@ -129,26 +114,46 @@ const Signin = () => {
                         />
                       )}
                     </Button>
+                  </Col>
+                </Row>
+                <Row className="mt-4 mb-3">
+                  <Col>
+                    <p className="signin-option-line">
+                      <span>or Sign-in With</span>
+                    </p>
+                  </Col>
+                </Row>
+                <Row className="mt-0 mb-3">
+                  <Col>
                     <Button
-                      type="submit"
-                      className="sigin-back-btn w-100 shadow-none mt-3"
-                      onClick={() => navigate("/")}
+                      type="button"
+                      className="signin-others w-100 shadow-none"
                     >
-                      <i className="bi bi-caret-left-fill me-2" />
-                      Back to Sign-in
+                      <span>
+                        <img
+                          src={microsoftLogo}
+                          alt="microsoft"
+                          title="microsoft"
+                          className="img-fluid microsoft-logo"
+                        />
+                      </span>
+                      Sign-in with Microsoft
                     </Button>
                   </Col>
                 </Row>
                 <Row>
                   <Col>
-                    <p className="text-center p-signup-area">
-                      By Signing up you agree to our Terms & condition
-                    </p>
+                    <NavLink className="navlinks">Forgot Password?</NavLink>
+                  </Col>
+                  <Col>
+                    <Link className="navlinks" to="/signup">
+                      Sign-Up for an account
+                    </Link>
                   </Col>
                 </Row>
               </Form>
             :
-              <VerifyOtp email={userEmailId} setUserEmailIdValue={setUserEmailId}/>
+              <VerifyOtp email={userEmailId} setUserEmailId={setUserEmailId}/>
             }
           </Card>
         </Col>
@@ -165,8 +170,8 @@ const Signin = () => {
   );
 };
 
-Signin.propTypes = {};
+SigninNew.propTypes = {};
 
-Signin.defaultProps = {};
+SigninNew.defaultProps = {};
 
-export default Signin;
+export default SigninNew;

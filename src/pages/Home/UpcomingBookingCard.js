@@ -22,8 +22,8 @@ export const UpcomingBookingCardItem = ({ booking, handleShow }) => {
               src={image}
               className="icon-headings me-3"
             />
-            <span>{new Date(booking.from_datetime).toLocaleDateString()}</span>{" "}
-            | <span>{new Date(booking.to_datetime).toLocaleDateString()}</span>
+            <span>{new Date(booking.from_datetime).toDateString()}</span>{" "}
+            {/* | <span>{new Date(booking.to_datetime).toDateString()}</span> */}
           </Card.Title>
           <Card.Title className="time-header">
             {new Date(booking.from_datetime).toLocaleTimeString("en-US", {

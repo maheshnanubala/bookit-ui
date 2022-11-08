@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "./header.scss";
+import indiumLogo from "../../../assest/images/logo.png";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -13,7 +14,8 @@ const Header = () => {
       <nav className="navbar">
         <img
           className="logo"
-          src="https://indiumsoftware.com/wp-content/uploads/2020/01/Indium-software-Logo.png"
+          src={indiumLogo}
+          onClick={() => navigate('/')}
           alt=""
         />
         <button className="logout-button" onClick={handleLogout}>

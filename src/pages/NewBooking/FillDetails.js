@@ -366,7 +366,7 @@ const FillDetails = () => {
             >
               <span onClick={modalOpen}>
                 <i className="bi bi-plus-circle">&nbsp;&nbsp;&nbsp;</i>
-                <u>Add Members</u>
+                <u>Add Participants</u>
               </span>
             </span>
             <span
@@ -380,11 +380,11 @@ const FillDetails = () => {
                 onClick={modalOpen}
               >
                 <i className="bi bi-plus-circle">
-                  &nbsp;&nbsp;&nbsp;<u>Edit Members</u>{" "}
+                  &nbsp;&nbsp;&nbsp;<u>Edit Participants</u>{" "}
                 </i>
               </span>
               <small>
-                &nbsp;&nbsp;&nbsp;Selected Members:&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;Selected Participants:&nbsp;&nbsp;&nbsp;
               </small>
               <span id="selected-members">{selectedUser} </span>
             </span>

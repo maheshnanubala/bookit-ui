@@ -16,6 +16,8 @@ API.interceptors.request.use((req) => {
 // Login
 export const signIn = (data) => API.post("/api/sign-in", data);
 export const signUp = (data) => API.post("/api/sign-up", data);
+export const verifyUserOtp = (data) => API.post("/api/verify-otp", data);
+
 
 // Workspace
 export const getMyBookingDetails = () => API.get("/api/my_bookings");
