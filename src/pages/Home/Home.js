@@ -45,14 +45,14 @@ const Home = () => {
               </span>
             </h4>
           </Col>
-          <Col className="home-newbooking-btn" xs={12} sm={6} md={6} lg={6}>
+          {/* <Col className="home-newbooking-btn" xs={12} sm={6} md={6} lg={6}>
             <Button
               className="booking-icon"
               onClick={() => navigate("/new-booking")}
             >
               New Booking
             </Button>
-          </Col>
+          </Col> */}
         </Row>
       </section>
       <section>

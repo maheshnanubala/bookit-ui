@@ -23,7 +23,7 @@ import {
   bookworkspace,
   availableWorkspace,
 } from "../../../redux/ActionReducer/bookSlice";
-import format from "date-fns/format";
+//import format from "date-fns/format";
 
 export const RoomSelection = () => {
   const {
@@ -241,19 +241,22 @@ export const RoomSelection = () => {
               <Row className="room-seat-block mt-3">
                 <Col lg={6}>
                   <Row className="seat-toolbar-block mb-3">
-                    <h5 className="mb-3">Select Conference Room</h5>
-                    <Col className="d-flex">
+                    <Col className="d-flex" md={5}>
+                      <h5 className="mb-3">Select Conference Room</h5>
+                      {/* <h6><i> - Info</i></h6> */}
+                    </Col>
+                    (<Col className="d-flex" md={2} style={{ alignItems: "baseline" }}>
                       <span className="box booking-available"></span>
-                      <span>Available Room</span>
+                      <span>Available</span>
                     </Col>
-                    <Col className="d-flex justify-content-center">
+                    <Col className="d-flex justify-content-center" md={2} style={{ alignItems: "baseline" }}>
                       <div className="box booking-selected-seats"></div>
-                      <span>Selected Room</span>
+                      <span>Selected</span>
                     </Col>
-                    <Col className="d-flex justify-content-end">
+                    <Col className="d-flex justify-content-end" md={2} style={{ alignItems: "baseline" }}>
                       <div className="box booking-booked-seats"></div>
-                      <span>Booked Room</span>
-                    </Col>
+                      <span>Booked</span>
+                    </Col>)
                   </Row>
                   <Form.Group>
                     <Row className="seats">
@@ -309,8 +312,8 @@ export const RoomSelection = () => {
                     {roomInfo.length > 0
                       ? ""
                       : errors.selected_workspaces &&
-                        errors.selected_workspaces.find((x) => x)?.seats
-                          .message}
+                      errors.selected_workspaces.find((x) => x)?.seats
+                        .message}
                   </span>
                   <Row className="mt-4 mb-3 text-lg-end">
                     <Col className="text-end">

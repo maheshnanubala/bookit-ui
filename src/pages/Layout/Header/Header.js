@@ -18,6 +18,14 @@ const Header = () => {
           onClick={() => navigate('/')}
           alt=""
         />
+        <div className="header-newbooking-btn col-md-7" >
+          <button
+            className="booking-icon"
+            onClick={() => navigate("/new-booking")}
+          >
+            New Booking
+          </button>
+        </div>
         <button className="logout-button" onClick={handleLogout}>
           <i className="bi bi-box-arrow-right" />
           <b id="icon_text">Logout</b>

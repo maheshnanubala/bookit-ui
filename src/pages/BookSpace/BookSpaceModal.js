@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Modal, Button, Col, Row } from "react-bootstrap";
 import "./BookSpace.scss";
-import format from 'date-fns/format'
+//import format from 'date-fns/format'
 
 const BookSpaceModal = ({
   show,
