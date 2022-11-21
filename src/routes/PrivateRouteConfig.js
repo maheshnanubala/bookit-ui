@@ -32,6 +32,12 @@ export const PrivateRouteConfig = [
     exact: true,
   },
   {
+    name: "modify bookings",
+    path: "/modify-booking",
+    element: <NewBooking />,
+    exact: true,
+  },
+  {
     name: "room selection",
     path: "/new-booking/room-selection/:floorId/:fromDate/:toDate/:startTime/:endTime/:buildingId/:value/:purpose",
     element: <RoomSelection />,
