@@ -18,9 +18,9 @@ const AsideBar = () => {
             <i className=" bi bi-calendar-check-fill sidebaricon " />
             My Bookings
           </NavLink>
-          <NavLink className="navlink" to="/new-booking">
+          {/* <NavLink className="navlink" to="/new-booking">
             <i className="bi bi-calendar4-week  sidebaricon" /> New Booking
-          </NavLink>
+          </NavLink> */}
         </Col>
       </Row>
     </Container>
