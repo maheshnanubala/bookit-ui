@@ -1,24 +1,29 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Col, Card } from "react-bootstrap";
 import { TbDotsVertical } from "react-icons/tb";
 import { Dropdown } from 'antd';
 import image from "../../assest/images/Group 1562.svg";
 
 export const UpcomingBookingCardItem = ({ booking, handleShow }) => {
+  const navigate = useNavigate();
 
-  const onOptionChange = (value) => {
-    console.log(value);
+  const onModifyBooking = () => {
+    navigate('/modify-booking', { state: { modifyFlag: true, bookingDetails: booking } })
+  }
 
+  const onCancelBooking = () => {
+    console.log('booking cancelled');
   }
 
   const items = [
     {
       key: '1',
-      label: (<h6 onClick={() => { onOptionChange('modify') }}>Modify</h6>)
+      label: (<h5 onClick={onModifyBooking}>Modify</h5>)
     },
     {
       key: '2',
-      label: (<h6 onClick={() => { onOptionChange('delete') }}>Cancel</h6>)
+      label: (<h5 onClick={onCancelBooking}>Cancel</h5>)
     },
   ]
 
