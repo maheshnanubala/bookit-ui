@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Container, Row, Col, Button, Modal, Table } from "react-bootstrap";
@@ -17,12 +18,12 @@ const MyBookings = () => {
   const handleClose = () => setShow(false);
 
   const { workspaceBookingDetails } = useSelector((state) => ({
-    ...state.bookworkspace,
+    ...state.bookworkspace, 
   }));
 
   useEffect(() => {
     dispatch(getMyBookingDetails());
-  }, [dispatch]);
+  }, []);
 
   const handleShow = (participants, bookedByUserName) => {
     setShow(true);

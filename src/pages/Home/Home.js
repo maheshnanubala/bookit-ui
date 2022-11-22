@@ -1,29 +1,30 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import { Container, Row, Col, Button, Modal, Table } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getMyBookingDetails } from "../../redux/ActionReducer/bookSlice";
-import "./Home.scss";
 import { UpcomingBookingCardItem } from "./UpcomingBookingCard";
 import { RecentBookingCardItem } from "./RecentBookingCardItem";
+import "./Home.scss";
+
 
 const Home = () => {
-  const userdetails = JSON.parse(localStorage.getItem("user"));
-  const UserObj = JSON.parse(localStorage.getItem("user"))?.user || {};
   const [bookedByUser, setBookedByUser] = useState("");
   const [participants, setParticipants] = useState([]);
-  const oneDay = 1000 * 60 * 60 * 24;
   const [show, setShow] = useState(false);
-  const navigate = useNavigate();
+
+  // const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { workspaceBookingDetails } = useSelector((state) => ({
-    ...state.bookworkspace,
-  }));
+  const { workspaceBookingDetails } = useSelector((state) => ({...state.bookworkspace }));
+
+  const userdetails = JSON.parse(localStorage.getItem("user"));
+  const UserObj = JSON.parse(localStorage.getItem("user"))?.user || {};
+  const oneDay = 1000 * 60 * 60 * 24;
 
   useEffect(() => {
     dispatch(getMyBookingDetails());
-  }, [dispatch]);
+  }, []);
 
   const handleClose = () => setShow(false);
   const handleShow = (participants, bookedByUserName) => {
