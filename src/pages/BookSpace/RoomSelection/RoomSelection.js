@@ -4,7 +4,6 @@ import {
   Form,
   Row,
   Col,
-  Table,
   Button,
   Container,
   Card,
@@ -24,6 +23,8 @@ import {
   availableWorkspace,
 } from "../../../redux/ActionReducer/bookSlice";
 //import format from "date-fns/format";
+import Label from "react-bootstrap/FormLabel";
+
 
 export const RoomSelection = () => {
   const {
@@ -44,6 +45,8 @@ export const RoomSelection = () => {
   const { loading, availableworkspace } = useSelector((state) => ({
     ...state.bookworkspace,
   }));
+  const [commonMail, setCommonMail] = useState('');
+  const [comments, setComments] = useState('');
 
   useEffect(() => {
     if (
@@ -120,9 +123,26 @@ export const RoomSelection = () => {
     setShow(false);
   };
   const handleSave = () => {
+    const roomBookingDetails = { ...bookSpace, comments, commonMail }
     setShow(false);
-    dispatch(bookworkspace({ bookSpace, navigate, toast }));
+    dispatch(bookworkspace({ roomBookingDetails, navigate, toast }));
   };
+
+  const handleInput = (e, field) => {
+    if (field === "email") {
+      setCommonMail(e.target.value);
+    } else {
+      setComments(e.target.value);
+    }
+  }
+
+  const validateOnsubmit = (formValue) => {
+    if (commonMail !== '' && !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(commonMail))) {
+      toast.error("Please enter valid email address");
+    } else {
+      onSubmit(formValue);
+    }
+  }
 
   const onSubmit = (formValue) => {
     let fd = new Date(availableworkspace?.data?.FromDate);
@@ -178,7 +198,7 @@ export const RoomSelection = () => {
             <h5 className="room-selection-title mt-3 mb-4">
               Booking Information
             </h5>
-            <Form onSubmit={handleSubmit(onSubmit)}>
+            <Form onSubmit={handleSubmit(validateOnsubmit)}>
               <Row className="mb-3">
                 <Col md={4}>
                   <span className="book-label">Date</span>
@@ -315,6 +335,32 @@ export const RoomSelection = () => {
                       errors.selected_workspaces.find((x) => x)?.seats
                         .message}
                   </span>
+                  <br />
+                  <Row>
+                    <Col className="col-md-3 text-field-label">
+                      <Label>
+                        Comments
+                      </Label>
+                    </Col>
+                    <Col className="col-md-9">
+                      <Form.Group>
+                        <Form.Control className="text-field-input" as="textarea" value={comments} onChange={(e) => { handleInput(e, 'comment') }} />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <br />
+                  <Row>
+                    <Col className="col-md-3 text-field-label">
+                      <Label>
+                        Common Mail Id
+                      </Label>
+                    </Col>
+                    <Col className="col-md-9">
+                      <Form.Group>
+                        <Form.Control style={{ width: "150%" }} type="email" placeholder="Enter email" value={commonMail} onChange={(e) => { handleInput(e, 'email') }} />
+                      </Form.Group>
+                    </Col>
+                  </Row>
                   <Row className="mt-4 mb-3 text-lg-end">
                     <Col className="text-end">
                       <Button
@@ -345,10 +391,24 @@ export const RoomSelection = () => {
                     </Col>
                   </Row>
                 </Col>
+                <Col lg={6} className="amenities-section">
+                  {individualRoomDetail?.length > 0 && (
+                    <div>
+                      <h6>Amenities</h6>
+                      {individualRoomDetail.map((obj) => (
+                        <div style={{ textAlign: "center" }}>
+                          {obj.amenities.map((value) => (
+                            value.is_present === true && <div>{value.name}</div>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </Col>
               </Row>
             </Form>
-            <hr className="mt-0 mb-0" />
-            <Row className="mt-3">
+            {/* <hr className="mt-0 mb-0" /> */}
+            {/* <Row className="mt-3">
               <Col lg={12}>
                 <Table
                   className="booking-property-block"
@@ -443,7 +503,7 @@ export const RoomSelection = () => {
                   )}
                 </Table>
               </Col>
-            </Row>
+            </Row> */}
             <BookSpaceModal
               show={show}
               handleClose={handleClose}

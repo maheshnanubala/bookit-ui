@@ -15,6 +15,7 @@ import "./newBooking.scss";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { getworkspaceDetails } from "../../redux/ActionReducer/bookSlice.js";
+import moment from "moment";
 
 const FillDetails = () => {
   const UserObj = JSON.parse(localStorage.getItem("user"))?.user || {};
@@ -193,7 +194,12 @@ const FillDetails = () => {
     setDisplay_edit_val("inline");
     popup(false);
   };
-
+  const HandlePassedTime = () => {
+    const todayDate = moment(new Date()).startOf('day').toDate();
+    const presentTime = new Date();
+    let diffSeconds = moment(presentTime).diff(todayDate, 'seconds');
+    return diffSeconds;
+  }
   return (
     <>
       <Form>
@@ -249,7 +255,10 @@ const FillDetails = () => {
                   Select
                 </option>
                 {Time.map((item) => (
-                  <option value={item.label} key={item.key}>
+                  <option
+                    value={item.label}
+                    disabled={!startTime && (HandlePassedTime() > item.value)}
+                    key={item.key}>
                     {item.label}
                   </option>
                 ))}
@@ -275,7 +284,7 @@ const FillDetails = () => {
                 {Time.map((item) => (
                   <option
                     value={item.lable}
-                    disabled={hideToTime.includes(item.label)}
+                    disabled={hideToTime.includes(item.label) || startTime === ""}
                     key={item.key}
                   >
                     {item.label}
