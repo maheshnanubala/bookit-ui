@@ -9,6 +9,7 @@ import {
   Card,
   Spinner,
   Breadcrumb,
+  Modal
 } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
@@ -21,9 +22,12 @@ import "./RoomSelection.scss";
 import {
   bookworkspace,
   availableWorkspace,
+  UpdateParticipantsDetails
 } from "../../../redux/ActionReducer/bookSlice";
 //import format from "date-fns/format";
 import Label from "react-bootstrap/FormLabel";
+import MultiSelect from "react-multiple-select-dropdown-lite";
+import "react-multiple-select-dropdown-lite/dist/index.css";
 
 
 export const RoomSelection = () => {
@@ -34,7 +38,6 @@ export const RoomSelection = () => {
     startTime,
     endTime,
     buildingId,
-    value,
     purpose,
   } = useParams();
 
@@ -42,11 +45,35 @@ export const RoomSelection = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
-  const { loading, availableworkspace } = useSelector((state) => ({
+  const UserObj = JSON.parse(localStorage.getItem("user"))?.user || {};
+  const { loading, workspacedetails, availableworkspace, participantsDetails } = useSelector((state) => ({
     ...state.bookworkspace,
   }));
+  var workspaceUserLists = workspacedetails?.workspace_details?.UserList;
+  let availableUserIds = (participantsDetails?.participantsIds?.length > 0 && participantsDetails?.participantsIds) || (availableworkspace?.user_ids?.split(",").length > 0 && availableworkspace?.user_ids?.split(",").map((uId) => {
+    return { id: Number(uId) };
+  })) || [];
+  let testUserIds = (participantsDetails?.participantsIds?.length > 0 && participantsDetails?.participantsIds) || (availableworkspace?.user_ids?.split(",").length > 0 && availableworkspace?.user_ids?.split(",").map((uId) => {
+    return { id: Number(uId) };
+  })) || [];
+
+  const usersList = workspaceUserLists?.filter((array) =>
+    availableUserIds?.includes(array.id)
+  );
   const [commonMail, setCommonMail] = useState('');
   const [comments, setComments] = useState('');
+  const [userList, setUserList] = useState(testUserIds || [UserObj.id]);
+  const [display_add_val, setDisplay_add_val] = useState("");
+  const [display_edit_val, setDisplay_edit_val] = useState("none");
+  const [selectedUser, setSelectedUser] = useState(
+    (usersList.length > 0 && usersList?.map((x) => x.name).join(",")) || [UserObj.name]
+  );
+  const [defaultUser, setDefaultUser] = useState(
+    (usersList.length > 0 && usersList?.map((x) => {
+      return { label: x.name, value: x.id };
+    })) || [{ label: UserObj.name, value: UserObj.id }]
+  );
+  const [showUserModal, setUserModal] = useState(false);
 
   useEffect(() => {
     if (
@@ -56,7 +83,6 @@ export const RoomSelection = () => {
       startTime !== "" &&
       endTime !== "" &&
       buildingId !== "" &&
-      value !== "" &&
       purpose !== ""
     ) {
       dispatch(
@@ -67,7 +93,6 @@ export const RoomSelection = () => {
           startTime,
           endTime,
           buildingId,
-          value,
           purpose,
           navigate,
         })
@@ -123,7 +148,7 @@ export const RoomSelection = () => {
     setShow(false);
   };
   const handleSave = () => {
-    const roomBookingDetails = { ...bookSpace, comments: comments, common_emails: commonMail,active:true }
+    const roomBookingDetails = { ...bookSpace, comments: comments, common_emails: commonMail, active: true }
     setShow(false);
     dispatch(bookworkspace({ bookSpace: roomBookingDetails, navigate, toast }));
   };
@@ -135,7 +160,9 @@ export const RoomSelection = () => {
       setComments(e.target.value);
     }
   }
-
+  const handleUserListModal = (blnVal) => {
+    setUserModal(blnVal);
+  }
   const validateOnsubmit = (formValue) => {
     if (commonMail !== '' && !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(commonMail))) {
       toast.error("Please enter valid email address");
@@ -143,7 +170,45 @@ export const RoomSelection = () => {
       onSubmit(formValue);
     }
   }
-
+  const handleOnchange = (val) => {
+    let userIds = val.split(",").map((uId) => {
+      return Number(uId);
+    });
+    setUserList(userIds);
+    setDisplay_add_val("none");
+    setDisplay_edit_val("inline");
+    let newArr = [];
+    let userObjArr = [];
+    let userRecords = workspacedetails?.workspace_details?.UserList;
+    userIds.map((userId) => {
+      userRecords?.find((u) => {
+        if (u.id === Number(userId)) {
+          newArr.push(u.name);
+          userObjArr.push({ label: u.name, value: u.id });
+        }
+        return null;
+      });
+      return userId;
+    });
+    setSelectedUser(newArr.join(","));
+    setDefaultUser(userObjArr);
+  };
+  const handleUserModalClose = () => {
+    setSelectedUser([UserObj.name]);
+    setDefaultUser([{ label: UserObj.name, value: UserObj.id }]);
+    setUserList([UserObj.id]);
+    setDisplay_add_val("none");
+    setDisplay_edit_val("inline");
+    setUserModal(false);
+  };
+  const handleAddParticiapants = () => {
+    const userDetails = {
+      participants: defaultUser,
+      participantsIds: userList
+    };
+    dispatch(UpdateParticipantsDetails(userDetails))
+    setUserModal(false);
+  }
   const onSubmit = (formValue) => {
     let fd = new Date(availableworkspace?.data?.FromDate);
     let td = new Date(availableworkspace?.data?.ToDate);
@@ -163,7 +228,7 @@ export const RoomSelection = () => {
       end_time: availableworkspace?.data?.EndTime || "",
       purpose: availableworkspace?.data?.Purpose || "",
       user_id: user?.user?.id,
-      user_ids: availableworkspace?.user_ids.split(",").map(Number) || [],
+      user_ids: userList || [],
       selected_workspaces: formValue.selected_workspaces || [],
       data: availableworkspace?.data || [],
     });
@@ -360,6 +425,79 @@ export const RoomSelection = () => {
                         <Form.Control style={{ width: "150%" }} type="email" placeholder="Enter email" value={commonMail} onChange={(e) => { handleInput(e, 'email') }} />
                       </Form.Group>
                     </Col>
+                  </Row>
+                  <Row className="mt-4">
+                    <p className="preview-values">
+                      <span
+                        className="addmem-cust"
+                        style={{ display: display_add_val, cursor: "pointer" }}
+                      >
+                        <span onClick={() => { handleUserListModal(true) }}>
+                          <i className="bi bi-plus-circle">&nbsp;&nbsp;&nbsp;</i>
+                          <u>Add Participants</u>
+                        </span>
+                      </span>
+                      <span
+                        className="addmem-cust"
+                        style={{
+                          display: selectedUser?.length > 0 ? "inline" : display_edit_val,
+                        }}
+                      >
+                        <span
+                          style={{ cursor: "pointer", display: display_edit_val }}
+                          onClick={() => { handleUserListModal(true) }}
+                        >
+                          <i className="bi bi-plus-circle">
+                            &nbsp;&nbsp;&nbsp;<u>Edit Participants</u>{" "}
+                          </i>
+                        </span>
+                        <small>
+                          &nbsp;&nbsp;&nbsp;Selected Participants:&nbsp;&nbsp;&nbsp;
+                        </small>
+                        <span id="selected-members">{selectedUser} </span>
+                      </span>
+                    </p>
+                    <Modal
+                      id="modal-card"
+                      show={showUserModal}
+                      onHide={() => { handleUserListModal(false) }}
+                      size="md"
+                      backdrop="static"
+                      keyboard={false}
+                      aria-labelledby="contained-modal-title-vcenter"
+                      centered
+                    >
+                      <Modal.Body id="modal-card">
+                        <Form.Group className="mb-3 ">
+                          <MultiSelect
+                            showArrow
+                            onChange={handleOnchange}
+                            defaultValue={defaultUser}
+                            options={
+                              workspacedetails?.workspace_details?.UserList?.map(
+                                (item) => ({
+                                  label: item.name,
+                                  value: item.id,
+                                })
+                              ) || []
+                            }
+                            id="modal-card"
+                          />
+                        </Form.Group>
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button onClick={() => { handleAddParticiapants() }} id="modal-save-btn" type="submit">
+                          Add
+                        </Button>
+                        <Button
+                          onClick={handleUserModalClose}
+                          className="modal-close-user-btn"
+                          type="submit"
+                        >
+                          Close
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
                   </Row>
                   <Row className="mt-4 mb-3 text-lg-end">
                     <Col className="text-end">

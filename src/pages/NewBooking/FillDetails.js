@@ -3,9 +3,8 @@ import { Col, Row, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Label from "react-bootstrap/FormLabel";
 import InputGroup from "react-bootstrap/InputGroup";
-import { Button, Modal } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { Time } from "../../constants/time";
-import MultiSelect from "react-multiple-select-dropdown-lite";
 import "react-multiple-select-dropdown-lite/dist/index.css";
 import { DateRange } from "react-date-range";
 import format from "date-fns/format";
@@ -18,36 +17,10 @@ import { getworkspaceDetails } from "../../redux/ActionReducer/bookSlice.js";
 import moment from "moment";
 
 const FillDetails = () => {
-  const UserObj = JSON.parse(localStorage.getItem("user"))?.user || {};
   const { workspacedetails, bookworkspaceDetails, availableworkspace } =
     useSelector((state) => ({
       ...state.bookworkspace,
     }));
-
-  let testUserIds = availableworkspace?.user_ids?.split(",").map((uId) => {
-    return Number(uId);
-  });
-
-  var workspaceUserLists = workspacedetails?.workspace_details?.UserList;
-  let availableUserIds = availableworkspace?.user_ids?.split(",").map((uId) => {
-    return { id: Number(uId) };
-  });
-
-  const individualRoomDetail = workspaceUserLists?.filter((array) =>
-    availableUserIds?.some((filter) => filter.id === array.id)
-  );
-
-  const [value, setvalue] = useState(testUserIds || [UserObj.id]);
-  const [display_add_val, setDisplay_add_val] = useState("");
-  const [display_edit_val, setDisplay_edit_val] = useState("none");
-  const [selectedUser, setSelectedUser] = useState(
-    individualRoomDetail?.map((x) => x.name).join(",") || [UserObj.name]
-  );
-  const [defaultUser, setDefaultUser] = useState(
-    individualRoomDetail?.map((x) => {
-      return { label: x.name, value: x.id };
-    }) || [{ label: UserObj.name, value: UserObj.id }]
-  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [floorData, setFloorData] = useState([]);
@@ -68,33 +41,6 @@ const FillDetails = () => {
     }
   }, [dispatch]);
 
-  const handleOnchange = (val) => {
-    let userIds = val.split(",").map((uId) => {
-      return Number(uId);
-    });
-    setvalue(userIds);
-    setDisplay_add_val("none");
-    setDisplay_edit_val("inline");
-    let newArr = [];
-    let userObjArr = [];
-    let userRecords = workspacedetails?.workspace_details?.UserList;
-    userIds.map((userId) => {
-      userRecords?.find((u) => {
-        if (u.id === Number(userId)) {
-          newArr.push(u.name);
-          userObjArr.push({ label: u.name, value: u.id });
-        }
-        return null;
-      });
-      return userId;
-    });
-    setSelectedUser(newArr.join(","));
-    setDefaultUser(userObjArr);
-  };
-
-  const [show, popup] = useState(false);
-  const modalOpen = () => popup(true);
-  const modalClose = () => popup(false);
   const setFloorRecord = (buildingId) => {
     let florListArr = workspacedetails?.workspace_details?.FloorList.filter(
       (val) => {
@@ -157,7 +103,7 @@ const FillDetails = () => {
       toast.error("Please select Purpose");
     } else {
       navigate(
-        `/new-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${value}/${purpose}`
+        `/new-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`
       );
     }
   };
@@ -186,14 +132,6 @@ const FillDetails = () => {
     }
   };
 
-  const handleUserModalClose = () => {
-    setSelectedUser([UserObj.name]);
-    setDefaultUser([{ label: UserObj.name, value: UserObj.id }]);
-    setvalue([UserObj.id]);
-    setDisplay_add_val("none");
-    setDisplay_edit_val("inline");
-    popup(false);
-  };
   const HandlePassedTime = () => {
     const todayDate = moment(new Date()).startOf('day').toDate();
     const presentTime = new Date();
@@ -367,7 +305,7 @@ const FillDetails = () => {
             </Form.Group>
           </Col>
         </Row>
-        <Row className="mt-4">
+        {/* <Row className="mt-4">
           <p className="preview-values">
             <span
               className="addmem-cust"
@@ -439,7 +377,7 @@ const FillDetails = () => {
               </Button>
             </Modal.Footer>
           </Modal>
-        </Row>
+        </Row> */}
         <Row className="mt-5">
           <Col md={{ span: 5, offset: 5 }}>
             <Button onClick={findConference} className="find-button">
