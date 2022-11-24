@@ -10,7 +10,6 @@ export const availableWorkspace = createAsyncThunk(
     startTime,
     endTime,
     buildingId,
-    value,
     purpose,
     navigate,
   }) => {
@@ -22,12 +21,12 @@ export const availableWorkspace = createAsyncThunk(
         startTime,
         endTime,
         buildingId,
-        value,
+        [],
         purpose
       );
 
       navigate(
-        `/new-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${value}/${purpose}`
+        `/new-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`
       );
       return response.data;
     } catch (err) {
@@ -81,6 +80,16 @@ export const getworkspaceDetails = createAsyncThunk(
     }
   }
 );
+export const UpdateParticipantsDetails = createAsyncThunk(
+  "bookworkspace/participantsDetails",
+  async (data) => {
+    try {
+      return data;
+    } catch (err) {
+      console.log(err.response.data.message);
+    }
+  }
+);
 
 const bookSlice = createSlice({
   name: "bookworkspace",
@@ -90,6 +99,7 @@ const bookSlice = createSlice({
     availableworkspace: {},
     bookworkspaceDetails: null,
     error: "",
+    participantsDetails: null,
     loading: false,
   },
   reducers: {},
@@ -137,6 +147,16 @@ const bookSlice = createSlice({
     [getMyBookingDetails.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload?.message;
+    },
+    [UpdateParticipantsDetails.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [UpdateParticipantsDetails.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.participantsDetails = action.payload;
+    },
+    [UpdateParticipantsDetails.rejected]: (state, action) => {
+      state.loading = false;
     },
   },
 });

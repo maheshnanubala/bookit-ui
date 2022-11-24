@@ -4,12 +4,12 @@ import {
   Form,
   Row,
   Col,
-  Table,
   Button,
   Container,
   Card,
   Spinner,
   Breadcrumb,
+  Modal
 } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
@@ -22,8 +22,13 @@ import "./RoomSelection.scss";
 import {
   bookworkspace,
   availableWorkspace,
+  UpdateParticipantsDetails
 } from "../../../redux/ActionReducer/bookSlice";
 //import format from "date-fns/format";
+import Label from "react-bootstrap/FormLabel";
+import MultiSelect from "react-multiple-select-dropdown-lite";
+import "react-multiple-select-dropdown-lite/dist/index.css";
+
 
 export const RoomSelection = () => {
   const {
@@ -33,7 +38,6 @@ export const RoomSelection = () => {
     startTime,
     endTime,
     buildingId,
-    value,
     purpose,
   } = useParams();
 
@@ -41,9 +45,35 @@ export const RoomSelection = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
-  const { loading, availableworkspace } = useSelector((state) => ({
+  const UserObj = JSON.parse(localStorage.getItem("user"))?.user || {};
+  const { loading, workspacedetails, availableworkspace, participantsDetails } = useSelector((state) => ({
     ...state.bookworkspace,
   }));
+  var workspaceUserLists = workspacedetails?.workspace_details?.UserList;
+  let availableUserIds = (participantsDetails?.participantsIds?.length > 0 && participantsDetails?.participantsIds) || (availableworkspace?.user_ids?.split(",").length > 0 && availableworkspace?.user_ids?.split(",").map((uId) => {
+    return { id: Number(uId) };
+  })) || [];
+  let testUserIds = (participantsDetails?.participantsIds?.length > 0 && participantsDetails?.participantsIds) || (availableworkspace?.user_ids?.split(",").length > 0 && availableworkspace?.user_ids?.split(",").map((uId) => {
+    return { id: Number(uId) };
+  })) || [];
+
+  const usersList = workspaceUserLists?.filter((array) =>
+    availableUserIds?.includes(array.id)
+  );
+  const [commonMail, setCommonMail] = useState('');
+  const [comments, setComments] = useState('');
+  const [userList, setUserList] = useState(testUserIds || [UserObj.id]);
+  const [display_add_val, setDisplay_add_val] = useState("");
+  const [display_edit_val, setDisplay_edit_val] = useState("none");
+  const [selectedUser, setSelectedUser] = useState(
+    (usersList.length > 0 && usersList?.map((x) => x.name).join(",")) || [UserObj.name]
+  );
+  const [defaultUser, setDefaultUser] = useState(
+    (usersList.length > 0 && usersList?.map((x) => {
+      return { label: x.name, value: x.id };
+    })) || [{ label: UserObj.name, value: UserObj.id }]
+  );
+  const [showUserModal, setUserModal] = useState(false);
 
   useEffect(() => {
     if (
@@ -53,7 +83,6 @@ export const RoomSelection = () => {
       startTime !== "" &&
       endTime !== "" &&
       buildingId !== "" &&
-      value !== "" &&
       purpose !== ""
     ) {
       dispatch(
@@ -64,7 +93,6 @@ export const RoomSelection = () => {
           startTime,
           endTime,
           buildingId,
-          value,
           purpose,
           navigate,
         })
@@ -120,10 +148,67 @@ export const RoomSelection = () => {
     setShow(false);
   };
   const handleSave = () => {
+    const roomBookingDetails = { ...bookSpace, comments: comments, common_emails: commonMail, active: true }
     setShow(false);
-    dispatch(bookworkspace({ bookSpace, navigate, toast }));
+    dispatch(bookworkspace({ bookSpace: roomBookingDetails, navigate, toast }));
   };
 
+  const handleInput = (e, field) => {
+    if (field === "email") {
+      setCommonMail(e.target.value);
+    } else {
+      setComments(e.target.value);
+    }
+  }
+  const handleUserListModal = (blnVal) => {
+    setUserModal(blnVal);
+  }
+  const validateOnsubmit = (formValue) => {
+    if (commonMail !== '' && !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(commonMail))) {
+      toast.error("Please enter valid email address");
+    } else {
+      onSubmit(formValue);
+    }
+  }
+  const handleOnchange = (val) => {
+    let userIds = val.split(",").map((uId) => {
+      return Number(uId);
+    });
+    setUserList(userIds);
+    setDisplay_add_val("none");
+    setDisplay_edit_val("inline");
+    let newArr = [];
+    let userObjArr = [];
+    let userRecords = workspacedetails?.workspace_details?.UserList;
+    userIds.map((userId) => {
+      userRecords?.find((u) => {
+        if (u.id === Number(userId)) {
+          newArr.push(u.name);
+          userObjArr.push({ label: u.name, value: u.id });
+        }
+        return null;
+      });
+      return userId;
+    });
+    setSelectedUser(newArr.join(","));
+    setDefaultUser(userObjArr);
+  };
+  const handleUserModalClose = () => {
+    setSelectedUser([UserObj.name]);
+    setDefaultUser([{ label: UserObj.name, value: UserObj.id }]);
+    setUserList([UserObj.id]);
+    setDisplay_add_val("none");
+    setDisplay_edit_val("inline");
+    setUserModal(false);
+  };
+  const handleAddParticiapants = () => {
+    const userDetails = {
+      participants: defaultUser,
+      participantsIds: userList
+    };
+    dispatch(UpdateParticipantsDetails(userDetails))
+    setUserModal(false);
+  }
   const onSubmit = (formValue) => {
     let fd = new Date(availableworkspace?.data?.FromDate);
     let td = new Date(availableworkspace?.data?.ToDate);
@@ -143,7 +228,7 @@ export const RoomSelection = () => {
       end_time: availableworkspace?.data?.EndTime || "",
       purpose: availableworkspace?.data?.Purpose || "",
       user_id: user?.user?.id,
-      user_ids: availableworkspace?.user_ids.split(",").map(Number) || [],
+      user_ids: userList || [],
       selected_workspaces: formValue.selected_workspaces || [],
       data: availableworkspace?.data || [],
     });
@@ -178,7 +263,7 @@ export const RoomSelection = () => {
             <h5 className="room-selection-title mt-3 mb-4">
               Booking Information
             </h5>
-            <Form onSubmit={handleSubmit(onSubmit)}>
+            <Form onSubmit={handleSubmit(validateOnsubmit)}>
               <Row className="mb-3">
                 <Col md={4}>
                   <span className="book-label">Date</span>
@@ -267,9 +352,9 @@ export const RoomSelection = () => {
                               type="radio"
                               id={item.id}
                               value={item.id}
-                              disabled={availableworkspace?.data?.BookedWorkSpaces.find(
-                                (x) => x
-                              )?.seats.includes(item.id)}
+                              disabled={availableworkspace?.data?.BookedWorkSpaces.filter(
+                                (x) => x.seats.includes(item.id)
+                              )?.length > 0}
                               {...register("selected_workspaces.seats")}
                               onChange={(e) => {
                                 if (e.target.checked) {
@@ -315,6 +400,105 @@ export const RoomSelection = () => {
                       errors.selected_workspaces.find((x) => x)?.seats
                         .message}
                   </span>
+                  <br />
+                  <Row>
+                    <Col className="col-md-3 text-field-label">
+                      <Label>
+                        Comments
+                      </Label>
+                    </Col>
+                    <Col className="col-md-9">
+                      <Form.Group>
+                        <Form.Control className="text-field-input" as="textarea" value={comments} onChange={(e) => { handleInput(e, 'comment') }} />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <br />
+                  <Row>
+                    <Col className="col-md-3 text-field-label">
+                      <Label>
+                        Common Mail Id
+                      </Label>
+                    </Col>
+                    <Col className="col-md-9">
+                      <Form.Group>
+                        <Form.Control style={{ width: "150%" }} type="email" placeholder="Enter email" value={commonMail} onChange={(e) => { handleInput(e, 'email') }} />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <Row className="mt-4">
+                    <p className="preview-values">
+                      <span
+                        className="addmem-cust"
+                        style={{ display: display_add_val, cursor: "pointer" }}
+                      >
+                        <span onClick={() => { handleUserListModal(true) }}>
+                          <i className="bi bi-plus-circle">&nbsp;&nbsp;&nbsp;</i>
+                          <u>Add Participants</u>
+                        </span>
+                      </span>
+                      <span
+                        className="addmem-cust"
+                        style={{
+                          display: selectedUser?.length > 0 ? "inline" : display_edit_val,
+                        }}
+                      >
+                        <span
+                          style={{ cursor: "pointer", display: display_edit_val }}
+                          onClick={() => { handleUserListModal(true) }}
+                        >
+                          <i className="bi bi-plus-circle">
+                            &nbsp;&nbsp;&nbsp;<u>Edit Participants</u>{" "}
+                          </i>
+                        </span>
+                        <small>
+                          &nbsp;&nbsp;&nbsp;Selected Participants:&nbsp;&nbsp;&nbsp;
+                        </small>
+                        <span id="selected-members">{selectedUser} </span>
+                      </span>
+                    </p>
+                    <Modal
+                      id="modal-card"
+                      show={showUserModal}
+                      onHide={() => { handleUserListModal(false) }}
+                      size="md"
+                      backdrop="static"
+                      keyboard={false}
+                      aria-labelledby="contained-modal-title-vcenter"
+                      centered
+                    >
+                      <Modal.Body id="modal-card">
+                        <Form.Group className="mb-3 ">
+                          <MultiSelect
+                            showArrow
+                            onChange={handleOnchange}
+                            defaultValue={defaultUser}
+                            options={
+                              workspacedetails?.workspace_details?.UserList?.map(
+                                (item) => ({
+                                  label: item.name,
+                                  value: item.id,
+                                })
+                              ) || []
+                            }
+                            id="modal-card"
+                          />
+                        </Form.Group>
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button onClick={() => { handleAddParticiapants() }} id="modal-save-btn" type="submit">
+                          Add
+                        </Button>
+                        <Button
+                          onClick={handleUserModalClose}
+                          className="modal-close-user-btn"
+                          type="submit"
+                        >
+                          Close
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
+                  </Row>
                   <Row className="mt-4 mb-3 text-lg-end">
                     <Col className="text-end">
                       <Button
@@ -345,10 +529,24 @@ export const RoomSelection = () => {
                     </Col>
                   </Row>
                 </Col>
+                <Col lg={6} className="amenities-section">
+                  {individualRoomDetail?.length > 0 && (
+                    <div>
+                      <h6>Amenities</h6>
+                      {individualRoomDetail.map((obj) => (
+                        <div style={{ textAlign: "center" }}>
+                          {obj.amenities.map((value) => (
+                            value.is_present === true && <div>{value.name}</div>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </Col>
               </Row>
             </Form>
-            <hr className="mt-0 mb-0" />
-            <Row className="mt-3">
+            {/* <hr className="mt-0 mb-0" /> */}
+            {/* <Row className="mt-3">
               <Col lg={12}>
                 <Table
                   className="booking-property-block"
@@ -443,7 +641,7 @@ export const RoomSelection = () => {
                   )}
                 </Table>
               </Col>
-            </Row>
+            </Row> */}
             <BookSpaceModal
               show={show}
               handleClose={handleClose}

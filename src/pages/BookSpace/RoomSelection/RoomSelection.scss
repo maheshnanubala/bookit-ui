@@ -202,3 +202,29 @@
   color: red;
   padding-top: 30px;
 }
+.text-field-label{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.text-field-input{
+  min-height: 100px;
+  width: 150% !important;
+}
+.amenities-section{
+  display: flex;
+  justify-content: center;
+  margin-top: 2% !important;
+}
+.amenities-section > div{
+  border: 1px solid;
+  border-radius: 10px;
+  height: max-content;
+  padding: 30px;
+}
+.amenities-section > div > h6{
+  font-family: "lato-heavy";
+  font-size: 16px;
+  color: #f06a3e;
+  text-align: center;
+}
