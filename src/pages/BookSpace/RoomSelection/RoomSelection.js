@@ -123,9 +123,9 @@ export const RoomSelection = () => {
     setShow(false);
   };
   const handleSave = () => {
-    const roomBookingDetails = { ...bookSpace, comments, commonMail }
+    const roomBookingDetails = { ...bookSpace, comments: comments, common_emails: commonMail,active:true }
     setShow(false);
-    dispatch(bookworkspace({ roomBookingDetails, navigate, toast }));
+    dispatch(bookworkspace({ bookSpace: roomBookingDetails, navigate, toast }));
   };
 
   const handleInput = (e, field) => {
@@ -287,9 +287,9 @@ export const RoomSelection = () => {
                               type="radio"
                               id={item.id}
                               value={item.id}
-                              disabled={availableworkspace?.data?.BookedWorkSpaces.find(
-                                (x) => x
-                              )?.seats.includes(item.id)}
+                              disabled={availableworkspace?.data?.BookedWorkSpaces.filter(
+                                (x) => x.seats.includes(item.id)
+                              )?.length > 0}
                               {...register("selected_workspaces.seats")}
                               onChange={(e) => {
                                 if (e.target.checked) {
