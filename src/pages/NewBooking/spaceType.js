@@ -19,7 +19,7 @@ function SpaceType() {
                 type={type}
                 id={`ConferenceRoom`}
                 label={`Conference Room`}
-                checked
+                defaultChecked
                 />
             </Col>
             <OverlayTrigger placement="left" overlay={showTooltip}>
