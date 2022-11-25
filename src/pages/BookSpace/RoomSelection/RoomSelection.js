@@ -50,11 +50,11 @@ export const RoomSelection = () => {
     ...state.bookworkspace,
   }));
   var workspaceUserLists = workspacedetails?.workspace_details?.UserList;
-  let availableUserIds = (participantsDetails?.participantsIds?.length > 0 && participantsDetails?.participantsIds) || (availableworkspace?.user_ids?.split(",").length > 0 && availableworkspace?.user_ids?.split(",").map((uId) => {
-    return { id: Number(uId) };
+  let availableUserIds = (participantsDetails?.participantsIds?.length > 0 && participantsDetails?.participantsIds) || (availableworkspace?.user_ids !== '' && availableworkspace?.user_ids?.split(",").length > 0 && availableworkspace?.user_ids?.split(",").map((uId) => {
+    return Number(uId)
   })) || [];
-  let testUserIds = (participantsDetails?.participantsIds?.length > 0 && participantsDetails?.participantsIds) || (availableworkspace?.user_ids?.split(",").length > 0 && availableworkspace?.user_ids?.split(",").map((uId) => {
-    return { id: Number(uId) };
+  let testUserIds = (participantsDetails?.participantsIds?.length > 0 && participantsDetails?.participantsIds) || (availableworkspace?.user_ids !== '' && availableworkspace?.user_ids?.split(",").length > 0 && availableworkspace?.user_ids?.split(",").map((uId) => {
+    return Number(uId)
   })) || [];
 
   const usersList = workspaceUserLists?.filter((array) =>
@@ -62,14 +62,14 @@ export const RoomSelection = () => {
   );
   const [commonMail, setCommonMail] = useState('');
   const [comments, setComments] = useState('');
-  const [userList, setUserList] = useState(testUserIds || [UserObj.id]);
+  const [userList, setUserList] = useState((testUserIds.length > 0 && testUserIds) || [UserObj.id]);
   const [display_add_val, setDisplay_add_val] = useState("");
   const [display_edit_val, setDisplay_edit_val] = useState("none");
   const [selectedUser, setSelectedUser] = useState(
-    (usersList.length > 0 && usersList?.map((x) => x.name).join(",")) || [UserObj.name]
+    (usersList?.length > 0 && usersList?.map((x) => x.name).join(",")) || [UserObj.name]
   );
   const [defaultUser, setDefaultUser] = useState(
-    (usersList.length > 0 && usersList?.map((x) => {
+    (usersList?.length > 0 && usersList?.map((x) => {
       return { label: x.name, value: x.id };
     })) || [{ label: UserObj.name, value: UserObj.id }]
   );
@@ -169,6 +169,16 @@ export const RoomSelection = () => {
     } else {
       onSubmit(formValue);
     }
+  }
+  const checkAmetiesAvailable = (roomData) => {
+    let bln = false;
+    let amenitiesList = [];
+    roomData.forEach((obj) => (
+      obj.amenities.forEach((value) => (
+        value.is_present === true && amenitiesList.push(value.name)
+      ))
+    ));
+    return amenitiesList.length > 0 ? !bln : bln;
   }
   const handleOnchange = (val) => {
     let userIds = val.split(",").map((uId) => {
@@ -530,7 +540,7 @@ export const RoomSelection = () => {
                   </Row>
                 </Col>
                 <Col lg={6} className="amenities-section">
-                  {individualRoomDetail?.length > 0 && (
+                  {individualRoomDetail?.length > 0 && checkAmetiesAvailable(individualRoomDetail) && (
                     <div>
                       <h6>Amenities</h6>
                       {individualRoomDetail.map((obj) => (
