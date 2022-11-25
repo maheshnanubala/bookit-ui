@@ -21,7 +21,7 @@ const Header = () => {
         <div className="header-newbooking-btn col-md-7" >
           <button
             className="booking-icon"
-            onClick={() => navigate("/new-booking")}
+            onClick={() => navigate("/new-booking", { state: { newBookFlag: true } })}
           >
             New Booking
           </button>

@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Col, Card } from "react-bootstrap";
 import { TbDotsVertical } from "react-icons/tb";
 import { Dropdown } from 'antd';
+import CancelBookingModal from "./CancelBookingModal";
 import image from "../../assest/images/Group 1562.svg";
 
 export const UpcomingBookingCardItem = ({ booking, handleShow }) => {
+  const [showModal, setShowModal] = useState(false)
   const navigate = useNavigate();
 
   const onModifyBooking = () => {
@@ -13,7 +15,7 @@ export const UpcomingBookingCardItem = ({ booking, handleShow }) => {
   }
 
   const onCancelBooking = () => {
-    console.log('booking cancelled');
+    setShowModal(true);
   }
 
   const items = [
@@ -29,6 +31,7 @@ export const UpcomingBookingCardItem = ({ booking, handleShow }) => {
 
   return (
     <Col md={6} lg={4}>
+      <CancelBookingModal show={showModal} handleClose={() => setShowModal(false)} bookingDetails={booking} />
       <Card
         className="text-initial ub-border-left">
         <Card.Body className="card-body-item">

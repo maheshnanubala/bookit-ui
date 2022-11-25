@@ -1,100 +1,60 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import {
-  Form,
-  Row,
-  Col,
-  Button,
-  Container,
-  Card,
-  Spinner,
-  Breadcrumb,
-  Modal
-} from "react-bootstrap";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { Form, Row, Col, Button, Container, Card, Spinner, Breadcrumb, Modal } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
-import moment from "moment";
 import { toast } from "react-toastify";
 import { bookWorkSpaceSchema } from "../../../services/ValidationSchema";
+import { bookworkspace, availableWorkspace, UpdateParticipantsDetails, modifyBookWorkSpace } from "../../../redux/ActionReducer/bookSlice";
+import moment from "moment";
 import BookSpaceModal from "../BookSpaceModal";
-import "./RoomSelection.scss";
-import {
-  bookworkspace,
-  availableWorkspace,
-  UpdateParticipantsDetails
-} from "../../../redux/ActionReducer/bookSlice";
-//import format from "date-fns/format";
 import Label from "react-bootstrap/FormLabel";
 import MultiSelect from "react-multiple-select-dropdown-lite";
 import "react-multiple-select-dropdown-lite/dist/index.css";
+import "./RoomSelection.scss";
 
 
 export const RoomSelection = () => {
-  const {
-    floorId,
-    fromDate,
-    toDate,
-    startTime,
-    endTime,
-    buildingId,
-    purpose,
-  } = useParams();
+  const { loading, workspacedetails, availableworkspace, participantsDetails } = useSelector((state) => ({ ...state.bookworkspace }));
+  const { floorId, fromDate, toDate, startTime, endTime, buildingId, purpose, } = useParams();
 
-  const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const modifyFlag = location?.state?.modifyFlag;
+  const bookingId = location?.state?.bookingId;
   const user = JSON.parse(localStorage.getItem("user"));
   const UserObj = JSON.parse(localStorage.getItem("user"))?.user || {};
-  const { loading, workspacedetails, availableworkspace, participantsDetails } = useSelector((state) => ({
-    ...state.bookworkspace,
-  }));
-  var workspaceUserLists = workspacedetails?.workspace_details?.UserList;
+
   let availableUserIds = (participantsDetails?.participantsIds?.length > 0 && participantsDetails?.participantsIds) || (availableworkspace?.user_ids !== '' && availableworkspace?.user_ids?.split(",").length > 0 && availableworkspace?.user_ids?.split(",").map((uId) => {
     return Number(uId)
   })) || [];
   let testUserIds = (participantsDetails?.participantsIds?.length > 0 && participantsDetails?.participantsIds) || (availableworkspace?.user_ids !== '' && availableworkspace?.user_ids?.split(",").length > 0 && availableworkspace?.user_ids?.split(",").map((uId) => {
     return Number(uId)
   })) || [];
+  var workspaceUserLists = workspacedetails?.workspace_details?.UserList;
+  const usersList = workspaceUserLists?.filter((array) => availableUserIds?.includes(array.id));
+  
 
-  const usersList = workspaceUserLists?.filter((array) =>
-    availableUserIds?.includes(array.id)
-  );
+  const [show, setShow] = useState(false);
   const [commonMail, setCommonMail] = useState('');
   const [comments, setComments] = useState('');
   const [userList, setUserList] = useState((testUserIds.length > 0 && testUserIds) || [UserObj.id]);
   const [display_add_val, setDisplay_add_val] = useState("");
   const [display_edit_val, setDisplay_edit_val] = useState("none");
-  const [selectedUser, setSelectedUser] = useState(
-    (usersList?.length > 0 && usersList?.map((x) => x.name).join(",")) || [UserObj.name]
-  );
-  const [defaultUser, setDefaultUser] = useState(
-    (usersList?.length > 0 && usersList?.map((x) => {
-      return { label: x.name, value: x.id };
-    })) || [{ label: UserObj.name, value: UserObj.id }]
-  );
+  const [selectedUser, setSelectedUser] = useState((usersList?.length > 0 && usersList?.map((x) => x.name).join(",")) || [UserObj.name]);
+  const [defaultUser, setDefaultUser] = useState((usersList?.length > 0 && usersList?.map((x) => { return { label: x.name, value: x.id } })) || [{ label: UserObj.name, value: UserObj.id }]);
   const [showUserModal, setUserModal] = useState(false);
 
   useEffect(() => {
-    if (
-      floorId !== "" &&
-      fromDate !== "" &&
-      toDate !== "" &&
-      startTime !== "" &&
-      endTime !== "" &&
-      buildingId !== "" &&
-      purpose !== ""
-    ) {
+    if (floorId !== "" && fromDate !== "" && toDate !== "" && startTime !== "" && endTime !== "" && buildingId !== "" && purpose !== "") {
       dispatch(
         availableWorkspace({
-          floorId,
-          fromDate,
-          toDate,
-          startTime,
-          endTime,
-          buildingId,
-          purpose,
-          navigate,
+          floorId, fromDate, toDate, startTime, endTime, buildingId, purpose,// navigate,
         })
       );
     }
@@ -128,7 +88,7 @@ export const RoomSelection = () => {
   } = useForm({ resolver: yupResolver(bookWorkSpaceSchema) });
 
   const individualRoomDetail =
-    availableworkspace?.data?.FloorDetails?.workspaces.filter((array) =>
+    availableworkspace?.data?.FloorDetails?.workspaces?.filter((array) =>
       roomInfo.some((filter) => filter.id === array.id)
     );
 
@@ -149,8 +109,14 @@ export const RoomSelection = () => {
   };
   const handleSave = () => {
     const roomBookingDetails = { ...bookSpace, comments: comments, common_emails: commonMail, active: true }
+    console.log('roomBookingDetails', roomBookingDetails);
     setShow(false);
-    dispatch(bookworkspace({ bookSpace: roomBookingDetails, navigate, toast }));
+    if (modifyFlag) {
+      dispatch(modifyBookWorkSpace({ bookSpace: roomBookingDetails, navigate, toast, bookingId }));
+    }
+    else {
+      dispatch(bookworkspace({ bookSpace: roomBookingDetails, navigate, toast }));
+    }
   };
 
   const handleInput = (e, field) => {
@@ -252,21 +218,23 @@ export const RoomSelection = () => {
 
   return (
     <Container fluid>
-      <Row className="mt-5">
-        <Col>
-          <Breadcrumb>
-            <Breadcrumb.Item
-              className="newbooking-breadcrumb-item"
-              onClick={() => navigate(`/new-booking`)}
-            >
-              New Booking
-            </Breadcrumb.Item>
-            <Breadcrumb.Item className="conference-breadcrumb-item">
-              Conference Room Selection{" "}
-            </Breadcrumb.Item>
-          </Breadcrumb>
-        </Col>
-      </Row>
+      {!modifyFlag ?
+        <Row className="mt-5">
+          <Col>
+            <Breadcrumb>
+              <Breadcrumb.Item
+                className="newbooking-breadcrumb-item"
+                onClick={() => navigate(`/new-booking`)}
+              >
+                New Booking
+              </Breadcrumb.Item>
+              <Breadcrumb.Item className="conference-breadcrumb-item">
+                Conference Room Selection{" "}
+              </Breadcrumb.Item>
+            </Breadcrumb>
+          </Col>
+        </Row> : <Row className="mt-5"></Row>
+      }
       <Row>
         <Col>
           <div className="room-selection-block">
@@ -511,14 +479,16 @@ export const RoomSelection = () => {
                   </Row>
                   <Row className="mt-4 mb-3 text-lg-end">
                     <Col className="text-end">
-                      <Button
-                        type="submit"
-                        className="book-conference-room-btn shadow-none"
-                        onClick={() => navigate(`/new-booking`)}
-                      >
-                        <i className="bi bi-pencil-square me-2" />
-                        Modify
-                      </Button>
+                      {!modifyFlag &&
+                        <Button
+                          type="submit"
+                          className="book-conference-room-btn shadow-none"
+                          onClick={() => navigate(`/new-booking`)}
+                        >
+                          <i className="bi bi-pencil-square me-2" />
+                          Modify
+                        </Button>
+                      }
                     </Col>
                     <Col className="text-start">
                       <Button

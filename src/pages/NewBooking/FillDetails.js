@@ -1,29 +1,71 @@
+/* eslint-disable no-mixed-operators */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react";
 import { Col, Row, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import Label from "react-bootstrap/FormLabel";
-import InputGroup from "react-bootstrap/InputGroup";
 import { Button } from "react-bootstrap";
 import { Time } from "../../constants/time";
-import "react-multiple-select-dropdown-lite/dist/index.css";
 import { DateRange } from "react-date-range";
-import format from "date-fns/format";
-import "react-date-range/dist/styles.css";
-import "react-date-range/dist/theme/default.css";
-import "./newBooking.scss";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { getworkspaceDetails } from "../../redux/ActionReducer/bookSlice.js";
+import Label from "react-bootstrap/FormLabel";
+import InputGroup from "react-bootstrap/InputGroup";
 import moment from "moment";
+import format from "date-fns/format";
+import "react-multiple-select-dropdown-lite/dist/index.css";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
+import "./newBooking.scss";
 
-const FillDetails = () => {
-  const { workspacedetails, bookworkspaceDetails, availableworkspace } =
-    useSelector((state) => ({
-      ...state.bookworkspace,
-    }));
+
+const FillDetails = ({ bookingDetails, newBookFlag }) => {
+  const { workspacedetails, bookworkspaceDetails, availableworkspace } = useSelector((state) => ({ ...state.bookworkspace }));
+
+  const modifyDefaultStartTime = bookingDetails && new Date(bookingDetails.from_datetime).toLocaleTimeString("en-US", { timeZone: "UTC", hour12: true, hour: "2-digit", minute: "2-digit" })
+  const modifyDefaultSEndTime = bookingDetails && new Date(bookingDetails.to_datetime).toLocaleTimeString("en-US", { timeZone: "UTC", hour12: true, hour: "2-digit", minute: "2-digit" })
+  const modifyDefaultBuildingId = bookingDetails?.building_id;
+  const modifyDefaultFloorId = bookingDetails?.floor_id;
+  const modifyDefaultPurpose = bookingDetails?.purpose;
+  const modifiedUserIds = bookingDetails?.BookingParticipant?.map((value) => { return value.id })
+
+  console.log('modifiedUserIds', modifiedUserIds);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  console.log('bookingDetails', bookingDetails);
+
+  const [purpose, setPurpose] = useState(modifyDefaultPurpose || availableworkspace?.data?.Purpose || "");
+  const [buildingId, setbuildingId] = useState(parseInt(modifyDefaultBuildingId || availableworkspace?.data?.FloorDetails?.building_id) || null);
+  const [floorId, setFloorId] = useState(parseInt(modifyDefaultFloorId || availableworkspace?.data?.FloorDetails?.id || null));
+  const [startTime, setStartTime] = useState(modifyDefaultStartTime || availableworkspace?.data?.StartTime || "")
+  const [endTime, setEndTime] = useState(modifyDefaultSEndTime || availableworkspace?.data?.EndTime || "");
+  const [hideToTime, setHideToTime] = useState("");
   const [floorData, setFloorData] = useState([]);
+  const [openCal, setOpenCal] = useState(false);
+
+  const [calRange, setCalRange] = useState([
+    {
+      startDate:
+        new Date(availableworkspace?.data?.FromDate || new Date()) ||
+        new Date(),
+      endDate:
+        new Date(availableworkspace?.data?.ToDate || new Date()) || new Date(),
+      key: "selection",
+    },
+  ]);
+
+  //Clearing all fields for new booking
+  useEffect(() => {
+    if (newBookFlag) {
+      setStartTime('')
+      setEndTime('')
+      setbuildingId('')
+      setFloorId('')
+      setPurpose('')
+    }
+  }, [newBookFlag])
 
   useEffect(() => {
     document.addEventListener("keydown", hideOnEscapeCal, true);
@@ -39,7 +81,7 @@ const FillDetails = () => {
     if (bookworkspaceDetails?.success === true) {
       navigate(0);
     }
-  }, [dispatch]);
+  }, []);
 
   const setFloorRecord = (buildingId) => {
     let florListArr = workspacedetails?.workspace_details?.FloorList.filter(
@@ -50,22 +92,6 @@ const FillDetails = () => {
     setFloorData(florListArr);
     setbuildingId(buildingId);
   };
-
-  const [purpose, setPurpose] = useState(
-    availableworkspace?.data?.Purpose || ""
-  );
-  const [buildingId, setbuildingId] = useState(
-    parseInt(availableworkspace?.data?.FloorDetails?.building_id) || null
-  );
-  const [floorId, setFloorId] = useState(null);
-
-  const [startTime, setStartTime] = useState(
-    availableworkspace?.data?.StartTime || ""
-  );
-  const [endTime, setEndTime] = useState(
-    availableworkspace?.data?.EndTime || ""
-  );
-  const [hideToTime, setHideToTime] = useState("");
 
   const setToTime = (sTime) => {
     setStartTime(sTime);
@@ -89,37 +115,29 @@ const FillDetails = () => {
     const toDate = format(tDate, "yyyy-MM-dd");
     if (fromDate !== toDate) {
       toast.error("Currently single date booking only available");
-    } else if (startTime === "" || startTime === undefined) {
+    } else if (!startTime) {
       toast.error("Please select Start Time");
-    } else if (endTime === "" || endTime === undefined) {
+    } else if (!endTime) {
       toast.error("Please select End Time");
     } else if (startTime === endTime) {
       toast.error("End time should be greater than start time");
-    } else if (buildingId === null || buildingId === undefined) {
+    } else if (!buildingId) {
       toast.error("Please select Building");
-    } else if (floorId === null || floorId === undefined) {
+    } else if (!floorId) {
       toast.error("Please select Floor");
-    } else if (purpose === "" || purpose === undefined) {
+    } else if (!purpose) {
       toast.error("Please select Purpose");
     } else {
-      navigate(
-        `/new-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`
-      );
+      if (bookingDetails) {
+        navigate(`/modify-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`,
+          { state: { modifyFlag: true, bookingId: bookingDetails.id } })
+      }
+      else {
+        navigate(`/new-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`);
+      }
     }
   };
 
-  const [calRange, setCalRange] = useState([
-    {
-      startDate:
-        new Date(availableworkspace?.data?.FromDate || new Date()) ||
-        new Date(),
-      endDate:
-        new Date(availableworkspace?.data?.ToDate || new Date()) || new Date(),
-      key: "selection",
-    },
-  ]);
-
-  const [openCal, setOpenCal] = useState(false);
   const refOneCal = useRef(null);
   const hideOnEscapeCal = (e) => {
     if (e.key === "Escape") {
@@ -138,6 +156,17 @@ const FillDetails = () => {
     let diffSeconds = moment(presentTime).diff(todayDate, 'seconds');
     return diffSeconds;
   }
+
+  console.log('starttime', startTime);
+  console.log('endTime', endTime);
+  console.log('floorId', floorId);
+  console.log('floorData', floorData);
+  console.log('buildingId', buildingId);
+  console.log('workspacedetails', workspacedetails);
+  console.log('newBookFlag', newBookFlag);
+
+
+
   return (
     <>
       <Form>
@@ -149,10 +178,7 @@ const FillDetails = () => {
             <Form.Group className="mb-3">
               <InputGroup>
                 <input
-                  value={`${format(
-                    calRange[0]?.startDate,
-                    "dd MMM"
-                  )} to ${format(calRange[0]?.endDate, "dd MMM")}`}
+                  value={`${format(calRange[0]?.startDate, "dd MMM")} to ${format(calRange[0]?.endDate, "dd MMM")}`}
                   className="inputBox"
                   disabled
                 />
@@ -177,9 +203,7 @@ const FillDetails = () => {
             </Form.Group>
           </Col>
           <Col>
-            <Label className="start-time-label">
-              Start Time <span className="mandate-item">*</span>
-            </Label>
+            <Label className="start-time-label">Start Time <span className="mandate-item">*</span></Label>
           </Col>
           <Col>
             <Form.Group className="mb-3 inputBox">
@@ -187,11 +211,10 @@ const FillDetails = () => {
                 onChange={(e) => setToTime(e.target.value)}
                 className="building-selectionbox"
                 size="sm"
-                defaultValue={startTime}
+                value={startTime}
+              // defaultValue={startTime}
               >
-                <option value="" key="">
-                  Select
-                </option>
+                <option value="" key="">Select</option>
                 {Time.map((item) => (
                   <option
                     value={item.label}
@@ -204,9 +227,7 @@ const FillDetails = () => {
             </Form.Group>
           </Col>
           <Col>
-            <Label className="end-time-label">
-              End Time <span className="mandate-item">*</span>
-            </Label>
+            <Label className="end-time-label">End Time <span className="mandate-item">*</span></Label>
           </Col>
           <Col>
             <Form.Group className="mb-3 inputBox">
@@ -214,11 +235,10 @@ const FillDetails = () => {
                 onChange={(e) => setEndTime(e.target.value)}
                 className="building-selectionbox"
                 size="sm"
-                defaultValue={endTime}
+                value={endTime}
+              // defaultValue={endTime}
               >
-                <option value="" key="">
-                  Select
-                </option>
+                <option value="" key="">Select</option>
                 {Time.map((item) => (
                   <option
                     value={item.lable}
@@ -246,7 +266,8 @@ const FillDetails = () => {
                 }}
                 className="building-selectionbox"
                 size="sm"
-                defaultValue={buildingId}
+                value={buildingId}
+              // defaultValue={buildingId}
               >
                 <option value="">Select</option>
                 {workspacedetails?.workspace_details?.BuildingList?.map(
@@ -269,7 +290,8 @@ const FillDetails = () => {
               <Form.Select
                 size="sm"
                 onChange={(e) => setFloorId(e.target.value)}
-                defaultValue={floorId}
+                value={floorId}
+              // defaultValue={floorId}
               >
                 <option value="">Select</option>
                 {floorData?.map((item) => (
@@ -293,9 +315,10 @@ const FillDetails = () => {
               <Form.Select
                 className="purpose-select"
                 onChange={(e) => setPurpose(e.target.value)}
-                defaultValue={purpose}
+                value={purpose}
+              // defaultValue={purpose}
               >
-                <option value="">Select</option>
+                <option value="">{bookingDetails?.purpose || 'Select'}</option>
                 {workspacedetails?.workspace_details?.Purpose?.map((item) => (
                   <option value={item} key={item}>
                     {item}
@@ -333,7 +356,7 @@ const FillDetails = () => {
               <small>
                 &nbsp;&nbsp;&nbsp;Selected Participants:&nbsp;&nbsp;&nbsp;
               </small>
-              <span id="selected-members">{selectedUser} </span>
+              <span id="selected-members">{selectedUser}</span>
             </span>
           </p>
           <Modal

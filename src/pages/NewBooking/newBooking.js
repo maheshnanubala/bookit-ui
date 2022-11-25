@@ -2,15 +2,15 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { Container, Row } from "react-bootstrap";
-import "./newBooking.scss";
 import SpaceType from "./spaceType.js";
 import FillDetails from "./FillDetails.js";
+import "./newBooking.scss";
 
 function newBooking() {
   const location = useLocation();
   const modifyFlag = location?.state?.modifyFlag;
-  const bookingDetails =  location?.state?.bookingDetails;
-  console.log(bookingDetails);
+  const newBookFlag = location?.state?.newBookFlag;
+  const bookingDetails = location?.state?.bookingDetails;
 
   return (
     <>
@@ -24,7 +24,7 @@ function newBooking() {
           <hr className="hr" />
         </Row>
         <Row>
-          <FillDetails />
+          <FillDetails bookingDetails={bookingDetails} newBookFlag={newBookFlag} />
         </Row>
       </Container>
     </>
