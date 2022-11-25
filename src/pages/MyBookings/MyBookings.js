@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import { Container, Row, Col, Button, Modal, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getMyBookingDetails } from "../../redux/ActionReducer/bookSlice";

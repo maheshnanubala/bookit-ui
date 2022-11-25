@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Card } from "react-bootstrap";
-import { TbDotsVertical } from "react-icons/tb";
+// import { TbDotsVertical } from "react-icons/tb";
 import image from "../../assest/images/Group 1562.svg";
 
 export const RecentBookingCardItem = ({ booking, handleShow, oneDay }) => {
@@ -20,9 +20,9 @@ export const RecentBookingCardItem = ({ booking, handleShow, oneDay }) => {
         }}
       >
         <Card.Body className="card-body-item">
-          <span className="book-label">
+          {/* <span className="book-label">
             <TbDotsVertical className="icon-dots" />
-          </span>
+          </span> */}
           <Card.Title className="card-headings">
             <img
               alt="conference-room"

@@ -3,31 +3,13 @@ import * as api from "../api";
 
 export const availableWorkspace = createAsyncThunk(
   "bookworkspace/availableWorkspace",
-  async ({
-    floorId,
-    fromDate,
-    toDate,
-    startTime,
-    endTime,
-    buildingId,
-    purpose,
-    navigate,
-  }) => {
+  async ({ floorId, fromDate, toDate, startTime, endTime, buildingId, purpose }) => {
     try {
-      const response = await api.availableworkspace(
-        floorId,
-        fromDate,
-        toDate,
-        startTime,
-        endTime,
-        buildingId,
-        [],
-        purpose
+      const response = await api.availableworkspace(floorId, fromDate, toDate, startTime, endTime, buildingId, [], purpose
       );
-
-      navigate(
-        `/new-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`
-      );
+      // navigate(
+      //   `/new-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`
+      // );
       return response.data;
     } catch (err) {
       if (err.response.status !== 200 && err.response.status !== 201) {
@@ -44,6 +26,22 @@ export const bookworkspace = createAsyncThunk(
       const response = await api.bookworkSpace(bookSpace);
       navigate(`/home`);
       toast.success("Successfully Booked");
+      return response.data;
+    } catch (err) {
+      if (err.response.status !== 200 && err.response.status !== 201) {
+        toast.error(err.response.data.message);
+      }
+    }
+  }
+);
+
+export const modifyBookWorkSpace = createAsyncThunk(
+  "bookworkspace/modifyBookWorkSpace",
+  async ({ bookSpace, navigate, toast, bookingId }) => {
+    try {
+      const response = await api.modifyBookWorkSpace(bookSpace, bookingId);
+      navigate(`/home`);
+      toast.success("Booking Modified Succesfully");
       return response.data;
     } catch (err) {
       if (err.response.status !== 200 && err.response.status !== 201) {
@@ -72,6 +70,7 @@ export const getworkspaceDetails = createAsyncThunk(
   async () => {
     try {
       const response = await api.getworkspaceDetails();
+      console.log('response', response);
       return response.data;
     } catch (err) {
       if (err.response.status !== 200 && err.response.status !== 201) {
@@ -80,6 +79,7 @@ export const getworkspaceDetails = createAsyncThunk(
     }
   }
 );
+
 export const UpdateParticipantsDetails = createAsyncThunk(
   "bookworkspace/participantsDetails",
   async (data) => {
@@ -87,6 +87,22 @@ export const UpdateParticipantsDetails = createAsyncThunk(
       return data;
     } catch (err) {
       console.log(err.response.data.message);
+    }
+  }
+);
+
+export const cancelBooking = createAsyncThunk(
+  "bookworkspace/cancelBooking",
+  async ({ bookingId, toast, dispatch }) => {
+    try {
+      const response = await api.cancelBooking(bookingId);
+      toast.success(response.data.message);
+      dispatch(getMyBookingDetails());
+      return response.data;
+    } catch (err) {
+      if (err.response.status !== 200 && err.response.status !== 201) {
+        toast.error(err.response.data.message);
+      }
     }
   }
 );
@@ -137,6 +153,17 @@ const bookSlice = createSlice({
       state.loading = false;
       state.error = action.payload?.message;
     },
+    [modifyBookWorkSpace.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [modifyBookWorkSpace.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.bookworkspaceDetails = action.payload;
+    },
+    [modifyBookWorkSpace.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload?.message;
+    },
     [getMyBookingDetails.pending]: (state, action) => {
       state.loading = true;
     },
@@ -156,6 +183,15 @@ const bookSlice = createSlice({
       state.participantsDetails = action.payload;
     },
     [UpdateParticipantsDetails.rejected]: (state, action) => {
+      state.loading = false;
+    },
+    [cancelBooking.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [cancelBooking.fulfilled]: (state, action) => {
+      state.loading = false;
+    },
+    [cancelBooking.rejected]: (state, action) => {
       state.loading = false;
     },
   },
