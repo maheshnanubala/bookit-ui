@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { Modal, Button, Col, Row } from "react-bootstrap";
 import { cancelBooking } from "../../redux/ActionReducer/bookSlice";
-// import { getMyBookingDetails } from "../../redux/ActionReducer/bookSlice";
 import moment from "moment";
 import '../BookSpace/BookSpace.scss';
 import './Home.scss';
@@ -17,12 +16,12 @@ const CancelBookingModal = ({ show, handleClose, bookingDetails }) => {
     const fromTime = new Date(bookingDetails.from_datetime).toLocaleTimeString("en-US", { timeZone: "UTC", hour12: true, hour: "2-digit", minute: "2-digit" })
     const toTime = new Date(bookingDetails.to_datetime).toLocaleTimeString("en-US", { timeZone: "UTC", hour12: true, hour: "2-digit", minute: "2-digit" })
 
-    console.log('bookingDetails', bookingDetails);
-
     const onCancelBooking = async () => {
         dispatch(cancelBooking({ bookingId, toast, dispatch }))
         handleClose();
     }
+
+    console.log(bookingDetails);
 
     return (
         <>
@@ -64,7 +63,7 @@ const CancelBookingModal = ({ show, handleClose, bookingDetails }) => {
                     <Row className="confirm-content mb-2">
                         <Col>{bookingDetails.floor_name} - {bookingDetails.BookingWorkspace[0].workspace_name}</Col>
                         <Col>
-                            {bookingDetails.BookingWorkspace[0].workspace_type} -{" "}
+                            {bookingDetails.purpose} -{" "}
                             {bookingDetails.user_name}
                         </Col>
                     </Row>

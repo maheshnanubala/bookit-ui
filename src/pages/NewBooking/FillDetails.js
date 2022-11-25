@@ -70,7 +70,7 @@ const FillDetails = ({ bookingDetails, newBookFlag }) => {
   useEffect(() => {
     document.addEventListener("keydown", hideOnEscapeCal, true);
     document.addEventListener("click", hideOnClickOutsideCal, true);
-    dispatch(getworkspaceDetails());
+    !workspacedetails && dispatch(getworkspaceDetails());
     let florListArr = workspacedetails?.workspace_details?.FloorList?.filter(
       (val) => {
         return val.building_id === Number(buildingId);
@@ -81,7 +81,7 @@ const FillDetails = ({ bookingDetails, newBookFlag }) => {
     if (bookworkspaceDetails?.success === true) {
       navigate(0);
     }
-  }, []);
+  }, [workspacedetails]);
 
   const setFloorRecord = (buildingId) => {
     let florListArr = workspacedetails?.workspace_details?.FloorList.filter(
@@ -119,7 +119,7 @@ const FillDetails = ({ bookingDetails, newBookFlag }) => {
       toast.error("Please select Start Time");
     } else if (!endTime) {
       toast.error("Please select End Time");
-    } else if (startTime === endTime) {
+    } else if (startTime > endTime) {
       toast.error("End time should be greater than start time");
     } else if (!buildingId) {
       toast.error("Please select Building");
@@ -218,7 +218,7 @@ const FillDetails = ({ bookingDetails, newBookFlag }) => {
                 {Time.map((item) => (
                   <option
                     value={item.label}
-                    disabled={!startTime && (HandlePassedTime() > item.value)}
+                    disabled={(HandlePassedTime() > item.value)}
                     key={item.key}>
                     {item.label}
                   </option>

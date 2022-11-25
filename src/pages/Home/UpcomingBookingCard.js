@@ -31,7 +31,7 @@ export const UpcomingBookingCardItem = ({ booking, handleShow }) => {
 
   return (
     <Col md={6} lg={4}>
-      <CancelBookingModal show={showModal} handleClose={() => setShowModal(false)} bookingDetails={booking} />
+      {showModal && <CancelBookingModal show={showModal} handleClose={() => setShowModal(false)} bookingDetails={booking} />}
       <Card
         className="text-initial ub-border-left">
         <Card.Body className="card-body-item">
