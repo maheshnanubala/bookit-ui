@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React from "react";
-import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Container, Row } from "react-bootstrap";
 import SpaceType from "./spaceType.js";
@@ -8,7 +7,6 @@ import FillDetails from "./FillDetails.js";
 import "./newBooking.scss";
 
 function newBooking() {
-  const modifyBookingData = useSelector((state) => ({...state.bookworkspace.modifyBookingData}));
   const location = useLocation();
   const newBookFlag = location?.state?.newBookFlag;
 
@@ -16,7 +14,7 @@ function newBooking() {
     <>
       <Container fluid className="p-5 new-booking-block">
         <Row>
-          <p id="page-title">{`${modifyBookingData?.id ? 'Modify' : 'New'} Booking`}</p>
+          <p id="page-title">{`${newBookFlag ? 'New' : 'Modify'} Booking`}</p>
         </Row>
         <hr className="hr" />
         <Row className="p-2">

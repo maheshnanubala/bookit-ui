@@ -54,7 +54,7 @@ export const RoomSelection = () => {
     if (floorId !== "" && fromDate !== "" && toDate !== "" && startTime !== "" && endTime !== "" && buildingId !== "" && purpose !== "") {
       dispatch(
         availableWorkspace({
-          floorId, fromDate, toDate, startTime, endTime, buildingId, purpose,// navigate,
+          floorId, fromDate, toDate, startTime, endTime, buildingId, userList, purpose,// navigate,
         })
       );
     }
@@ -177,6 +177,7 @@ export const RoomSelection = () => {
     setDisplay_edit_val("inline");
     setUserModal(false);
   };
+  
   const handleAddParticiapants = () => {
     const userDetails = {
       participants: defaultUser,
@@ -445,7 +446,7 @@ export const RoomSelection = () => {
                     >
                       <Modal.Body id="modal-card">
                         <Form.Group className="mb-3 ">
-                          <MultiSelect
+                        <MultiSelect
                             showArrow
                             onChange={handleOnchange}
                             defaultValue={defaultUser}
@@ -477,16 +478,13 @@ export const RoomSelection = () => {
                   </Row>
                   <Row className="mt-4 mb-3 text-lg-end">
                     <Col className="text-end">
-                      {!modifyFlag &&
-                        <Button
-                          type="submit"
-                          className="book-conference-room-btn shadow-none"
-                          onClick={() => navigate(`/new-booking`)}
-                        >
-                          <i className="bi bi-pencil-square me-2" />
-                          Modify
-                        </Button>
-                      }
+                      <Button
+                        type="submit"
+                        className="book-conference-room-btn shadow-none"
+                        onClick={() => { modifyFlag ? navigate(`/modify-booking`) : navigate(`/new-booking`) }}>
+                        <i className="bi bi-pencil-square me-2" />
+                        Modify
+                      </Button>
                     </Col>
                     <Col className="text-start">
                       <Button
