@@ -3,9 +3,9 @@ import * as api from "../api";
 
 export const availableWorkspace = createAsyncThunk(
   "bookworkspace/availableWorkspace",
-  async ({ floorId, fromDate, toDate, startTime, endTime, buildingId, purpose }) => {
+  async ({ floorId, fromDate, toDate, startTime, endTime, buildingId, userList = [], purpose }) => {
     try {
-      const response = await api.availableworkspace(floorId, fromDate, toDate, startTime, endTime, buildingId, [], purpose
+      const response = await api.availableworkspace(floorId, fromDate, toDate, startTime, endTime, buildingId, userList, purpose
       );
       // navigate(
       //   `/new-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`

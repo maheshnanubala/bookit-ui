@@ -95,15 +95,13 @@ const FillDetails = ({ bookingDetails, newBookFlag }) => {
 
   const setToTime = (sTime) => {
     setStartTime(sTime);
+    setEndTime("")
     var disabledTime = [];
-    var isBreak = false;
-    Time.map((item) => {
-      if (item.label !== sTime && !isBreak) {
+    let timeObj = Time[(Time.findIndex((time) => time.label === sTime) + 1)]
+    Time.forEach((item) => {
+      if ((Number(item.value) < Number(timeObj?.value)) || sTime === "11:30 PM") {
         disabledTime.push(item.label);
-      } else {
-        isBreak = true;
       }
-      return null;
     });
     setHideToTime(disabledTime);
   };
@@ -156,7 +154,12 @@ const FillDetails = ({ bookingDetails, newBookFlag }) => {
     let diffSeconds = moment(presentTime).diff(todayDate, 'seconds');
     return diffSeconds;
   }
-
+  const checkEndPastTime = () => {
+    let presentTimeInSec = HandlePassedTime();
+    let currentSecObj = Time.find((timeObj) => timeObj.value > presentTimeInSec);
+    let currentEndSec = Time[(Time.findIndex((time) => time.label === currentSecObj.label) + 1)]
+    return currentEndSec.value && Number(currentEndSec.value);
+  }
   console.log('starttime', startTime);
   console.log('endTime', endTime);
   console.log('floorId', floorId);
@@ -242,7 +245,7 @@ const FillDetails = ({ bookingDetails, newBookFlag }) => {
                 {Time.map((item) => (
                   <option
                     value={item.lable}
-                    disabled={hideToTime.includes(item.label) || startTime === ""}
+                    disabled={hideToTime.includes(item.label) || startTime === "" || (checkEndPastTime() > item.value)}
                     key={item.key}
                   >
                     {item.label}
