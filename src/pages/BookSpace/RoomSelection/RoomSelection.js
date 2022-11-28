@@ -1,14 +1,14 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Form, Row, Col, Button, Container, Card, Spinner, Breadcrumb, Modal } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { bookWorkSpaceSchema } from "../../../services/ValidationSchema";
-import { bookworkspace, availableWorkspace, UpdateParticipantsDetails, modifyBookWorkSpace } from "../../../redux/ActionReducer/bookSlice";
+import { bookworkspace, availableWorkspace, updateCurrentBookingData, modifyBookWorkSpace } from "../../../redux/ActionReducer/bookSlice";
 import moment from "moment";
 import BookSpaceModal from "../BookSpaceModal";
 import Label from "react-bootstrap/FormLabel";
@@ -18,44 +18,42 @@ import "./RoomSelection.scss";
 
 
 export const RoomSelection = () => {
-  const { loading, workspacedetails, availableworkspace, participantsDetails } = useSelector((state) => ({ ...state.bookworkspace }));
+  const { loading, workspacedetails, availableworkspace, currentBookingData, modifyBookingData } = useSelector((state) => ({ ...state.bookworkspace }));
   const { floorId, fromDate, toDate, startTime, endTime, buildingId, purpose, } = useParams();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const modifyFlag = location?.state?.modifyFlag;
-  const bookingId = location?.state?.bookingId;
+  const modifyFlag = modifyBookingData ? true : false;
+  const bookingId = modifyBookingData?.id;
   const user = JSON.parse(localStorage.getItem("user"));
   const UserObj = JSON.parse(localStorage.getItem("user"))?.user || {};
 
-  let availableUserIds = (participantsDetails?.participantsIds?.length > 0 && participantsDetails?.participantsIds) || (availableworkspace?.user_ids !== '' && availableworkspace?.user_ids?.split(",").length > 0 && availableworkspace?.user_ids?.split(",").map((uId) => {
+  let availableUserIds = (currentBookingData?.userDetails?.participantsIds?.length > 0 && currentBookingData?.userDetails?.participantsIds?.participantsIds) || (availableworkspace?.user_ids !== '' && availableworkspace?.user_ids?.split(",").length > 0 && availableworkspace?.user_ids?.split(",").map((uId) => {
     return Number(uId)
   })) || [];
-  let testUserIds = (participantsDetails?.participantsIds?.length > 0 && participantsDetails?.participantsIds) || (availableworkspace?.user_ids !== '' && availableworkspace?.user_ids?.split(",").length > 0 && availableworkspace?.user_ids?.split(",").map((uId) => {
+  let testUserIds = (currentBookingData?.userDetails?.participantsIds?.length > 0 && currentBookingData?.userDetails?.participantsIds) || (availableworkspace?.user_ids !== '' && availableworkspace?.user_ids?.split(",").length > 0 && availableworkspace?.user_ids?.split(",").map((uId) => {
     return Number(uId)
   })) || [];
   var workspaceUserLists = workspacedetails?.workspace_details?.UserList;
   const usersList = workspaceUserLists?.filter((array) => availableUserIds?.includes(array.id));
-
+  const modifyBookingUserIds = modifyBookingData?.BookingParticipant.map((data) => { return data.id })
 
   const [show, setShow] = useState(false);
-  const [commonMail, setCommonMail] = useState('');
-  const [comments, setComments] = useState('');
-  const [userList, setUserList] = useState((testUserIds.length > 0 && testUserIds) || [UserObj.id]);
+  const [commonMail, setCommonMail] = useState(currentBookingData?.commonMail || modifyBookingData?.common_emails || '');
+  const [comments, setComments] = useState(currentBookingData?.comments || modifyBookingData?.comments || '');
+  const [userList, setUserList] = useState((testUserIds.length > 0 && testUserIds) || modifyBookingUserIds|| [UserObj.id]);
   const [display_add_val, setDisplay_add_val] = useState("");
   const [display_edit_val, setDisplay_edit_val] = useState("none");
-  const [selectedUser, setSelectedUser] = useState((usersList?.length > 0 && usersList?.map((x) => x.name).join(",")) || [UserObj.name]);
+  const [selectedUser, setSelectedUser] = useState(
+    ((usersList?.length > 0 && usersList?.map((x) => x.name).join(",")) || modifyBookingData?.BookingParticipant.map((x) => x.user_name).join(",")) || [UserObj.name]);
   const [defaultUser, setDefaultUser] = useState((usersList?.length > 0 && usersList?.map((x) => { return { label: x.name, value: x.id } })) || [{ label: UserObj.name, value: UserObj.id }]);
   const [showUserModal, setUserModal] = useState(false);
 
   useEffect(() => {
     if (floorId !== "" && fromDate !== "" && toDate !== "" && startTime !== "" && endTime !== "" && buildingId !== "" && purpose !== "") {
       dispatch(
-        availableWorkspace({
-          floorId, fromDate, toDate, startTime, endTime, buildingId, userList, purpose,// navigate,
-        })
+        availableWorkspace({ floorId, fromDate, toDate, startTime, endTime, buildingId, userList, purpose })
       );
     }
   }, []);
@@ -177,13 +175,18 @@ export const RoomSelection = () => {
     setDisplay_edit_val("inline");
     setUserModal(false);
   };
-  
+
   const handleAddParticiapants = () => {
     const userDetails = {
       participants: defaultUser,
       participantsIds: userList
     };
-    dispatch(UpdateParticipantsDetails(userDetails))
+    const payload = {
+      userDetails: userDetails,
+      comments: comments,
+      commonMail: commonMail
+    }
+    dispatch(updateCurrentBookingData(payload))
     setUserModal(false);
   }
   const onSubmit = (formValue) => {
@@ -217,25 +220,41 @@ export const RoomSelection = () => {
       (item) => item.type === "conference"
     );
 
+  const redirectToModify = () => {
+    if (modifyFlag)
+      navigate(`/modify-booking`)
+    else
+      navigate(`/new-booking`)
+
+    const payload = {
+      userDetails: { participants: selectedUser, participantsIds: userList },
+      comments: comments,
+      commonMail: commonMail
+    }
+    dispatch(updateCurrentBookingData(payload))
+  }
+
+  console.log('testUserIds',testUserIds);
+  console.log('usersList',usersList);
+  console.log('defaultUser',defaultUser);
+
   return (
     <Container fluid>
-      {!modifyFlag ?
-        <Row className="mt-5">
-          <Col>
-            <Breadcrumb>
-              <Breadcrumb.Item
-                className="newbooking-breadcrumb-item"
-                onClick={() => navigate(`/new-booking`)}
-              >
-                New Booking
-              </Breadcrumb.Item>
-              <Breadcrumb.Item className="conference-breadcrumb-item">
-                Conference Room Selection{" "}
-              </Breadcrumb.Item>
-            </Breadcrumb>
-          </Col>
-        </Row> : <Row className="mt-5"></Row>
-      }
+      <Row className="mt-5">
+        <Col>
+          <Breadcrumb>
+            <Breadcrumb.Item
+              className="newbooking-breadcrumb-item"
+              onClick={redirectToModify}
+            >
+              {modifyFlag ? 'Modify Booking' : 'New Booking'}
+            </Breadcrumb.Item>
+            <Breadcrumb.Item className="conference-breadcrumb-item">
+              Conference Room Selection{" "}
+            </Breadcrumb.Item>
+          </Breadcrumb>
+        </Col>
+      </Row>
       <Row>
         <Col>
           <div className="room-selection-block">
@@ -448,7 +467,7 @@ export const RoomSelection = () => {
                     >
                       <Modal.Body id="modal-card">
                         <Form.Group className="mb-3 ">
-                        <MultiSelect
+                          <MultiSelect
                             showArrow
                             onChange={handleOnchange}
                             defaultValue={defaultUser}
@@ -480,16 +499,13 @@ export const RoomSelection = () => {
                   </Row>
                   <Row className="mt-4 mb-3 text-lg-end">
                     <Col className="text-end">
-                      {!modifyFlag &&
-                        <Button
-                          type="submit"
-                          className="book-conference-room-btn shadow-none"
-                          onClick={() => navigate(`/new-booking`)}
-                        >
-                          <i className="bi bi-pencil-square me-2" />
-                          Modify
-                        </Button>
-                      }
+                      <Button
+                        type="submit"
+                        className="book-conference-room-btn shadow-none"
+                        onClick={redirectToModify}>
+                        <i className="bi bi-pencil-square me-2" />
+                        Modify
+                      </Button>
                     </Col>
                     <Col className="text-start">
                       <Button

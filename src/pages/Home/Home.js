@@ -59,8 +59,8 @@ const Home = () => {
       <section>
         <Row className="custom-upcomingbooking-section pt-5 pb-3">
           <h4 className="headings">Upcoming Bookings</h4>
-          {upcomingBookings?.length > 0 ? (
-            upcomingBookings.map((booking) => (
+          {upcomingBookings?.filter(val => val.active).length > 0 ? (
+            upcomingBookings?.filter(val => val.active).map((booking) => (
               <React.Fragment key={booking.id}>
                 <UpcomingBookingCardItem
                   booking={booking}

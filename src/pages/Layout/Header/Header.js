@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import "./header.scss";
 import indiumLogo from "../../../assest/images/logo.png";
+import "./header.scss";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const Header = () => {
         <div className="header-newbooking-btn col-md-7" >
           <button
             className="booking-icon"
-            onClick={() => navigate("/new-booking", { state: { newBookFlag: true } })}
+            onClick={() => navigate("/new-booking")}
           >
             New Booking
           </button>

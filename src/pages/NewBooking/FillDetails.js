@@ -19,32 +19,20 @@ import "react-date-range/dist/theme/default.css";
 import "./newBooking.scss";
 
 
-const FillDetails = ({ bookingDetails, newBookFlag }) => {
-  const { workspacedetails, bookworkspaceDetails, availableworkspace } = useSelector((state) => ({ ...state.bookworkspace }));
-
-  const modifyDefaultStartTime = bookingDetails && new Date(bookingDetails.from_datetime).toLocaleTimeString("en-US", { timeZone: "UTC", hour12: true, hour: "2-digit", minute: "2-digit" })
-  const modifyDefaultSEndTime = bookingDetails && new Date(bookingDetails.to_datetime).toLocaleTimeString("en-US", { timeZone: "UTC", hour12: true, hour: "2-digit", minute: "2-digit" })
-  const modifyDefaultBuildingId = bookingDetails?.building_id;
-  const modifyDefaultFloorId = bookingDetails?.floor_id;
-  const modifyDefaultPurpose = bookingDetails?.purpose;
-  const modifiedUserIds = bookingDetails?.BookingParticipant?.map((value) => { return value.id })
-
-  console.log('modifiedUserIds', modifiedUserIds);
+const FillDetails = () => {
+  const { workspacedetails, availableworkspace, modifyBookingData } = useSelector((state) => ({ ...state.bookworkspace }));
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log('bookingDetails', bookingDetails);
-
-  const [purpose, setPurpose] = useState(modifyDefaultPurpose || availableworkspace?.data?.Purpose || "");
-  const [buildingId, setbuildingId] = useState(parseInt(modifyDefaultBuildingId || availableworkspace?.data?.FloorDetails?.building_id) || null);
-  const [floorId, setFloorId] = useState(parseInt(modifyDefaultFloorId || availableworkspace?.data?.FloorDetails?.id || null));
-  const [startTime, setStartTime] = useState(modifyDefaultStartTime || availableworkspace?.data?.StartTime || "")
-  const [endTime, setEndTime] = useState(modifyDefaultSEndTime || availableworkspace?.data?.EndTime || "");
+  const [purpose, setPurpose] = useState();
+  const [buildingId, setbuildingId] = useState();
+  const [floorId, setFloorId] = useState();
+  const [startTime, setStartTime] = useState()
+  const [endTime, setEndTime] = useState();
   const [hideToTime, setHideToTime] = useState("");
   const [floorData, setFloorData] = useState([]);
   const [openCal, setOpenCal] = useState(false);
-
   const [calRange, setCalRange] = useState([
     {
       startDate:
@@ -56,32 +44,28 @@ const FillDetails = ({ bookingDetails, newBookFlag }) => {
     },
   ]);
 
-  //Clearing all fields for new booking
   useEffect(() => {
-    if (newBookFlag) {
-      setStartTime('')
-      setEndTime('')
-      setbuildingId('')
-      setFloorId('')
-      setPurpose('')
-    }
-  }, [newBookFlag])
+    const modifyDefaultStartTime = modifyBookingData && new Date(modifyBookingData.from_datetime).toLocaleTimeString("en-US", { timeZone: "UTC", hour12: true, hour: "2-digit", minute: "2-digit" })
+    const modifyDefaultSEndTime = modifyBookingData && new Date(modifyBookingData.to_datetime).toLocaleTimeString("en-US", { timeZone: "UTC", hour12: true, hour: "2-digit", minute: "2-digit" })
+    setPurpose(availableworkspace?.data?.Purpose || modifyBookingData?.purpose || '');
+    setbuildingId(parseInt(availableworkspace?.data?.FloorDetails?.building_id || modifyBookingData?.building_id || ''));
+    setFloorId(parseInt(availableworkspace?.data?.FloorDetails?.id || modifyBookingData?.floor_id || ''));
+    setStartTime(availableworkspace?.data?.StartTime || modifyDefaultStartTime || '')
+    setEndTime(availableworkspace?.data?.EndTime || modifyDefaultSEndTime || '')
+
+  }, [modifyBookingData, availableworkspace])
 
   useEffect(() => {
     document.addEventListener("keydown", hideOnEscapeCal, true);
     document.addEventListener("click", hideOnClickOutsideCal, true);
-    !workspacedetails && dispatch(getworkspaceDetails());
-    let florListArr = workspacedetails?.workspace_details?.FloorList?.filter(
-      (val) => {
-        return val.building_id === Number(buildingId);
-      }
-    );
-    setFloorData(florListArr);
+    dispatch(getworkspaceDetails());
+  }, []);
 
-    if (bookworkspaceDetails?.success === true) {
-      navigate(0);
-    }
-  }, [workspacedetails]);
+  // To setup floor data
+  useEffect(() => {
+    let florListArr = workspacedetails?.workspace_details?.FloorList?.filter((val) => { return val.building_id === Number(buildingId) });
+    setFloorData(florListArr);
+  }, [workspacedetails])
 
   const setFloorRecord = (buildingId) => {
     let florListArr = workspacedetails?.workspace_details?.FloorList.filter(
@@ -117,7 +101,7 @@ const FillDetails = ({ bookingDetails, newBookFlag }) => {
       toast.error("Please select Start Time");
     } else if (!endTime) {
       toast.error("Please select End Time");
-    } else if (startTime > endTime) {
+    } else if (startTime === endTime) {
       toast.error("End time should be greater than start time");
     } else if (!buildingId) {
       toast.error("Please select Building");
@@ -126,9 +110,8 @@ const FillDetails = ({ bookingDetails, newBookFlag }) => {
     } else if (!purpose) {
       toast.error("Please select Purpose");
     } else {
-      if (bookingDetails) {
-        navigate(`/modify-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`,
-          { state: { modifyFlag: true, bookingId: bookingDetails.id } })
+      if (modifyBookingData) {
+        navigate(`/modify-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`)
       }
       else {
         navigate(`/new-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`);
@@ -154,11 +137,14 @@ const FillDetails = ({ bookingDetails, newBookFlag }) => {
     let diffSeconds = moment(presentTime).diff(todayDate, 'seconds');
     return diffSeconds;
   }
+
+  console.log('modifyBookingData', modifyBookingData);
+
   const checkEndPastTime = () => {
     let presentTimeInSec = HandlePassedTime();
     let currentSecObj = Time.find((timeObj) => timeObj.value > presentTimeInSec);
     let currentEndSec = Time[(Time.findIndex((time) => time.label === currentSecObj.label) + 1)]
-    return currentEndSec.value && Number(currentEndSec.value);
+    return currentEndSec?.value && Number(currentEndSec.value);
   }
   console.log('starttime', startTime);
   console.log('endTime', endTime);
@@ -166,8 +152,7 @@ const FillDetails = ({ bookingDetails, newBookFlag }) => {
   console.log('floorData', floorData);
   console.log('buildingId', buildingId);
   console.log('workspacedetails', workspacedetails);
-  console.log('newBookFlag', newBookFlag);
-
+  // console.log('newBookFlag', newBookFlag);
 
 
   return (
@@ -321,7 +306,7 @@ const FillDetails = ({ bookingDetails, newBookFlag }) => {
                 value={purpose}
               // defaultValue={purpose}
               >
-                <option value="">{bookingDetails?.purpose || 'Select'}</option>
+                <option>Select</option>
                 {workspacedetails?.workspace_details?.Purpose?.map((item) => (
                   <option value={item} key={item}>
                     {item}
