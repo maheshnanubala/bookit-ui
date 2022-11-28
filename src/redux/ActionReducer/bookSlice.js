@@ -35,7 +35,7 @@ export const bookworkspace = createAsyncThunk(
   }
 );
 
-export const UpdateModifyBookingData = createAsyncThunk(
+export const updateModifyBookingData = createAsyncThunk(
   "bookworkspace/updateModifyBookingData",
   async (data) => {
     try {
@@ -91,11 +91,11 @@ export const getworkspaceDetails = createAsyncThunk(
   }
 );
 
-export const UpdateParticipantsDetails = createAsyncThunk(
-  "bookworkspace/participantsDetails",
-  async (data) => {
+export const updateCurrentBookingData = createAsyncThunk(
+  "bookworkspace/updateCurrentBookingData",
+  async (payload) => {
     try {
-      return data;
+      return payload;
     } catch (err) {
       console.log(err.response.data.message);
     }
@@ -127,7 +127,7 @@ const bookSlice = createSlice({
     bookworkspaceDetails: null,
     modifyBookingData: null,
     error: "",
-    participantsDetails: null,
+    currentBookingData: null,
     loading: false,
   },
   reducers: {},
@@ -168,15 +168,15 @@ const bookSlice = createSlice({
       state.loading = false;
       state.error = action.payload?.message;
     },
-    // UpdateModifyBookingData
-    [UpdateModifyBookingData.pending]: (state, action) => {
+    // updateModifyBookingData
+    [updateModifyBookingData.pending]: (state, action) => {
       state.loading = true;
     },
-    [UpdateModifyBookingData.fulfilled]: (state, action) => {
+    [updateModifyBookingData.fulfilled]: (state, action) => {
       state.loading = false;
       state.modifyBookingData = action.payload;
     },
-    [UpdateModifyBookingData.rejected]: (state, action) => {
+    [updateModifyBookingData.rejected]: (state, action) => {
       state.loading = false;
     },
     // modifyBookWorkSpace
@@ -199,20 +199,22 @@ const bookSlice = createSlice({
       state.loading = false;
       state.workspaceBookingDetails = action.payload;
       state.modifyBookingData = null;
+      state.availableworkspace = null;
+      state.currentBookingData = null;
     },
     [getMyBookingDetails.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload?.message;
     },
-    // UpdateParticipantsDetails
-    [UpdateParticipantsDetails.pending]: (state, action) => {
+    // updateCurrentBookingData
+    [updateCurrentBookingData.pending]: (state, action) => {
       state.loading = true;
     },
-    [UpdateParticipantsDetails.fulfilled]: (state, action) => {
+    [updateCurrentBookingData.fulfilled]: (state, action) => {
       state.loading = false;
-      state.participantsDetails = action.payload;
+      state.currentBookingData = action.payload;
     },
-    [UpdateParticipantsDetails.rejected]: (state, action) => {
+    [updateCurrentBookingData.rejected]: (state, action) => {
       state.loading = false;
     },
     // cancelBooking

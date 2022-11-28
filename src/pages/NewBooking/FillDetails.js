@@ -19,8 +19,8 @@ import "react-date-range/dist/theme/default.css";
 import "./newBooking.scss";
 
 
-const FillDetails = ({ newBookFlag }) => {
-  const { workspacedetails, bookworkspaceDetails, availableworkspace, modifyBookingData } = useSelector((state) => ({ ...state.bookworkspace }));
+const FillDetails = () => {
+  const { workspacedetails, availableworkspace, modifyBookingData } = useSelector((state) => ({ ...state.bookworkspace }));
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -47,32 +47,18 @@ const FillDetails = ({ newBookFlag }) => {
   useEffect(() => {
     const modifyDefaultStartTime = modifyBookingData && new Date(modifyBookingData.from_datetime).toLocaleTimeString("en-US", { timeZone: "UTC", hour12: true, hour: "2-digit", minute: "2-digit" })
     const modifyDefaultSEndTime = modifyBookingData && new Date(modifyBookingData.to_datetime).toLocaleTimeString("en-US", { timeZone: "UTC", hour12: true, hour: "2-digit", minute: "2-digit" })
-    setPurpose(modifyBookingData?.purpose || availableworkspace?.data?.Purpose);
-    setbuildingId(parseInt(modifyBookingData?.building_id || availableworkspace?.data?.FloorDetails?.building_id));
-    setFloorId(parseInt(modifyBookingData?.floor_id || availableworkspace?.data?.FloorDetails?.id));
-    setStartTime(modifyDefaultStartTime || availableworkspace?.data?.StartTime)
-    setEndTime(modifyDefaultSEndTime || availableworkspace?.data?.EndTime)
+    setPurpose(availableworkspace?.data?.Purpose || modifyBookingData?.purpose || '');
+    setbuildingId(parseInt(availableworkspace?.data?.FloorDetails?.building_id || modifyBookingData?.building_id || ''));
+    setFloorId(parseInt(availableworkspace?.data?.FloorDetails?.id || modifyBookingData?.floor_id || ''));
+    setStartTime(availableworkspace?.data?.StartTime || modifyDefaultStartTime || '')
+    setEndTime(availableworkspace?.data?.EndTime || modifyDefaultSEndTime || '')
 
   }, [modifyBookingData, availableworkspace])
-
-  //Clearing all fields for new booking
-  useEffect(() => {
-    if (newBookFlag) {
-      setStartTime('')
-      setEndTime('')
-      setbuildingId('')
-      setFloorId('')
-      setPurpose('')
-    }
-  }, [newBookFlag])
 
   useEffect(() => {
     document.addEventListener("keydown", hideOnEscapeCal, true);
     document.addEventListener("click", hideOnClickOutsideCal, true);
     dispatch(getworkspaceDetails());
-    // if (bookworkspaceDetails?.success === true) {
-    //   navigate(0);
-    // }
   }, []);
 
   // To setup floor data
@@ -153,12 +139,12 @@ const FillDetails = ({ newBookFlag }) => {
   }
 
   console.log('modifyBookingData', modifyBookingData);
-  
+
   const checkEndPastTime = () => {
     let presentTimeInSec = HandlePassedTime();
     let currentSecObj = Time.find((timeObj) => timeObj.value > presentTimeInSec);
     let currentEndSec = Time[(Time.findIndex((time) => time.label === currentSecObj.label) + 1)]
-    return currentEndSec.value && Number(currentEndSec.value);
+    return currentEndSec?.value && Number(currentEndSec.value);
   }
   console.log('starttime', startTime);
   console.log('endTime', endTime);
@@ -166,7 +152,7 @@ const FillDetails = ({ newBookFlag }) => {
   console.log('floorData', floorData);
   console.log('buildingId', buildingId);
   console.log('workspacedetails', workspacedetails);
-  console.log('newBookFlag', newBookFlag);
+  // console.log('newBookFlag', newBookFlag);
 
 
   return (

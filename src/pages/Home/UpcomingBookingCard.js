@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { Col, Card } from "react-bootstrap";
 import { TbDotsVertical } from "react-icons/tb";
 import { Dropdown } from 'antd';
-import { UpdateModifyBookingData } from "../../redux/ActionReducer/bookSlice";
+import { updateModifyBookingData } from "../../redux/ActionReducer/bookSlice";
 import CancelBookingModal from "./CancelBookingModal";
 import image from "../../assest/images/Group 1562.svg";
 
@@ -16,7 +16,7 @@ export const UpcomingBookingCardItem = ({ booking, handleShow }) => {
 
   const onModifyBooking = () => {
     navigate('/modify-booking')
-    dispatch(UpdateModifyBookingData(booking))
+    dispatch(updateModifyBookingData(booking))
   }
 
   const onCancelBooking = () => {
