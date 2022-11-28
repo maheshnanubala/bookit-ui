@@ -35,6 +35,17 @@ export const bookworkspace = createAsyncThunk(
   }
 );
 
+export const UpdateModifyBookingData = createAsyncThunk(
+  "bookworkspace/updateModifyBookingData",
+  async (data) => {
+    try {
+      return data;
+    } catch (err) {
+      console.log(err.response.data.message);
+    }
+  }
+);
+
 export const modifyBookWorkSpace = createAsyncThunk(
   "bookworkspace/modifyBookWorkSpace",
   async ({ bookSpace, navigate, toast, bookingId }) => {
@@ -114,12 +125,14 @@ const bookSlice = createSlice({
     workspacedetails: null,
     availableworkspace: {},
     bookworkspaceDetails: null,
+    modifyBookingData: null,
     error: "",
     participantsDetails: null,
     loading: false,
   },
   reducers: {},
   extraReducers: {
+    // getworkspaceDetails
     [getworkspaceDetails.pending]: (state, action) => {
       state.loading = true;
     },
@@ -131,6 +144,7 @@ const bookSlice = createSlice({
       state.loading = false;
       state.error = action.payload?.message;
     },
+    // availableWorkspace
     [availableWorkspace.pending]: (state, action) => {
       state.loading = true;
     },
@@ -142,6 +156,7 @@ const bookSlice = createSlice({
       state.loading = false;
       state.error = action.payload?.message;
     },
+    // bookworkspace
     [bookworkspace.pending]: (state, action) => {
       state.loading = true;
     },
@@ -153,6 +168,18 @@ const bookSlice = createSlice({
       state.loading = false;
       state.error = action.payload?.message;
     },
+    // UpdateModifyBookingData
+    [UpdateModifyBookingData.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [UpdateModifyBookingData.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.modifyBookingData = action.payload;
+    },
+    [UpdateModifyBookingData.rejected]: (state, action) => {
+      state.loading = false;
+    },
+    // modifyBookWorkSpace
     [modifyBookWorkSpace.pending]: (state, action) => {
       state.loading = true;
     },
@@ -164,17 +191,20 @@ const bookSlice = createSlice({
       state.loading = false;
       state.error = action.payload?.message;
     },
+    // getMyBookingDetails
     [getMyBookingDetails.pending]: (state, action) => {
       state.loading = true;
     },
     [getMyBookingDetails.fulfilled]: (state, action) => {
       state.loading = false;
       state.workspaceBookingDetails = action.payload;
+      state.modifyBookingData = null;
     },
     [getMyBookingDetails.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload?.message;
     },
+    // UpdateParticipantsDetails
     [UpdateParticipantsDetails.pending]: (state, action) => {
       state.loading = true;
     },
@@ -185,6 +215,7 @@ const bookSlice = createSlice({
     [UpdateParticipantsDetails.rejected]: (state, action) => {
       state.loading = false;
     },
+    // cancelBooking
     [cancelBooking.pending]: (state, action) => {
       state.loading = true;
     },

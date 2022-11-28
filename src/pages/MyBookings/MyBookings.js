@@ -38,11 +38,11 @@ const MyBookings = () => {
       <section className="custom-upcomingbooking-section pt-3 pb-3">
         <Row>
           <h4 className="headings">Upcoming Bookings</h4>
-          {upcomingBookings?.length > 0 ? (
+          {upcomingBookings?.filter(val => val.active).length > 0 ? (
             upcomingBookings
               .slice()
               .sort((a, b) => (a.from_datetime > b.from_datetime ? 1 : -1))
-              .map((booking) => (
+              .filter(val => val.active).map((booking) => (
                 <React.Fragment key={booking.id}>
                   <UpcomingBookingCardItem
                     booking={booking}

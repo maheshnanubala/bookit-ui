@@ -1,17 +1,22 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { Col, Card } from "react-bootstrap";
 import { TbDotsVertical } from "react-icons/tb";
 import { Dropdown } from 'antd';
+import { UpdateModifyBookingData } from "../../redux/ActionReducer/bookSlice";
 import CancelBookingModal from "./CancelBookingModal";
 import image from "../../assest/images/Group 1562.svg";
 
 export const UpcomingBookingCardItem = ({ booking, handleShow }) => {
   const [showModal, setShowModal] = useState(false)
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onModifyBooking = () => {
-    navigate('/modify-booking', { state: { modifyFlag: true, bookingDetails: booking } })
+    navigate('/modify-booking')
+    dispatch(UpdateModifyBookingData(booking))
   }
 
   const onCancelBooking = () => {
