@@ -38,7 +38,7 @@ export const RoomSelection = () => {
   })) || [];
   var workspaceUserLists = workspacedetails?.workspace_details?.UserList;
   const usersList = workspaceUserLists?.filter((array) => availableUserIds?.includes(array.id));
-  
+
 
   const [show, setShow] = useState(false);
   const [commonMail, setCommonMail] = useState('');
@@ -54,7 +54,7 @@ export const RoomSelection = () => {
     if (floorId !== "" && fromDate !== "" && toDate !== "" && startTime !== "" && endTime !== "" && buildingId !== "" && purpose !== "") {
       dispatch(
         availableWorkspace({
-          floorId, fromDate, toDate, startTime, endTime, buildingId, purpose,// navigate,
+          floorId, fromDate, toDate, startTime, endTime, buildingId, userList, purpose,// navigate,
         })
       );
     }
@@ -177,6 +177,7 @@ export const RoomSelection = () => {
     setDisplay_edit_val("inline");
     setUserModal(false);
   };
+  
   const handleAddParticiapants = () => {
     const userDetails = {
       participants: defaultUser,
@@ -447,7 +448,7 @@ export const RoomSelection = () => {
                     >
                       <Modal.Body id="modal-card">
                         <Form.Group className="mb-3 ">
-                          <MultiSelect
+                        <MultiSelect
                             showArrow
                             onChange={handleOnchange}
                             defaultValue={defaultUser}
