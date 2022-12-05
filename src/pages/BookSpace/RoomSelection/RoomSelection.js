@@ -1,6 +1,7 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
+// import validator from 'validator'
 import { useNavigate, useParams } from "react-router-dom";
 import { Form, Row, Col, Button, Container, Card, Spinner, Breadcrumb, Modal } from "react-bootstrap";
 import { useForm } from "react-hook-form";
@@ -12,6 +13,7 @@ import { bookworkspace, availableWorkspace, updateCurrentBookingData, modifyBook
 import moment from "moment";
 import BookSpaceModal from "../BookSpaceModal";
 import Label from "react-bootstrap/FormLabel";
+// import { MultiSelect } from "react-multi-select-component";
 import MultiSelect from "react-multiple-select-dropdown-lite";
 import "react-multiple-select-dropdown-lite/dist/index.css";
 import "./RoomSelection.scss";
@@ -219,6 +221,30 @@ export const RoomSelection = () => {
     availableworkspace?.data?.FloorDetails?.workspaces.filter(
       (item) => item.type === "conference"
     );
+  //   const [emailError, setEmailError] = useState('')
+  // const validateEmail = (e) => {
+  //   var email = e.target.value
+  
+  //   if (validator.isEmail(email)) {
+  //     setEmailError('Valid Email ID')
+  //   } else {
+  //     setEmailError('Invalid Email ID')
+  //   }  
+  // }
+  // const [errorMessage, setErrorMessage] = useState('')
+ 
+  // const validate = (value) => {
+ 
+  //   if (validator.isStrongPassword(value, {
+  //     minLength: 8, minLowercase: 1,
+  //     minUppercase: 1, minNumbers: 1, minSymbols: 1
+  //   })) {
+  //     setErrorMessage('Valid Password')
+  //   } else {
+  //     setErrorMessage('Invaid Password')
+  //   }
+  // }
+  
 
   const redirectToModify = () => {
     if (modifyFlag)
@@ -499,6 +525,7 @@ export const RoomSelection = () => {
                   </Row>
                   <Row className="mt-4 mb-3 text-lg-end">
                     <Col className="text-end">
+                    
                       <Button
                         type="submit"
                         className="book-conference-room-btn shadow-none"
@@ -506,6 +533,7 @@ export const RoomSelection = () => {
                         <i className="bi bi-pencil-square me-2" />
                         Modify
                       </Button>
+                      
                     </Col>
                     <Col className="text-start">
                       <Button
