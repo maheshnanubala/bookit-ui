@@ -15,15 +15,23 @@ const Header = () => {
         <img
           className="logo"
           src={indiumLogo}
-          onClick={() => navigate('/')}
+          onClick={() => navigate("/")}
           alt=""
         />
-        <div className="header-newbooking-btn col-md-7" >
+        <div className="header-newbooking-btn col-md-7">
           <button
             className="booking-icon"
             onClick={() => navigate("/new-booking")}
           >
             New Booking
+          </button>
+        </div>
+        <div className="header-cabinbooking-btn col-md-2">
+          <button
+            className="booking-icon"
+            onClick={() => navigate("/cabin-booking")}
+          >
+            Cabin Booking
           </button>
         </div>
         <button className="logout-button" onClick={handleLogout}>
