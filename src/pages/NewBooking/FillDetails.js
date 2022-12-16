@@ -18,9 +18,9 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import "./newBooking.scss";
 
+
 const FillDetails = () => {
-  const { workspacedetails, availableworkspace, modifyBookingData } =
-    useSelector((state) => ({ ...state.bookworkspace }));
+  const { workspacedetails, availableworkspace, modifyBookingData } = useSelector((state) => ({ ...state.bookworkspace }));
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ const FillDetails = () => {
   const [purpose, setPurpose] = useState();
   const [buildingId, setbuildingId] = useState();
   const [floorId, setFloorId] = useState();
-  const [startTime, setStartTime] = useState();
+  const [startTime, setStartTime] = useState()
   const [endTime, setEndTime] = useState();
   const [hideToTime, setHideToTime] = useState("");
   const [floorData, setFloorData] = useState([]);
@@ -45,46 +45,15 @@ const FillDetails = () => {
   ]);
 
   useEffect(() => {
-    const modifyDefaultStartTime =
-      modifyBookingData &&
-      new Date(modifyBookingData.from_datetime).toLocaleTimeString("en-US", {
-        timeZone: "UTC",
-        hour12: true,
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-    const modifyDefaultSEndTime =
-      modifyBookingData &&
-      new Date(modifyBookingData.to_datetime).toLocaleTimeString("en-US", {
-        timeZone: "UTC",
-        hour12: true,
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-    setPurpose(
-      availableworkspace?.data?.Purpose || modifyBookingData?.purpose || ""
-    );
-    setbuildingId(
-      parseInt(
-        availableworkspace?.data?.FloorDetails?.building_id ||
-          modifyBookingData?.building_id ||
-          ""
-      )
-    );
-    setFloorId(
-      parseInt(
-        availableworkspace?.data?.FloorDetails?.id ||
-          modifyBookingData?.floor_id ||
-          ""
-      )
-    );
-    setStartTime(
-      availableworkspace?.data?.StartTime || modifyDefaultStartTime || ""
-    );
-    setEndTime(
-      availableworkspace?.data?.EndTime || modifyDefaultSEndTime || ""
-    );
-  }, [modifyBookingData, availableworkspace]);
+    const modifyDefaultStartTime = modifyBookingData && new Date(modifyBookingData.from_datetime).toLocaleTimeString("en-US", { timeZone: "UTC", hour12: true, hour: "2-digit", minute: "2-digit" })
+    const modifyDefaultSEndTime = modifyBookingData && new Date(modifyBookingData.to_datetime).toLocaleTimeString("en-US", { timeZone: "UTC", hour12: true, hour: "2-digit", minute: "2-digit" })
+    setPurpose(availableworkspace?.data?.Purpose || modifyBookingData?.purpose || '');
+    setbuildingId(parseInt(availableworkspace?.data?.FloorDetails?.building_id || modifyBookingData?.building_id || ''));
+    setFloorId(parseInt(availableworkspace?.data?.FloorDetails?.id || modifyBookingData?.floor_id || ''));
+    setStartTime(availableworkspace?.data?.StartTime || modifyDefaultStartTime || '')
+    setEndTime(availableworkspace?.data?.EndTime || modifyDefaultSEndTime || '')
+
+  }, [modifyBookingData, availableworkspace])
 
   useEffect(() => {
     document.addEventListener("keydown", hideOnEscapeCal, true);
@@ -94,13 +63,9 @@ const FillDetails = () => {
 
   // To setup floor data
   useEffect(() => {
-    let florListArr = workspacedetails?.workspace_details?.FloorList?.filter(
-      (val) => {
-        return val.building_id === Number(buildingId);
-      }
-    );
+    let florListArr = workspacedetails?.workspace_details?.FloorList?.filter((val) => { return val.building_id === Number(buildingId) });
     setFloorData(florListArr);
-  }, [workspacedetails]);
+  }, [workspacedetails])
 
   const setFloorRecord = (buildingId) => {
     let florListArr = workspacedetails?.workspace_details?.FloorList.filter(
@@ -114,11 +79,11 @@ const FillDetails = () => {
 
   const setToTime = (sTime) => {
     setStartTime(sTime);
-    setEndTime("");
+    setEndTime("")
     var disabledTime = [];
-    let timeObj = Time[Time.findIndex((time) => time.label === sTime) + 1];
+    let timeObj = Time[(Time.findIndex((time) => time.label === sTime) + 1)]
     Time.forEach((item) => {
-      if (Number(item.value) < Number(timeObj?.value) || sTime === "11:30 PM") {
+      if ((Number(item.value) < Number(timeObj?.value)) || sTime === "11:30 PM") {
         disabledTime.push(item.label);
       }
     });
@@ -146,13 +111,10 @@ const FillDetails = () => {
       toast.error("Please select Purpose");
     } else {
       if (modifyBookingData) {
-        navigate(
-          `/modify-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`
-        );
-      } else {
-        navigate(
-          `/new-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`
-        );
+        navigate(`/modify-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`)
+      }
+      else {
+        navigate(`/new-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`);
       }
     }
   };
@@ -170,30 +132,28 @@ const FillDetails = () => {
   };
 
   const HandlePassedTime = () => {
-    const todayDate = moment(new Date()).startOf("day").toDate();
+    const todayDate = moment(new Date()).startOf('day').toDate();
     const presentTime = new Date();
-    let diffSeconds = moment(presentTime).diff(todayDate, "seconds");
+    let diffSeconds = moment(presentTime).diff(todayDate, 'seconds');
     return diffSeconds;
-  };
+  }
 
-  console.log("modifyBookingData", modifyBookingData);
+  console.log('modifyBookingData', modifyBookingData);
 
   const checkEndPastTime = () => {
     let presentTimeInSec = HandlePassedTime();
-    let currentSecObj = Time.find(
-      (timeObj) => timeObj.value > presentTimeInSec
-    );
-    let currentEndSec =
-      Time[Time.findIndex((time) => time.label === currentSecObj.label) + 1];
+    let currentSecObj = Time.find((timeObj) => timeObj.value > presentTimeInSec);
+    let currentEndSec = Time[(Time.findIndex((time) => time.label === currentSecObj.label) + 1)]
     return currentEndSec?.value && Number(currentEndSec.value);
-  };
-  console.log("starttime", startTime);
-  console.log("endTime", endTime);
-  console.log("floorId", floorId);
-  console.log("floorData", floorData);
-  console.log("buildingId", buildingId);
-  console.log("workspacedetails", workspacedetails);
+  }
+  console.log('starttime', startTime);
+  console.log('endTime', endTime);
+  console.log('floorId', floorId);
+  console.log('floorData', floorData);
+  console.log('buildingId', buildingId);
+  console.log('workspacedetails', workspacedetails);
   // console.log('newBookFlag', newBookFlag);
+
 
   return (
     <>
@@ -206,10 +166,7 @@ const FillDetails = () => {
             <Form.Group className="mb-3">
               <InputGroup>
                 <input
-                  value={`${format(
-                    calRange[0]?.startDate,
-                    "dd MMM"
-                  )} to ${format(calRange[0]?.endDate, "dd MMM")}`}
+                  value={`${format(calRange[0]?.startDate, "dd MMM")} to ${format(calRange[0]?.endDate, "dd MMM")}`}
                   className="inputBox"
                   disabled
                 />
@@ -234,9 +191,7 @@ const FillDetails = () => {
             </Form.Group>
           </Col>
           <Col>
-            <Label className="start-time-label">
-              Start Time <span className="mandate-item">*</span>
-            </Label>
+            <Label className="start-time-label">Start Time <span className="mandate-item">*</span></Label>
           </Col>
           <Col>
             <Form.Group className="mb-3 inputBox">
@@ -245,17 +200,14 @@ const FillDetails = () => {
                 className="building-selectionbox"
                 size="sm"
                 value={startTime}
-                // defaultValue={startTime}
+              // defaultValue={startTime}
               >
-                <option value="" key="">
-                  Select
-                </option>
+                <option value="" key="">Select</option>
                 {Time.map((item) => (
                   <option
                     value={item.label}
-                    disabled={HandlePassedTime() > item.value}
-                    key={item.key}
-                  >
+                    disabled={(HandlePassedTime() > item.value)}
+                    key={item.key}>
                     {item.label}
                   </option>
                 ))}
@@ -263,9 +215,7 @@ const FillDetails = () => {
             </Form.Group>
           </Col>
           <Col>
-            <Label className="end-time-label">
-              End Time <span className="mandate-item">*</span>
-            </Label>
+            <Label className="end-time-label">End Time <span className="mandate-item">*</span></Label>
           </Col>
           <Col>
             <Form.Group className="mb-3 inputBox">
@@ -274,19 +224,13 @@ const FillDetails = () => {
                 className="building-selectionbox"
                 size="sm"
                 value={endTime}
-                // defaultValue={endTime}
+              // defaultValue={endTime}
               >
-                <option value="" key="">
-                  Select
-                </option>
+                <option value="" key="">Select</option>
                 {Time.map((item) => (
                   <option
                     value={item.lable}
-                    disabled={
-                      hideToTime.includes(item.label) ||
-                      startTime === "" ||
-                      checkEndPastTime() > item.value
-                    }
+                    disabled={hideToTime.includes(item.label) || startTime === "" || (checkEndPastTime() > item.value)}
                     key={item.key}
                   >
                     {item.label}
@@ -311,7 +255,7 @@ const FillDetails = () => {
                 className="building-selectionbox"
                 size="sm"
                 value={buildingId}
-                // defaultValue={buildingId}
+              // defaultValue={buildingId}
               >
                 <option value="">Select</option>
                 {workspacedetails?.workspace_details?.BuildingList?.map(
@@ -335,7 +279,7 @@ const FillDetails = () => {
                 size="sm"
                 onChange={(e) => setFloorId(e.target.value)}
                 value={floorId}
-                // defaultValue={floorId}
+              // defaultValue={floorId}
               >
                 <option value="">Select</option>
                 {floorData?.map((item) => (
@@ -360,7 +304,7 @@ const FillDetails = () => {
                 className="purpose-select"
                 onChange={(e) => setPurpose(e.target.value)}
                 value={purpose}
-                // defaultValue={purpose}
+              // defaultValue={purpose}
               >
                 <option>Select</option>
                 {workspacedetails?.workspace_details?.Purpose?.map((item) => (

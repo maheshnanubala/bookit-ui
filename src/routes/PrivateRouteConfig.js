@@ -5,7 +5,6 @@ import MyBookings from "../pages/MyBookings/MyBookings.lazy";
 import MyProfile from "../pages/MyProfile/MyProfile.lazy";
 import NewBooking from "../pages/NewBooking/newBooking";
 import { NotFound } from "../pages/NotFound/NotFound";
-import CabinBooking from "../pages/CabinBooking/cabinBooking";
 
 export const PrivateRouteConfig = [
   {
@@ -33,23 +32,11 @@ export const PrivateRouteConfig = [
     exact: true,
   },
   {
-    name: "cabin bookings",
-    path: "/cabin-booking",
-    element: <CabinBooking />,
-    exact: true,
-  },
-  {
     name: "modify bookings",
     path: "/modify-booking",
     element: <NewBooking />,
     exact: true,
   },
-  {
-    name: "modify bookings",
-    path: "/modify-booking",
-    element: <CabinBooking />,
-    exact: true,
-},
   {
     name: "room selection",
     path: "/new-booking/room-selection/:floorId/:fromDate/:toDate/:startTime/:endTime/:buildingId/:purpose",
