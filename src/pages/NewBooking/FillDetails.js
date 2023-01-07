@@ -114,7 +114,7 @@ const FillDetails = () => {
         navigate(`/modify-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`)
       }
       else {
-        navigate(`/new-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`);
+        navigate(`/conference-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`);
       }
     }
   };

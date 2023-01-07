@@ -16,6 +16,8 @@ API.interceptors.request.use((req) => {
 export const signIn = (data) => API.post("/api/sign-in", data);
 export const signUp = (data) => API.post("/api/sign-up", data);
 export const verifyUserOtp = (data) => API.post("/api/verify-otp", data);
+export const verifyLoginOtp = (data) => API.post("/api/verify-login-otp", data);
+
 
 
 // Workspace
@@ -36,3 +38,16 @@ export const availableworkspace = (floorId, fromDate, toDate, startTime, endTime
     buildingId
   )}&user_ids=${[value]}&purpose=${purpose}`
 );
+
+
+//cabin booking
+export const availableCabinDetails = (dates, buildingId, floorId) => {
+  let url = floorId ? `api/cabin_availability?booking_dates=${dates}&building_id=${buildingId}&floor_id=${floorId}` :
+    `api/cabin_availability?booking_dates=${dates}&building_id=${buildingId}`;
+  return API.get(url)
+}
+
+export const bookCabins = (data) => API.post("/api/cabin_booking", data);
+export const cancelCabinBooking = (bookingId, data) => API.put(`/api/cancel_cabin_booking/${bookingId}`, data);
+export const modifyCabins = (data, bookingId) => API.put(`/api/cabin_booking/${bookingId}`, data);
+export const getCabinBookingDetails = () => API.get("/api/my_cabin_booking_details");

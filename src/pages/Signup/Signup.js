@@ -36,7 +36,7 @@ const Signin = () => {
   const onSubmit = (formValues, e) => {
     e.preventDefault();
     if (formValues.email && formValues.password && formValues.name) {
-      dispatch(signup({ formValues, toast, setUserEmailId }));
+      dispatch(signup({ formValues, toast, setUserEmailId, navigate }));
     }
   };
 
@@ -50,7 +50,7 @@ const Signin = () => {
             </Col>
           </Row>
           <Card className="login-form-block p-4 mt-3 mb-5">
-            {!userEmailId ?
+            {!userEmailId &&
               <Form onSubmit={handleSubmit(onSubmit)} className="p-3">
                 <Row>
                   <p className="signin-text">Sign-up</p>
@@ -147,8 +147,8 @@ const Signin = () => {
                   </Col>
                 </Row>
               </Form>
-            :
-              <VerifyOtp email={userEmailId} setUserEmailIdValue={setUserEmailId}/>
+              //
+              //<VerifyOtp email={userEmailId} setUserEmailIdValue={setUserEmailId}/>
             }
           </Card>
         </Col>

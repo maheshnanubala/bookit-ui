@@ -6,19 +6,19 @@ export const signin = createAsyncThunk(
   async ({ formValues, navigate, toast, setUserEmailId }) => {
     try {
       const response = await api.signIn(formValues);
-      if(response){
-        navigate(`/home`);
+      if (response) {
+        navigate(`/verify-login-otp`);
         toast.success("Successfully logged in");
         return response.data;
       }
     } catch (err) {
-      if(err?.response?.status === 404){
+      if (err?.response?.status === 404) {
         setUserEmailId(formValues.email);
         toast.error("Verification process is pending, Please check registered email for otp");
       } else if (err.response.status !== 200 && err.response.status !== 201) {
         toast.error(err.response.data.message);
         navigate(`/`);
-      }else{
+      } else {
         return err.response.data.message;
       }
     }
@@ -27,13 +27,15 @@ export const signin = createAsyncThunk(
 
 export const signup = createAsyncThunk(
   "auth/sign-up",
-  async ({ formValues, toast, setUserEmailId }) => {
+  async ({ formValues, toast, setUserEmailId, navigate }) => {
     try {
       const response = await api.signUp(formValues);
       if (!response) {
         toast.error("Failed to register");
       } else {
-        setUserEmailId(response?.data?.user?.email)
+        //setUserEmailId(response?.data?.user?.email)
+        navigate(`/verify-signup-otp`);
+        return response.data
       }
     } catch (err) {
       if (err.response.status !== 200 && err.response.status !== 201) {
@@ -45,16 +47,29 @@ export const signup = createAsyncThunk(
 
 export const verifyUser = createAsyncThunk(
   "auth/verify-user",
-  async ({ data, navigate, toast, setUserEmailIdValue }) => {
+  async ({ data, navigate, toast, setUserEmailIdValue, path }) => {
     try {
-      const response = await api.verifyUserOtp(data);
+      const { password, ...reqBodydata } = { ...data };
+      let signUpReqBody = { ...reqBodydata };
+      let loginReqBody = {
+        email: reqBodydata.email,
+        password: password,
+        login_otp: reqBodydata.otp
+      }
+      const response = (path === '/verify-signup-otp') ? await api.verifyUserOtp(signUpReqBody) :
+        (path === '/verify-login-otp') ? await api.verifyLoginOtp(loginReqBody) : null;
+
       if (!response) {
         toast.error("Failed to Authenticate");
-      } else if(response?.status === 404) {
+      } else if (response?.status === 404) {
         toast.success("Invalid OTP");
-      }else {
+      } else if (path === '/verify-signup-otp' && response?.status === 200) {
         toast.success("User verified successfully");
         navigate('/signin-page');
+      } else if (path === '/verify-login-otp' && response?.status === 200) {
+        navigate(`/home`);
+        toast.success("Successfully logged in");
+        return response.data;
       }
     } catch (err) {
       if (err.response.status !== 200 && err.response.status !== 201) {
@@ -95,6 +110,13 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = action?.payload?.message;
     },
+    [verifyUser.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.user = action.payload;
+      if (state.user?.message === "Successfully login") {
+        localStorage.setItem("user", JSON.stringify({ ...action.payload }));
+      }
+    }
   },
 });
 

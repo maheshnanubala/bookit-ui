@@ -43,4 +43,14 @@ export const PublicRouteConfig = [
     path: "*",
     element: <GenericNotFound />,
   },
+  {
+    name: "verify-signup-otp",
+    path: "/verify-signup-otp",
+    element: <VerifyOtp />,
+  },
+  {
+    name: "verify-login-otp",
+    path: "/verify-login-otp",
+    element: <VerifyOtp />,
+  }
 ];

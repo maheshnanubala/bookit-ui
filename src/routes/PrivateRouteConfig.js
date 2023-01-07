@@ -26,8 +26,8 @@ export const PrivateRouteConfig = [
     exact: true,
   },
   {
-    name: "new bookings",
-    path: "/new-booking",
+    name: "conference bookings",
+    path: "/conference-booking",
     element: <NewBooking />,
     exact: true,
   },
@@ -38,8 +38,14 @@ export const PrivateRouteConfig = [
     exact: true,
   },
   {
+    name: "cabin bookings",
+    path: "/cabin-booking",
+    element: <NewBooking />,
+    exact: true,
+  },
+  {
     name: "room selection",
-    path: "/new-booking/room-selection/:floorId/:fromDate/:toDate/:startTime/:endTime/:buildingId/:purpose",
+    path: "/conference-booking/room-selection/:floorId/:fromDate/:toDate/:startTime/:endTime/:buildingId/:purpose",
     element: <RoomSelection />,
     exact: true,
   },

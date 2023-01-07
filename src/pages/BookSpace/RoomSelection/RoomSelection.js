@@ -42,7 +42,7 @@ export const RoomSelection = () => {
   const [show, setShow] = useState(false);
   const [commonMail, setCommonMail] = useState(currentBookingData?.commonMail || modifyBookingData?.common_emails || '');
   const [comments, setComments] = useState(currentBookingData?.comments || modifyBookingData?.comments || '');
-  const [userList, setUserList] = useState((testUserIds.length > 0 && testUserIds) || modifyBookingUserIds|| [UserObj.id]);
+  const [userList, setUserList] = useState((testUserIds.length > 0 && testUserIds) || modifyBookingUserIds || [UserObj.id]);
   const [display_add_val, setDisplay_add_val] = useState("");
   const [display_edit_val, setDisplay_edit_val] = useState("none");
   const [selectedUser, setSelectedUser] = useState(
@@ -224,7 +224,7 @@ export const RoomSelection = () => {
     if (modifyFlag)
       navigate(`/modify-booking`)
     else
-      navigate(`/new-booking`)
+      navigate(`/conference-booking`)
 
     const payload = {
       userDetails: { participants: selectedUser, participantsIds: userList },
@@ -234,9 +234,9 @@ export const RoomSelection = () => {
     dispatch(updateCurrentBookingData(payload))
   }
 
-  console.log('testUserIds',testUserIds);
-  console.log('usersList',usersList);
-  console.log('defaultUser',defaultUser);
+  console.log('testUserIds', testUserIds);
+  console.log('usersList', usersList);
+  console.log('defaultUser', defaultUser);
 
   return (
     <Container fluid>

@@ -1,32 +1,36 @@
-.logo{
-    width: 10%;
-    margin-left: 2%;
-    cursor: pointer;
+.logo {
+   width: 10%;
+   margin-left: 2%;
+   cursor: pointer;
 }
 
-.logout-button{ 
-   font-size:20px !important;
-   font-family:lato-regular;
-   padding-right:  2rem;
+.logout-button {
+   font-size: 20px !important;
+   font-family: lato-regular;
+   padding-right: 2rem;
    border: none;
    background: none;
-   font-weight: 100;  
+   font-weight: 100;
 }
-.logout-button:hover{
+
+.logout-button:hover {
    color: red;
 }
-#icon{
-    margin-right: 2px;
-    margin-bottom: 2px;   
- }
+
+#icon {
+   margin-right: 2px;
+   margin-bottom: 2px;
+}
 
 #icon_text {
    padding-left: 10px;
 }
-.header-newbooking-btn{
+
+.header-newbooking-btn {
    display: flex;
    justify-content: flex-end;
 }
+
 .booking-icon {
    width: 154px;
    height: 40px;
@@ -40,12 +44,24 @@
    border-color: transparent;
    box-shadow: none;
    outline: none;
- }
- .booking-icon:hover {
+}
+
+.booking-icon:hover {
    background-color: #f06a3e;
    color: white;
    border-color: transparent;
- }
- .booking-icon:focus {
+}
+
+.booking-icon:focus {
    background-color: #f06a3e;
- }
+}
+
+.dropdown-button button {
+   background-color: #f06a3e !important;
+   border-color: #f06a3e !important;
+}
+
+.dropdown-button .dropdown-item.active,
+.dropdown-button .dropdown-item:active {
+   background-color: #f06a3e;
+}

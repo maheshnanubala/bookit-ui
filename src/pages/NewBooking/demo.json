@@ -1,0 +1,184 @@
+{
+    "data": [
+        {
+            "date": "10/12/2022",
+            "buildingName": "Workfella",
+            "balanceBookings": 3,
+            "id":1,
+            "cabins": [
+                {
+                    "floor": "Floor 1",
+                    "data": [
+                        {
+                            "cabinName": "Cabin 1",
+                            "id": 1,
+                            "availableTimings": [
+                                "First Half",
+                                "Second Half",
+                                "Full Day"
+                            ]
+                        },
+                        {
+                            "cabinName": "Cabin 2",
+                            "id": 2,
+                            "availableTimings": [
+                                "First Half",
+                                "Second Half",
+                                "Full Day"
+                            ]
+                        },
+                        {
+                            "cabinName": "Cabin 3",
+                            "id": 3,
+                            "availableTimings": [
+                                "First Half",
+                                "Second Half",
+                                "Full Day"
+                            ]
+                        },
+                        {
+                            "cabinName": "Cabin 4",
+                            "id": 4,
+                            "availableTimings": [
+                                "First Half",
+                                "Second Half",
+                                "Full Day"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "floor": "Floor 2",
+                    "data": [
+                        {
+                            "cabinName": "Cabin 5",
+                            "id": 5,
+                            "availableTimings": [
+                                "First Half",
+                                "Second Half",
+                                "Full Day"
+                            ]
+                        },
+                        {
+                            "cabinName": "Cabin 6",
+                            "id": 6,
+                            "availableTimings": [
+                                "First Half",
+                                "Second Half",
+                                "Full Day"
+                            ]
+                        },
+                        {
+                            "cabinName": "Cabin 7",
+                            "id": 7,
+                            "availableTimings": [
+                                "First Half",
+                                "Second Half",
+                                "Full Day"
+                            ]
+                        },
+                        {
+                            "cabinName": "Cabin 8",
+                            "id": 8,
+                            "availableTimings": [
+                                "First Half",
+                                "Second Half",
+                                "Full Day"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "date": "11/12/2022",
+            "buildingName": "Workfella",
+            "balanceBookings": 3,
+            "id":2,
+            "cabins": [
+                {
+                    "floor": "Floor 1",
+                    "data": [
+                        {
+                            "cabinName": "Cabin 1",
+                            "id": 1,
+                            "availableTimings": [
+                                "First Half",
+                                "Second Half",
+                                "Full Day"
+                            ]
+                        },
+                        {
+                            "cabinName": "Cabin 2",
+                            "id": 2,
+                            "availableTimings": [
+                                "First Half",
+                                "Second Half",
+                                "Full Day"
+                            ]
+                        },
+                        {
+                            "cabinName": "Cabin 3",
+                            "id": 3,
+                            "availableTimings": [
+                                "First Half",
+                                "Second Half",
+                                "Full Day"
+                            ]
+                        },
+                        {
+                            "cabinName": "Cabin 4",
+                            "id": 4,
+                            "availableTimings": [
+                                "First Half",
+                                "Second Half",
+                                "Full Day"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "floor": "Floor 2",
+                    "data": [
+                        {
+                            "cabinName": "Cabin 5",
+                            "id": 5,
+                            "availableTimings": [
+                                "First Half",
+                                "Second Half",
+                                "Full Day"
+                            ]
+                        },
+                        {
+                            "cabinName": "Cabin 6",
+                            "id": 6,
+                            "availableTimings": [
+                                "First Half",
+                                "Second Half",
+                                "Full Day"
+                            ]
+                        },
+                        {
+                            "cabinName": "Cabin 7",
+                            "id": 7,
+                            "availableTimings": [
+                                "First Half",
+                                "Second Half",
+                                "Full Day"
+                            ]
+                        },
+                        {
+                            "cabinName": "Cabin 8",
+                            "id": 8,
+                            "availableTimings": [
+                                "First Half",
+                                "Second Half",
+                                "Full Day"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
