@@ -214,6 +214,7 @@ const Home = () => {
         bookedCabinDetails={bookedCabinDetails}
         closeHandler={() => setShowCabinDetails(false)}
         callFrom={"showDetails"}
+        Title={"Cabin Booking Details"}
       />}
     </Container>
   );

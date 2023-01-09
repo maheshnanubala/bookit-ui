@@ -106,9 +106,9 @@ export const updateCurrentBookingData = createAsyncThunk(
 
 export const cancelBooking = createAsyncThunk(
   "bookworkspace/cancelBooking",
-  async ({ bookingId, toast, dispatch }) => {
+  async ({ bookingId, payload, toast, dispatch }) => {
     try {
-      const response = await api.cancelBooking(bookingId);
+      const response = await (payload) ? api.cancelCabinBooking(payload) : api.cancelBooking(bookingId);
       toast.success(response.data.message);
       dispatch(getMyBookingDetails());
       return response.data;

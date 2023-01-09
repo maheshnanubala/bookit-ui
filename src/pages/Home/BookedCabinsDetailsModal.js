@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Modal, Col, Row, Button, Table } from "react-bootstrap";
+import { Modal, Col, Row, Button, Table, Form } from "react-bootstrap";
 import "./Home.scss";
-const BookedCabinsDetailsModal = ({ showCabinDetails, bookedCabinDetails, closeHandler, callFrom }) => {
+const BookedCabinsDetailsModal = ({ showCabinDetails, bookedCabinDetails,
+    closeHandler, callFrom, Title, handleCheckBox, handleConfirm }) => {
     return (<>
         <Modal
             show={showCabinDetails}
@@ -12,7 +13,7 @@ const BookedCabinsDetailsModal = ({ showCabinDetails, bookedCabinDetails, closeH
         >
             <Modal.Header className="participant-model-title">
                 <Col md={6}>
-                    <Modal.Title>Cabin Details</Modal.Title>
+                    <Modal.Title>{Title}</Modal.Title>
                 </Col>
                 <Col md={6} className="text-end">
                     <button
@@ -29,7 +30,7 @@ const BookedCabinsDetailsModal = ({ showCabinDetails, bookedCabinDetails, closeH
                 <Modal.Body>
                     <Row className="booked-by-row">
                         <Col className="ps-0">
-                            <span className="booked-by-col">Facility</span> : {` ${bookedCabinDetails[0].building_name}`}
+                            <span className="booked-by-col">Facility</span> : {` ${bookedCabinDetails && bookedCabinDetails[0]?.building_name}`}
                             <span>
 
                             </span>
@@ -45,11 +46,24 @@ const BookedCabinsDetailsModal = ({ showCabinDetails, bookedCabinDetails, closeH
                             </tr>
                         </thead>
                         <tbody>
-                            {bookedCabinDetails.map((cabin) => (<tr key={`${cabin.booking_date}_${cabin.cabin_name}_${cabin.booking_slot_type}`}>
+                            {bookedCabinDetails?.map((cabin) => (<tr key={`${cabin.booking_date}_${cabin.cabin_name}_${cabin.booking_slot_type}`}>
                                 <td>{cabin.booking_date}</td>
                                 <td>{cabin.cabin_name}</td>
                                 <td>{cabin.floor_name}</td>
-                                <td>{cabin.booking_slot_type}</td>
+                                <td>
+                                    {callFrom === 'cancel' && < span >
+                                        <Form.Check
+                                            inline
+                                            name={cabin.id}
+                                            type={"checkbox"}
+                                            id={cabin.id}
+                                            aria-label={cabin.id}
+                                            //defaultChecked={setCheckedOpt(cabin, sessionType, date)}
+                                            onClick={(e) => { handleCheckBox(cabin, e) }}
+                                        />
+                                    </span>}
+                                    <span>{cabin.booking_slot_type}</span>
+                                </td>
                             </tr>))}
                         </tbody>
                     </Table>
@@ -71,9 +85,9 @@ const BookedCabinsDetailsModal = ({ showCabinDetails, bookedCabinDetails, closeH
                             size="lg"
                             variant="danger"
                             className="close-btn"
-                            onClick={closeHandler}
+                            onClick={handleConfirm}
                         >
-                            Book
+                            Confirm
                         </Button>}
                     </Col>
                 </Row>

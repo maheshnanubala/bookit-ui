@@ -48,7 +48,7 @@ export const availableCabinDetails = (dates, buildingId, floorId) => {
 }
 
 export const bookCabins = (data) => API.post("/api/cabin_booking", data);
-export const cancelCabinBooking = (bookingId, data) => API.put(`/api/cancel_cabin_booking/${bookingId}`, data);
+export const cancelCabinBooking = (data) => API.put(`/api/cancel_cabin_booking`, data);
 export const modifyCabins = (data, bookingId) => API.put(`/api/cabin_booking/${bookingId}`, data);
 export const getCabinBookingDetails = () => API.get("/api/my_cabin_booking_details");
 export const getMyCabinBookingDetails = () => API.get("/api/my_cabin_booking_details");
