@@ -342,7 +342,7 @@ const CabinBooking = () => {
                         </Col>
                         <Col>
                             <Button onClick={() => (window.location.reload())}
-                                className="find-button" disabled={selectedCabins?.length === 0} >
+                                className="find-button"  >
                                 Cancel
                             </Button>
                             <Button onClick={() => setBookModal(true)}
@@ -360,6 +360,7 @@ const CabinBooking = () => {
                 selectedCabins={selectedCabins}
                 facility={cabinsDetails?.building_name}
                 handleCancelCabin={handleCancelSelectedCab}
+                handleBookbtn={() => setBookModal(true)}
             />
             }
             {showBookModal && <ConfirmBookingModal

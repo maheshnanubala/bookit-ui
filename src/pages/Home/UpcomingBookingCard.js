@@ -8,15 +8,17 @@ import { updateModifyBookingData } from "../../redux/ActionReducer/bookSlice";
 import CancelBookingModal from "./CancelBookingModal";
 import image from "../../assest/images/Group 1562.svg";
 
-export const UpcomingBookingCardItem = ({ booking, handleShow }) => {
+export const UpcomingBookingCardItem = ({ booking, handleShow, cardType, handleCabinDetails }) => {
   const [showModal, setShowModal] = useState(false)
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const onModifyBooking = () => {
-    navigate('/modify-booking')
-    dispatch(updateModifyBookingData(booking))
+    if (cardType === "Conference & WorkSpace") {
+      navigate('/modify-booking')
+      dispatch(updateModifyBookingData(booking))
+    }
   }
 
   const onCancelBooking = () => {
@@ -47,7 +49,7 @@ export const UpcomingBookingCardItem = ({ booking, handleShow }) => {
             className="custom-dropdown">
             <TbDotsVertical className="icon-dots" />
           </Dropdown>
-          <div onClick={() => { handleShow(booking.BookingParticipant, booking.user_name) }}>
+          {cardType === "Conference & WorkSpace" && <div onClick={() => { handleShow(booking.BookingParticipant, booking.user_name) }}>
             <Card.Title className="card-headings">
               <img
                 alt="conference-room"
@@ -94,7 +96,21 @@ export const UpcomingBookingCardItem = ({ booking, handleShow }) => {
                 </li>
               </ul>
             </Card.Text>
-          </div>
+          </div>}
+          {cardType === "Cabin" && <div onClick={() => { handleCabinDetails(booking) }}>
+            <Card.Title className="card-headings">
+              <img
+                alt="conference-room"
+                src={image}
+                className="icon-headings me-3"
+              />
+              <span>Booked On : {new Date(booking.created_at).toDateString()}</span>{" "}
+              {/* | <span>{new Date(booking.to_datetime).toDateString()}</span> */}
+            </Card.Title>
+            <Card.Title className="card-headers">
+              {`${booking.cabin_booking_details[0].building_name} - ${booking.cabin_booking_details[0].city_name}`}
+            </Card.Title>
+          </div>}
         </Card.Body>
       </Card>
     </Col>

@@ -66,8 +66,10 @@ export const getMyBookingDetails = createAsyncThunk(
   "bookworkspace/getMyBookingDetails",
   async () => {
     try {
-      const response = await api.getMyBookingDetails();
-      return response.data;
+      const responses = await Promise.all([api.getMyBookingDetails(), api.getMyCabinBookingDetails()]);
+      const workspaceBookingDetails = responses[0]?.data;
+      const cabinBookingDetails = responses[1]?.data;
+      return { "workspaceBookingDetails": workspaceBookingDetails, "cabinBookingDetails": cabinBookingDetails };
     } catch (err) {
       if (err.response.status !== 200 && err.response.status !== 201) {
         console.log(err.response.data.message);
@@ -197,7 +199,8 @@ const bookSlice = createSlice({
     },
     [getMyBookingDetails.fulfilled]: (state, action) => {
       state.loading = false;
-      state.workspaceBookingDetails = action.payload;
+      state.workspaceBookingDetails = action.payload.workspaceBookingDetails;
+      state.cabinBookingDetails = action.payload.cabinBookingDetails;
       state.modifyBookingData = null;
       state.availableworkspace = null;
       state.currentBookingData = null;

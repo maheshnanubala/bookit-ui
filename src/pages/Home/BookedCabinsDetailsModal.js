@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Modal, Col, Row, Button, Table } from "react-bootstrap";
-import "../../Home/Home.scss"
-const SelectedCabinDetailsModal = ({ show, handleSeeDetails, selectedCabins, facility, handleCancelCabin, handleBookbtn }) => {
+import "./Home.scss";
+const BookedCabinsDetailsModal = ({ showCabinDetails, bookedCabinDetails, closeHandler, callFrom }) => {
     return (<>
         <Modal
-            show={show}
+            show={showCabinDetails}
             backdrop="static"
             keyboard={false}
             size="lg"
@@ -12,12 +12,12 @@ const SelectedCabinDetailsModal = ({ show, handleSeeDetails, selectedCabins, fac
         >
             <Modal.Header className="participant-model-title">
                 <Col md={6}>
-                    <Modal.Title>Selected Cabin Details</Modal.Title>
+                    <Modal.Title>Cabin Details</Modal.Title>
                 </Col>
                 <Col md={6} className="text-end">
                     <button
                         className="bg-transparent modal-close-btn"
-                        onClick={() => { handleSeeDetails(false) }}
+                        onClick={closeHandler}
                     >
                         <i className="bi bi-x-lg" />
                     </button>
@@ -25,15 +25,11 @@ const SelectedCabinDetailsModal = ({ show, handleSeeDetails, selectedCabins, fac
             </Modal.Header>
             <div
                 className="booking-participant-body"
-            // style={{
-            //     height: participants.length > 5 ? "" : "300px",
-            //     overflow: "auto",
-            // }}
             >
                 <Modal.Body>
                     <Row className="booked-by-row">
                         <Col className="ps-0">
-                            <span className="booked-by-col">Facility</span> : {` ${facility}`}
+                            <span className="booked-by-col">Facility</span> : {` ${bookedCabinDetails[0].building_name}`}
                             <span>
 
                             </span>
@@ -46,21 +42,14 @@ const SelectedCabinDetailsModal = ({ show, handleSeeDetails, selectedCabins, fac
                                 <th>Cabin Name</th>
                                 <th>Floor</th>
                                 <th>Session</th>
-                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            {selectedCabins.map((cabin) => (<tr key={`${cabin.date}_${cabin.name}_${cabin.session}`}>
-                                <td>{cabin.date}</td>
-                                <td>{cabin.name}</td>
-                                <td>{cabin.floor.name}</td>
-                                <td>{cabin.session}</td>
-                                <td><button
-                                    className="bg-transparent modal-close-btn"
-                                    onClick={() => { handleCancelCabin(cabin) }}
-                                >
-                                    <i className="bi bi-x-lg" style={{ color: "black" }} />
-                                </button></td>
+                            {bookedCabinDetails.map((cabin) => (<tr key={`${cabin.booking_date}_${cabin.cabin_name}_${cabin.booking_slot_type}`}>
+                                <td>{cabin.booking_date}</td>
+                                <td>{cabin.cabin_name}</td>
+                                <td>{cabin.floor_name}</td>
+                                <td>{cabin.booking_slot_type}</td>
                             </tr>))}
                         </tbody>
                     </Table>
@@ -73,16 +62,16 @@ const SelectedCabinDetailsModal = ({ show, handleSeeDetails, selectedCabins, fac
                             size="lg"
                             variant="danger"
                             className="close-btn"
-                            onClick={() => { handleSeeDetails(false) }}
+                            onClick={closeHandler}
                             style={{ marginRight: "10px" }}
                         >
                             Close
                         </Button>
-                        {selectedCabins.length > 0 && <Button
+                        {callFrom === "cancel" && <Button
                             size="lg"
                             variant="danger"
                             className="close-btn"
-                            onClick={() => { handleBookbtn() }}
+                            onClick={closeHandler}
                         >
                             Book
                         </Button>}
@@ -92,4 +81,4 @@ const SelectedCabinDetailsModal = ({ show, handleSeeDetails, selectedCabins, fac
         </Modal>
     </>)
 }
-export default SelectedCabinDetailsModal;
+export default BookedCabinsDetailsModal;
