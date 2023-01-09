@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Col, Row, Button, Table } from "react-bootstrap";
 import "../../Home/Home.scss"
-const SelectedCabinDetailsModal = ({ show, handleSeeDetails, selectedCabins, facility }) => {
+const SelectedCabinDetailsModal = ({ show, handleSeeDetails, selectedCabins, facility, handleCancelCabin }) => {
     return (<>
         <Modal
             show={show}
@@ -50,13 +50,14 @@ const SelectedCabinDetailsModal = ({ show, handleSeeDetails, selectedCabins, fac
                             </tr>
                         </thead>
                         <tbody>
-                            {selectedCabins.map((cabin) => (<tr key={cabin.id}>
+                            {selectedCabins.map((cabin) => (<tr key={`${cabin.date}_${cabin.name}_${cabin.session}`}>
                                 <td>{cabin.date}</td>
                                 <td>{cabin.name}</td>
-                                <td>{cabin.floor_name}</td>
+                                <td>{cabin.floor.name}</td>
                                 <td>{cabin.session}</td>
                                 <td><button
                                     className="bg-transparent modal-close-btn"
+                                    onClick={() => { handleCancelCabin(cabin) }}
                                 >
                                     <i className="bi bi-x-lg" style={{ color: "black" }} />
                                 </button></td>
@@ -73,8 +74,17 @@ const SelectedCabinDetailsModal = ({ show, handleSeeDetails, selectedCabins, fac
                             variant="danger"
                             className="close-btn"
                             onClick={() => { handleSeeDetails(false) }}
+                            style={{ marginRight: "10px" }}
                         >
                             Close
+                        </Button>
+                        <Button
+                            size="lg"
+                            variant="danger"
+                            className="close-btn"
+                            onClick={() => { handleSeeDetails(false) }}
+                        >
+                            Book
                         </Button>
                     </Col>
                 </Row>

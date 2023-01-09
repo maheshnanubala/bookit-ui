@@ -15,6 +15,22 @@ export const getCabinDetails = createAsyncThunk(
     }
 );
 
+export const bookSelectedCabins = createAsyncThunk(
+    "cabinBooking/bookSelectedCabins",
+    async ({ data, navigate, toast }) => {
+        try {
+            const response = await api.bookCabins(data);
+            navigate(`/home`);
+            toast.success("Cabins are booked Succesfully");
+            return response.data;
+        } catch (err) {
+            if (err.response.status !== 200 && err.response.status !== 201) {
+                console.log(err.response.data.message);
+            }
+        }
+    }
+);
+
 
 const cabinSlice = createSlice({
     name: "cabinBooking",
@@ -34,6 +50,17 @@ const cabinSlice = createSlice({
             state.cabinsDetails = action.payload;
         },
         [getCabinDetails.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message;
+        },
+        [bookSelectedCabins.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [bookSelectedCabins.fulfilled]: (state, action) => {
+            state.loading = false;
+            //state.cabinsDetails = action.payload;
+        },
+        [bookSelectedCabins.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload?.message;
         },
