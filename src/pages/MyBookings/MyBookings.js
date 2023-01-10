@@ -7,6 +7,7 @@ import { getMyBookingDetails } from "../../redux/ActionReducer/bookSlice";
 import "./MyBookings.scss";
 import { UpcomingBookingCardItem } from "../Home/UpcomingBookingCard";
 import { RecentBookingCardItem } from "../Home/RecentBookingCardItem";
+import BookedCabinsDetailsModal from "../Home/BookedCabinsDetailsModal";
 
 const MyBookings = () => {
   const UserObj = JSON.parse(localStorage.getItem("user"))?.user || {};
@@ -16,9 +17,11 @@ const MyBookings = () => {
   const [show, setShow] = useState(false);
   const [bookedByUser, setBookedByUser] = useState("");
   const handleClose = () => setShow(false);
+  const [showCabinDetails, setShowCabinDetails] = useState(false);
+  const [bookedCabinDetails, setBookedCabinDetails] = useState([]);
 
-  const { workspaceBookingDetails } = useSelector((state) => ({
-    ...state.bookworkspace, 
+  const { workspaceBookingDetails, cabinBookingDetails } = useSelector((state) => ({
+    ...state.bookworkspace,
   }));
 
   useEffect(() => {
@@ -32,7 +35,16 @@ const MyBookings = () => {
   };
 
   const upcomingBookings = workspaceBookingDetails?.upcoming_booking_details;
-
+  const upcomingCabinBookings = cabinBookingDetails?.upcoming_cabin_booking_details;
+  const handleCabinDetails = (booking) => {
+    setShowCabinDetails(true);
+    setBookedCabinDetails(booking.cabin_booking_details)
+  }
+  const handleRecentBookings = () => {
+    let arr = [...(workspaceBookingDetails?.past_booking_details || []), ...(cabinBookingDetails?.past_cabin_booking_details || [])]
+    arr.length > 0 && arr.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+    return arr;
+  }
   return (
     <Container fluid className="home">
       <section className="custom-upcomingbooking-section pt-3 pb-3">
@@ -48,6 +60,7 @@ const MyBookings = () => {
                     booking={booking}
                     handleShow={handleShow}
                     uniqueKey={booking.id}
+                    cardType={"Conference & WorkSpace"}
                   />
                 </React.Fragment>
               ))
@@ -56,18 +69,38 @@ const MyBookings = () => {
           )}
         </Row>
       </section>
+      <section>
+        <Row className="custom-upcomingbooking-section pt-5 pb-3">
+          <h4 className="headings">Upcoming Cabin Bookings</h4>
+          {upcomingCabinBookings?.filter(val => val.active).length > 0 ? (
+            upcomingCabinBookings?.filter(val => val.active).map((booking) => (
+              <React.Fragment key={booking.id}>
+                <UpcomingBookingCardItem
+                  booking={booking}
+                  handleShow={handleShow}
+                  cardType={"Cabin"}
+                  handleCabinDetails={handleCabinDetails}
+                />
+              </React.Fragment>
+            ))
+          ) : (
+            <span className="not-found-span">No upcoming cabin bookings</span>
+          )}
+        </Row>
+      </section>
       <hr className="hr" />
       <section className="custom-recentbooking-section pt-3 pb-3">
         <Row>
           <h4 className="headings"> Booking History</h4>
-          {workspaceBookingDetails?.past_booking_details?.length > 0 ? (
-            workspaceBookingDetails?.past_booking_details.map((booking) => (
+          {handleRecentBookings().length > 0 ? (
+            handleRecentBookings()?.map((booking) => (
               <React.Fragment key={booking.id}>
                 <RecentBookingCardItem
                   booking={booking}
                   oneDay={oneDay}
                   handleShow={handleShow}
                   uniqueKey={booking.id}
+                  handleCabinDetails={handleCabinDetails}
                 />
               </React.Fragment>
             ))
@@ -156,6 +189,13 @@ const MyBookings = () => {
           </Row>
         </Modal.Footer>
       </Modal>
+      {showCabinDetails && <BookedCabinsDetailsModal
+        showCabinDetails={showCabinDetails}
+        bookedCabinDetails={bookedCabinDetails}
+        closeHandler={() => setShowCabinDetails(false)}
+        callFrom={"showDetails"}
+        Title={"Cabin Booking Details"}
+      />}
     </Container>
   );
 };

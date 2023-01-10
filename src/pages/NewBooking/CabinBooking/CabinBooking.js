@@ -110,6 +110,11 @@ const CabinBooking = () => {
         }
     }
 
+    const checkCabinAvailability = (cabin, session) => {
+        let bookedObj = cabinsDetails?.booked_cabins?.filter((obj) => obj.cabin_id === cabin.id && obj.booking_slot_type === session);
+        return bookedObj.length > 0 ? true : false
+    }
+
     const checkMaxSelectionOfDay = (date) => {
         let selectedCabinsOftheDay = (selectedCabins.length > 0 && selectedCabins.filter((cabin) => cabin.date === date)) || [];
         return selectedCabinsOftheDay.length;
@@ -319,6 +324,7 @@ const CabinBooking = () => {
                                                                 type={"checkbox"}
                                                                 id={sessionType}
                                                                 aria-label={sessionType}
+                                                                disabled={checkCabinAvailability(cabin, sessionType)}
                                                                 //defaultChecked={setCheckedOpt(cabin, sessionType, date)}
                                                                 onClick={(e) => { handleCheckBox(cabin, sessionType, date, e, { id: floorData.id, name: floorData.name }) }}
                                                             />
