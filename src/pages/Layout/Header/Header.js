@@ -25,9 +25,9 @@ const Header = () => {
               New Booking
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item href="/cabin-booking">Cabin Room</Dropdown.Item>
-              <Dropdown.Item href="/conference-booking">Conference Room</Dropdown.Item>
-              <Dropdown.Item href="/workspace-booking" disabled>Workspace</Dropdown.Item>
+              <Dropdown.Item onClick={() => { navigate('/cabin-booking') }}>Cabin Room</Dropdown.Item>
+              <Dropdown.Item onClick={() => { navigate('/conference-booking') }}>Conference Room</Dropdown.Item>
+              <Dropdown.Item disabled>Workspace</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </div>

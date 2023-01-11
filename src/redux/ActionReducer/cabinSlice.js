@@ -26,6 +26,7 @@ export const bookSelectedCabins = createAsyncThunk(
         } catch (err) {
             if (err.response.status !== 200 && err.response.status !== 201) {
                 console.log(err.response.data.message);
+                toast.error(err?.response?.data?.message)
             }
         }
     }

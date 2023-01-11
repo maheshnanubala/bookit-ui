@@ -24,7 +24,7 @@ const CancelBookingModal = ({ show, handleClose, bookingDetails, cardType }) => 
         handleClose();
     }
     const handleCabinCancel = (btnName) => {
-        let cabinIds = (btnName === "complete") ? bookingDetails.cabin_booking_details.map((obj) => obj.workspace_id) : partialCancelCabins.map((obj) => obj.workspace_id);
+        let cabinIds = (btnName === "complete") ? bookingDetails.cabin_booking_details.map((obj) => obj.id) : partialCancelCabins.map((obj) => obj.id);
         let payload = {
             cabin_booking_id: bookingDetails.id,
             cancellation_booking_ids: [...new Set(cabinIds)],

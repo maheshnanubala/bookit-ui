@@ -110,6 +110,10 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = action?.payload?.message;
     },
+    [signup.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.user = action.payload;
+    },
     [verifyUser.fulfilled]: (state, action) => {
       state.loading = false;
       state.user = action.payload;

@@ -108,7 +108,7 @@ export const cancelBooking = createAsyncThunk(
   "bookworkspace/cancelBooking",
   async ({ bookingId, payload, toast, dispatch }) => {
     try {
-      const response = await (payload) ? api.cancelCabinBooking(payload) : api.cancelBooking(bookingId);
+      const response = await ((payload) ? api.cancelCabinBooking(payload) : api.cancelBooking(bookingId));
       toast.success(response.data.message);
       dispatch(getMyBookingDetails());
       return response.data;
@@ -229,6 +229,7 @@ const bookSlice = createSlice({
     },
     [cancelBooking.rejected]: (state, action) => {
       state.loading = false;
+      state.error = action.payload?.message;
     },
   },
 });
