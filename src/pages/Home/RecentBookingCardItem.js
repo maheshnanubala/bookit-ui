@@ -73,7 +73,7 @@ export const RecentBookingCardItem = ({ booking, handleShow, oneDay, handleCabin
           </Card.Body>
         </Card>}
       {
-        !(booking?.from_datetime) && <Card
+        ((!booking?.from_datetime) && booking?.cabin_booking_details?.length > 0) && <Card
           className={
             Math.ceil(
               (new Date().getTime() - new Date(booking.created_at).getTime()) /
@@ -96,7 +96,7 @@ export const RecentBookingCardItem = ({ booking, handleShow, oneDay, handleCabin
               {/* | <span>{new Date(booking.to_datetime).toDateString()}</span> */}
             </Card.Title>
             <Card.Title className="card-headers">
-              {`${booking.cabin_booking_details[0].building_name} - ${booking.cabin_booking_details[0].city_name}`}
+              {`${booking?.cabin_booking_details[0]?.building_name || ''} - ${booking?.cabin_booking_details[0]?.city_name || ''}`}
             </Card.Title>
           </Card.Body>
         </Card>

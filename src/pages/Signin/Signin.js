@@ -55,7 +55,7 @@ const Signin = () => {
             {!userEmailId ?
               <Form onSubmit={handleSubmit(onSubmit)} className="p-3">
                 <Row>
-                  <p className="signin-text"> Sign-in</p>
+                  <p className="signin-text"> Sign-In</p>
                 </Row>
                 <Row className="mt-0 mb-1">
                   <Form.Group className="mb-2">
@@ -104,7 +104,7 @@ const Signin = () => {
                       type="submit"
                       className="submit-btn w-100 shadow-none"
                     >
-                      {loading ? "Signing in..." : "Sign-in"}
+                      {loading ? "Signing in..." : "Sign-In"}
                       {loading && (
                         <Spinner
                           animation="border"
@@ -119,7 +119,7 @@ const Signin = () => {
                 <Row className="mt-4 mb-3">
                   <Col>
                     <p className="signin-option-line">
-                      <span>or Sign-in With</span>
+                      <span>or Sign-In With</span>
                     </p>
                   </Col>
                 </Row>
@@ -137,7 +137,7 @@ const Signin = () => {
                           className="img-fluid microsoft-logo"
                         />
                       </span>
-                      Sign-in with Microsoft
+                      Sign-In with Microsoft
                     </Button>
                   </Col>
                 </Row>
@@ -147,7 +147,7 @@ const Signin = () => {
                   </Col>
                   <Col>
                     <Link className="navlinks" to="/signup">
-                      Sign-Up for an account
+                      Sign-Up
                     </Link>
                   </Col>
                 </Row>

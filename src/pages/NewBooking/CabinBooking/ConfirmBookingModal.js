@@ -14,6 +14,17 @@ const ConfirmBookingModal = ({
     handleClose
 }) => {
 
+    const handleUniqueDates = () => {
+        let uniqArr = []
+        selectedCabins.forEach((cabin) => {
+            if (uniqArr.length > 0 && uniqArr.findIndex(cabin.date) == -1) {
+                uniqArr.push(cabin.date);
+            } else if (uniqArr.length === 0) {
+                uniqArr.push(cabin.date);
+            }
+        });
+        return uniqArr;
+    }
     return (
         <>
             <Modal
@@ -42,9 +53,12 @@ const ConfirmBookingModal = ({
                     </Row>
                     <Row className="confirm-content mb-2">
                         <Col>
-                            <span>{`Total Cabins Booked - ${selectedCabins.length}`}</span>
-                            <br />
-                            <span>{`Number of Days - ${bookingDates.length}`}</span>
+                            {(handleUniqueDates()).length > 0 && (handleUniqueDates()).map((date) => (<>
+                                <span>{`${date} (${selectedCabins.filter((obj) => obj.date === date).length} sessions)`}</span>
+                                <br />
+                            </>
+                            ))
+                            }
                         </Col>
                     </Row>
                 </Modal.Body>

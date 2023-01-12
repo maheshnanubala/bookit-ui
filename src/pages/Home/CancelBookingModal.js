@@ -60,7 +60,7 @@ const CancelBookingModal = ({ show, handleClose, bookingDetails, cardType }) => 
                 className="bookspace-confirmation-section"
             >
                 <Modal.Header className="border-0 pb-0">
-                    <Modal.Title>Do you really want to cancel this booking !!!!!</Modal.Title>
+                    <Modal.Title>Do you really want to cancel this booking?</Modal.Title>
                     <i className="bi bi-x-circle-fill close-icon" onClick={handleClose} />
                 </Modal.Header>
                 {cardType !== "Cabin" && < Modal.Body className="justify-content-center">
@@ -111,9 +111,8 @@ const CancelBookingModal = ({ show, handleClose, bookingDetails, cardType }) => 
                 </Modal.Body>}
                 <Modal.Footer className="cancel-modal-footer">
                     {cardType !== "Cabin" && <Button className="cancel-booking-button" onClick={onCancelBooking} >Cancel Booking</Button>}
-                    {cardType === "Cabin" && <Button className="cancel-booking-button" onClick={() => { handleCabinCancel('complete') }} >Complete Cancel</Button>}
                     {cardType === "Cabin" && <Button className="cancel-booking-button" onClick={() => { setPartialModal(true) }} >Partial Cancel</Button>}
-
+                    {cardType === "Cabin" && <Button className="cancel-booking-button" onClick={() => { handleCabinCancel('complete') }} >Complete Cancel</Button>}
                 </Modal.Footer>
             </Modal>
             <BookedCabinsDetailsModal

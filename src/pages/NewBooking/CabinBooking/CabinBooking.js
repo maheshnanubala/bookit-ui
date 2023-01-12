@@ -344,7 +344,7 @@ const CabinBooking = () => {
                     <Row md={12} className="cabin-footer-container">
                         <Col>
                             <div>{`Selected Cabins (${selectedCabins.length})`}</div>
-                            {selectedCabins.length > 0 && <span className="see-details-text" onClick={() => { handleSeeDetails(true) }}><u>See Deatils</u></span>}
+                            {selectedCabins.length > 0 && <span className="see-details-text" onClick={() => { handleSeeDetails(true) }}><u>See Details</u></span>}
                         </Col>
                         <Col>
                             <Button onClick={() => (window.location.reload())}

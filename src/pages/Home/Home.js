@@ -42,7 +42,7 @@ const Home = () => {
     setBookedCabinDetails(booking.cabin_booking_details)
   }
   const handleRecentBookings = () => {
-    let arr = [...(workspaceBookingDetails?.past_booking_details || []), ...(cabinBookingDetails?.past_cabin_booking_details || [])]
+    let arr = [...(workspaceBookingDetails?.past_booking_details || []), ...(cabinBookingDetails?.past_cabin_booking_details.filter((obj) => obj.cabin_booking_details.length > 0) || [])]
     arr.length > 0 && arr.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
     return arr;
   }
@@ -70,7 +70,7 @@ const Home = () => {
       </section>
       <section>
         <Row className="custom-upcomingbooking-section pt-5 pb-3">
-          <h4 className="headings">Upcoming Bookings</h4>
+          <h4 className="headings">Upcoming Conference Bookings</h4>
           {upcomingBookings?.filter(val => val.active).length > 0 ? (
             upcomingBookings?.filter(val => val.active).map((booking) => (
               <React.Fragment key={booking.id}>

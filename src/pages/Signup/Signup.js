@@ -53,7 +53,7 @@ const Signin = () => {
             {!userEmailId &&
               <Form onSubmit={handleSubmit(onSubmit)} className="p-3">
                 <Row>
-                  <p className="signin-text">Sign-up</p>
+                  <p className="signin-text">Sign-Up</p>
                 </Row>
                 <Row className="mt-0 mb-1">
                   <Form.Group className="mb-2">
@@ -119,7 +119,7 @@ const Signin = () => {
                       type="submit"
                       className="submit-btn w-100 shadow-none"
                     >
-                      {loading ? "Signing up..." : "Sign-up"}
+                      {loading ? "Signing up..." : "Sign-Up"}
                       {loading && (
                         <Spinner
                           animation="border"
