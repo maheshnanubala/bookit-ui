@@ -26,6 +26,10 @@ const BookedCabinsDetailsModal = ({ showCabinDetails, bookedCabinDetails,
             </Modal.Header>
             <div
                 className="booking-participant-body"
+                style={{
+                    height: bookedCabinDetails.length > 5 ? "" : "300px",
+                    overflow: "auto",
+                }}
             >
                 <Modal.Body>
                     <Row className="booked-by-row">

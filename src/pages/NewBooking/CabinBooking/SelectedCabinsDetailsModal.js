@@ -25,10 +25,10 @@ const SelectedCabinDetailsModal = ({ show, handleSeeDetails, selectedCabins, fac
             </Modal.Header>
             <div
                 className="booking-participant-body"
-            // style={{
-            //     height: participants.length > 5 ? "" : "300px",
-            //     overflow: "auto",
-            // }}
+                style={{
+                    height: selectedCabins.length > 5 ? "" : "300px",
+                    overflow: "auto",
+                }}
             >
                 <Modal.Body>
                     <Row className="booked-by-row">

@@ -15,16 +15,23 @@ const ConfirmBookingModal = ({
 }) => {
 
     const handleUniqueDates = () => {
-        let uniqArr = []
+        let uniqArr = [];
         selectedCabins.forEach((cabin) => {
-            if (uniqArr.length > 0 && uniqArr.findIndex(cabin.date) == -1) {
+            if (uniqArr.length > 0 && uniqArr.findIndex((date) => date === cabin.date) == -1) {
                 uniqArr.push(cabin.date);
             } else if (uniqArr.length === 0) {
                 uniqArr.push(cabin.date);
             }
         });
-        return uniqArr;
+        //return uniqArr;
+        let contentArr = uniqArr.length > 0 ? uniqArr.map((date) => (<>
+            <span>{`${date} (${selectedCabins.filter((obj) => obj.date === date).length} sessions)`}</span>
+            <br />
+        </>
+        )) : [];
+        return contentArr;
     }
+
     return (
         <>
             <Modal
@@ -53,12 +60,7 @@ const ConfirmBookingModal = ({
                     </Row>
                     <Row className="confirm-content mb-2">
                         <Col>
-                            {(handleUniqueDates()).length > 0 && (handleUniqueDates()).map((date) => (<>
-                                <span>{`${date} (${selectedCabins.filter((obj) => obj.date === date).length} sessions)`}</span>
-                                <br />
-                            </>
-                            ))
-                            }
+                            {selectedCabins.length > 0 && handleUniqueDates()}
                         </Col>
                     </Row>
                 </Modal.Body>
