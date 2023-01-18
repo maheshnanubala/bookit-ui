@@ -21,7 +21,7 @@ function newBooking() {
           <hr className="hr" />
         </Row>
         <Row>
-          <FillDetails/>
+      <FillDetails/>
         </Row>
       </Container>
     </>

@@ -362,7 +362,7 @@ const FillDetails = () => {
                 <MultiSelect
                   showArrow
                   onChange={handleOnchange}
-                  defaultValue={defaultUser}
+                  displayValue={defaultUser}
                   options={
                     workspacedetails?.workspace_details?.UserList?.map(
                       (item) => ({
@@ -398,7 +398,7 @@ const FillDetails = () => {
         </Row>
       </Form>
     </>
-  );
+  );  
 };
 
 export default FillDetails;

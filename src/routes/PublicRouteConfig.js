@@ -7,12 +7,15 @@ import SigninNew from "../pages/Signin/SigninNew";
 import Signup from "../pages/Signup/Signup.lazy";
 import VerifyOtp from "../pages/Signup/VerifyOtp";
 
+
 export const PublicRouteConfig = [
   {
     name: "signin",
     path: "/signin",
     element: <Signin />,
   },
+
+ 
   {
     name: "signin redirect",
     path: "/",

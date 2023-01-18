@@ -22,6 +22,7 @@ const CancelBookingModal = ({ show, handleClose, bookingDetails }) => {
     }
 
     console.log(bookingDetails);
+    
 
     return (
         <>

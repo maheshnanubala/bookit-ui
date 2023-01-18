@@ -7,8 +7,10 @@ import { PrivateRoutes } from "./Authentication/PrivateRoutes";
 import { setUser } from "./redux/ActionReducer/authSlice";
 import { PrivateRouteConfig } from "./routes/PrivateRouteConfig";
 import { PublicRouteConfig } from "./routes/PublicRouteConfig";
+
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
+import VerifySigninOtp from "./pages/Signin/VerifySigninOtp";
 
 function App() {
   const { user: userAuthenticated } = useSelector((state) => ({
@@ -36,7 +38,8 @@ function App() {
               <Route key={name} path={path} element={element} />
             ))}
           </Route>
-        )}
+           )}
+          <Route path="/verifySigninOtp"  element ={<VerifySigninOtp />} />
       </Routes>
     </div>
   );

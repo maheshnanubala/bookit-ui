@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 // import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, Routes, Route } from "react-router-dom";
 import {
   Container,
   Row,
@@ -22,16 +22,18 @@ import { signInValidationSchema } from "../../services/ValidationSchema";
 import microsoftLogo from "../../assest/images/732221.png";
 import VerifyOtp from "../Signup/VerifyOtp";
 
+
 const Signin = () => {
   const { loading } = useSelector((state) => ({ ...state.auth }));
   const [passwordShown, setPasswordShown] = useState(false);
   const [userEmailId, setUserEmailId] = useState('');
+ 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const {
     register,
-    handleSubmit,
+  handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(signInValidationSchema) });
 
@@ -40,9 +42,18 @@ const Signin = () => {
     if (formValues.email && formValues.password) {
       dispatch(signin({ formValues, navigate, toast, setUserEmailId }));
     }
-  };
+ };
+
+// const handleSubmit = event => {
+//   event.preventDefault();
+
+//   // 👇️ redirect to /contacts
+//   navigate('/VerifySignOtp');
+// };
+ 
 
   return (
+   
     <Container fluid className="login-block">
       <Row className="justify-content-center align-items-center">
         <Col sm={8} md={6} lg={4} xl={4} xxl={3}>
@@ -53,7 +64,10 @@ const Signin = () => {
           </Row>
           <Card className="login-form-block p-4 mt-3 mb-5">
             {!userEmailId ?
-              <Form onSubmit={handleSubmit(onSubmit)} className="p-3">
+              <Form 
+           
+          onSubmit={handleSubmit(onSubmit)}
+               className="p-3">
                 <Row>
                   <p className="signin-text"> Sign-in</p>
                 </Row>
@@ -61,10 +75,12 @@ const Signin = () => {
                   <Form.Group className="mb-2">
                     <Form.Label className="input-label required ms-2">
                       Email
+                      
                     </Form.Label>
                     <Form.Control
                       className="input-box"
                       type="email"
+                      
                       {...register("email")}
                     />
                   </Form.Group>
@@ -99,12 +115,19 @@ const Signin = () => {
                   )}
                 </Row>
                 <Row className="mt-0 mb-4">
+              
                   <Col>
                     <Button
+                    
                       type="submit"
                       className="submit-btn w-100 shadow-none"
+                      animation="border"
+                      variant="light"
+                     
+                  
                     >
-                      {loading ? "Signing in..." : "Sign-in"}
+                    
+                    {loading ? "Signing in..." : "Sign-in"}
                       {loading && (
                         <Spinner
                           animation="border"
@@ -112,7 +135,7 @@ const Signin = () => {
                           variant="light"
                           className="ms-2"
                         />
-                      )}
+                      )} 
                     </Button>
                   </Col>
                 </Row>
@@ -120,7 +143,9 @@ const Signin = () => {
                   <Col>
                     <p className="signin-option-line">
                       <span>or Sign-in With</span>
+                      
                     </p>
+                    
                   </Col>
                 </Row>
                 <Row className="mt-0 mb-3">
@@ -164,9 +189,11 @@ const Signin = () => {
           <p className="justify-content-center align-items-center font-face-gm footer-text">
             Copyright @ 2020 Indium Software
           </p>
+         
         </Col>
       </Row>
     </Container>
+   
   );
 };
 
@@ -175,3 +202,8 @@ Signin.propTypes = {};
 Signin.defaultProps = {};
 
 export default Signin;
+
+
+
+
+

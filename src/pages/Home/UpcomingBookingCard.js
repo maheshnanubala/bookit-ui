@@ -1,53 +1,66 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { Col, Card } from "react-bootstrap";
+import { Col, Card, Alert } from "react-bootstrap";
 import { TbDotsVertical } from "react-icons/tb";
-import { Dropdown } from 'antd';
+//import { GiVideoConference } from "react-icons/gi";
+import { Dropdown } from "antd";
 import { updateModifyBookingData } from "../../redux/ActionReducer/bookSlice";
 import CancelBookingModal from "./CancelBookingModal";
 import image from "../../assest/images/Group 1562.svg";
 
+import "bootstrap/dist/css/bootstrap.min.css";
+
 export const UpcomingBookingCardItem = ({ booking, handleShow }) => {
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const onModifyBooking = () => {
-    navigate('/modify-booking')
-    dispatch(updateModifyBookingData(booking))
-  }
-
+    navigate("/modify-booking");
+    dispatch(updateModifyBookingData(booking));
+  };
   const onCancelBooking = () => {
     setShowModal(true);
-  }
+  };
 
   const items = [
     {
-      key: '1',
-      label: (<h5 onClick={onModifyBooking}>Modify</h5>)
+      key: "1",
+      label: <h5 onClick={onModifyBooking}>Modify</h5>,
     },
     {
-      key: '2',
-      label: (<h5 onClick={onCancelBooking}>Cancel</h5>)
+      key: "2",
+      label: <h5 onClick={onCancelBooking}>Cancel</h5>,
     },
-  ]
+  ];
 
   return (
     <Col md={6} lg={4}>
-      {showModal && <CancelBookingModal show={showModal} handleClose={() => setShowModal(false)} bookingDetails={booking} />}
-      <Card
-        className="text-initial ub-border-left">
+      {showModal && (
+        <CancelBookingModal
+          show={showModal}
+          handleClose={() => setShowModal(false)}
+          bookingDetails={booking}
+        />
+      )}
+      <Card className="text-initial ub-border-left">
         <Card.Body className="card-body-item">
-          <Dropdown menu={{ items }}
-            trigger={['click']}
+          <Dropdown
+            menu={{ items }}
+            trigger={["click"]}
             placement="topRight"
             arrow={{ pointAtCenter: true }}
-            className="custom-dropdown">
+            className="custom-dropdown"
+          >
             <TbDotsVertical className="icon-dots" />
           </Dropdown>
-          <div onClick={() => { handleShow(booking.BookingParticipant, booking.user_name) }}>
+          <div
+            onClick={() => {
+              handleShow(booking.BookingParticipant, booking.user_name);
+            }}
+          >
             <Card.Title className="card-headings">
               <img
                 alt="conference-room"

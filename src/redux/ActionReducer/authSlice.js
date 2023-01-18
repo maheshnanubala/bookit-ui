@@ -7,8 +7,8 @@ export const signin = createAsyncThunk(
     try {
       const response = await api.signIn(formValues);
       if(response){
-        navigate(`/home`);
-        toast.success("Successfully logged in");
+        navigate(`/verifySigninOtp`);
+       
         return response.data;
       }
     } catch (err) {

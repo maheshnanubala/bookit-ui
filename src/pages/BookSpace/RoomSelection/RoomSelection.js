@@ -304,7 +304,7 @@ export const RoomSelection = () => {
                     </span>
                   </span>
                 </Col>
-              </Row>
+              </Row> 
               <Row className="mb-3">
                 <Col md={4}>
                   <span className="book-label">Floor</span>
@@ -570,6 +570,8 @@ export const RoomSelection = () => {
                             <td>{item.name}</td>
                             <td>{item.capacity}</td>
                             <td>
+                             
+                  <div className=""></div>
                               {item.amenities
                                 ?.slice(0, 1)
                                 .map((item, index) => {
