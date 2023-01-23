@@ -3,6 +3,7 @@ import React from "react";
 import { Modal, Button, Col, Row } from "react-bootstrap";
 import "../../BookSpace/BookSpace.scss";
 //import format from 'date-fns/format'
+import moment from "moment";
 
 const ConfirmBookingModal = ({
     show,
@@ -25,7 +26,7 @@ const ConfirmBookingModal = ({
         });
         //return uniqArr;
         let contentArr = uniqArr.length > 0 ? uniqArr.map((date) => (<>
-            <span>{`${date} (${selectedCabins.filter((obj) => obj.date === date).length} sessions)`}</span>
+            <span>{`${moment(new Date(date)).format("DD/MM/YYYY")} (${selectedCabins.filter((obj) => obj.date === date).length} sessions)`}</span>
             <br />
         </>
         )) : [];

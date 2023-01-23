@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Col, Row, Button, Table, Form } from "react-bootstrap";
 import "./Home.scss";
+import moment from "moment";
 const BookedCabinsDetailsModal = ({ showCabinDetails, bookedCabinDetails,
     closeHandler, callFrom, Title, handleCheckBox, handleConfirm }) => {
     return (<>
@@ -51,7 +52,7 @@ const BookedCabinsDetailsModal = ({ showCabinDetails, bookedCabinDetails,
                         </thead>
                         <tbody>
                             {bookedCabinDetails?.map((cabin) => (<tr key={`${cabin.booking_date}_${cabin.cabin_name}_${cabin.booking_slot_type}`}>
-                                <td>{cabin.booking_date}</td>
+                                <td>{(moment(new Date(cabin.booking_date)).format("DD/MM/YYYY"))}</td>
                                 <td>{cabin.cabin_name}</td>
                                 <td>{cabin.floor_name}</td>
                                 <td>

@@ -84,6 +84,7 @@ const CabinBooking = () => {
         setBookingDates(dates);
         setShowCabins(false);
         selectedCabins?.length > 0 && updateSelectedCabins(formattedDates);
+        setSelectedCabins([]);
     }
 
     const updateSelectedCabins = (dates) => {
@@ -110,8 +111,9 @@ const CabinBooking = () => {
         }
     }
 
-    const checkCabinAvailability = (cabin, session) => {
-        let bookedObj = cabinsDetails?.booked_cabins?.filter((obj) => obj.cabin_id === cabin.id && obj.booking_slot_type === session);
+    const checkCabinAvailability = (cabin, session, date) => {
+        let bookedObj = cabinsDetails?.booked_cabins?.filter((obj) => obj.cabin_id === cabin.id && obj.booking_slot_type === session &&
+            (moment(new Date(obj.booking_date)).format("YYYY-MM-DD")) === date);
         return bookedObj.length > 0 ? true : false
     }
 
@@ -141,7 +143,7 @@ const CabinBooking = () => {
     const handleCheckBox = (cabinData, type, date, e, floor) => {
         console.log(cabinData, type);
         let clonnedSelectedCabins = (selectedCabins.length > 0 && [...selectedCabins]) || [];
-        if (e.target.checked && checkMaxSelectionOfDay(date) < 2 && checkWeekLimit(date)) {
+        if (e.target.checked && checkMaxSelectionOfDay(date) < 2 && checkWeekLimit(date) && sameDaySameSessionCheck(date, type)) {
             let selectedObj = { date: date, session: type, floor: floor, checked: true, ...cabinData }
             clonnedSelectedCabins.push(selectedObj);
             setSelectedCabins(clonnedSelectedCabins)
@@ -152,6 +154,10 @@ const CabinBooking = () => {
         } else {
             e.preventDefault();
         }
+    }
+    const sameDaySameSessionCheck = (date, session) => {
+        let selectedSessionOftheDay = (selectedCabins.length > 0 && selectedCabins.filter((cabin) => (cabin.date === date && cabin.session === session))) || [];
+        return selectedSessionOftheDay.length > 0 ? false : true;
     }
     const setMaxDate = () => {
         let comingSunday = new Date(nextSunday(new Date()));
@@ -207,6 +213,18 @@ const CabinBooking = () => {
         dispatch(bookSelectedCabins({ data: payload, navigate, toast }))
     }
 
+    const disabalePastSession = (date, cabin, session) => {
+        let bln = false;
+        if ((new Date(date).toDateString() === new Date().toDateString())) {
+            if ((session === "Session 1") && (new Date().getHours() > 13)) {
+                bln = true
+            } else if ((session === "Session 2") && (new Date().getHours() > 15)) {
+                bln = true;
+            }
+        }
+        return bln
+    }
+
     return (
         <>
             <Form>
@@ -242,7 +260,7 @@ const CabinBooking = () => {
                         </Label>
                     </Col>
                     <Col>
-                        <Form.Group className="mb-3 inputBox">
+                        <Form.Group className="mb-3 facility inputBox">
                             <Form.Select
                                 onChange={(e) => {
                                     setFloorRecord(e.target.value);
@@ -272,7 +290,7 @@ const CabinBooking = () => {
                         <Form.Group className="mb-3 inputBox">
                             <Form.Select
                                 size="sm"
-                                onChange={(e) => setFloorId(e.target.value)}
+                                onChange={(e) => { setFloorId(e.target.value); setSelectedCabins([]) }}
                                 value={floorId}
                             // defaultValue={floorId}
                             >
@@ -302,29 +320,29 @@ const CabinBooking = () => {
                         {cabinsDetails?.booking_dates.length > 0 && cabinsDetails?.booking_dates.map((date, index) => (
                             <Accordion defaultActiveKey={0}>
                                 <Accordion.Item eventKey={index}>
-                                    <Accordion.Header><b>{`${date} - ${cabinsDetails?.building_name}`}</b></Accordion.Header>
+                                    <Accordion.Header><b>{`${(moment(new Date(date)).format("DD/MM/YYYY"))} - ${cabinsDetails?.building_name}`}</b></Accordion.Header>
                                     {cabinsDetails?.floors.map((floorData) => (
                                         <Accordion.Body>
                                             <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>{floorData.name}</div>
                                             <br />
                                             <Row style={{ marginBottom: "5px" }}>
-                                                <Col></Col>
-                                                <Col>First Half</Col>
-                                                <Col>Second Half</Col>
+                                                <Col>Cabin Name</Col>
+                                                <Col>Session 1</Col>
+                                                <Col>Session 2</Col>
                                                 {/* <Col>Full Day</Col> */}
                                             </Row>
                                             {
                                                 floorData.cabins.map((cabin) => (
                                                     <Row key={cabin.id} style={{ marginBottom: "5px" }}>
                                                         <Col>{cabin.name}</Col>
-                                                        {["First Half", "Second Half"].map((sessionType) => (<Col>
+                                                        {["Session 1", "Session 2"].map((sessionType) => (<Col>
                                                             <Form.Check
                                                                 inline
                                                                 name={sessionType}
                                                                 type={"checkbox"}
                                                                 id={sessionType}
                                                                 aria-label={sessionType}
-                                                                disabled={checkCabinAvailability(cabin, sessionType)}
+                                                                disabled={checkCabinAvailability(cabin, sessionType, date) || disabalePastSession(date, cabin, sessionType)}
                                                                 //defaultChecked={setCheckedOpt(cabin, sessionType, date)}
                                                                 onClick={(e) => { handleCheckBox(cabin, sessionType, date, e, { id: floorData.id, name: floorData.name }) }}
                                                             />
