@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import * as api from "../api";
+import * as api from "http://localhost:3004/posts";
 
 export const availableWorkspace = createAsyncThunk(
   "bookworkspace/availableWorkspace",
@@ -37,17 +37,6 @@ export const bookworkspace = createAsyncThunk(
 
 export const updateModifyBookingData = createAsyncThunk(
   "bookworkspace/updateModifyBookingData",
-  async (data) => {
-    try {
-      return data;
-    } catch (err) {
-      console.log(err.response.data.message);
-    }
-  }
-);
-
-export const updateModifyCabinBookingData = createAsyncThunk(
-  "bookworkspace/updateModifyCabinBookingData",
   async (data) => {
     try {
       return data;
@@ -188,17 +177,6 @@ const bookSlice = createSlice({
       state.modifyBookingData = action.payload;
     },
     [updateModifyBookingData.rejected]: (state, action) => {
-      state.loading = false;
-    },
-    // updateModifyCabinBookingData
-    [updateModifyCabinBookingData.pending]: (state, action) => {
-      state.loading = true;
-    },
-    [updateModifyCabinBookingData.fulfilled]: (state, action) => {
-      state.loading = false;
-      state.modifyBookingData = action.payload;
-    },
-    [updateModifyCabinBookingData.rejected]: (state, action) => {
       state.loading = false;
     },
     // modifyBookWorkSpace

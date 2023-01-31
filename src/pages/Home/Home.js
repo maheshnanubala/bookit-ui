@@ -4,19 +4,29 @@ import { Container, Row, Col, Button, Modal, Table } from "react-bootstrap";
 // import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getMyBookingDetails } from "../../redux/ActionReducer/bookSlice";
+import { updateModifyCabinBookingData } from "../../redux/ActionReducer/bookSlice";
 import { UpcomingBookingCardItem } from "./UpcomingBookingCard";
+import {UpcomingCabinCardItem}  from "./UpcomingCabinBooking"
 import { RecentBookingCardItem } from "./RecentBookingCardItem";
 import "./Home.scss";
 
+fetch("http://localhost:3004/my_cabin_bookings")
 
+
+    
 const Home = () => {
+  
+  
+      
   const [bookedByUser, setBookedByUser] = useState("");
   const [participants, setParticipants] = useState([]);
   const [show, setShow] = useState(false);
-
+  
   // const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { workspaceBookingDetails } = useSelector((state) => ({...state.bookworkspace }));
+  const { workspaceBookingDetails } = useSelector((state) => ({
+    ...state.bookworkspace,
+  }));
 
   const userdetails = JSON.parse(localStorage.getItem("user"));
   const UserObj = JSON.parse(localStorage.getItem("user"))?.user || {};
@@ -26,12 +36,17 @@ const Home = () => {
     dispatch(getMyBookingDetails());
   }, []);
 
+  useEffect(() => {
+    dispatch(updateModifyCabinBookingData());
+  }, []);
+
   const handleClose = () => setShow(false);
   const handleShow = (participants, bookedByUserName) => {
     setShow(true);
     setParticipants(participants);
     setBookedByUser(bookedByUserName);
   };
+
   const upcomingBookings = workspaceBookingDetails?.upcoming_booking_details;
 
   return (
@@ -59,20 +74,33 @@ const Home = () => {
       <section>
         <Row className="custom-upcomingbooking-section pt-5 pb-3">
           <h4 className="headings">Upcoming Bookings</h4>
-          {upcomingBookings?.filter(val => val.active).length > 0 ? (
-            upcomingBookings?.filter(val => val.active).map((booking) => (
-              <React.Fragment key={booking.id}>
-                <UpcomingBookingCardItem
-                  booking={booking}
-                  handleShow={handleShow}
-                />
-              </React.Fragment>
-            ))
+          {upcomingBookings?.filter((val) => val.active).length > 0 ? (
+            upcomingBookings
+              ?.filter((val) => val.active)
+              .map((booking) => (
+                <React.Fragment key={booking.id}>
+                  <UpcomingBookingCardItem
+                    booking={booking}
+                    handleShow={handleShow}
+                  />
+                </React.Fragment>
+              ))
           ) : (
-            <span className="not-found-span">No upcoming bookings</span>
+            <span className="not-found-span">
+              No Upcoming Conference Bookings
+            </span>
           )}
         </Row>
       </section>
+      <section>
+        <Row className="custom-upcomingbooking-section pt-5 pb-3">
+          <h4 className="headings">Upcoming Cabin Bookings</h4>
+          <React.Fragment>
+            <UpcomingCabinCardItem />
+          </React.Fragment>
+        </Row>
+      </section>
+
       <hr className="hr" />
       <section>
         <Row className="custom-recentbooking-section pt-3 pb-3">
@@ -177,7 +205,7 @@ const Home = () => {
           </Row>
         </Modal.Footer>
       </Modal>
-    </Container>
+      </Container>
   );
 };
 

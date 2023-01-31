@@ -12,6 +12,7 @@ import { bookworkspace, availableWorkspace, updateCurrentBookingData, modifyBook
 import moment from "moment";
 import BookSpaceModal from "../BookSpaceModal";
 import Label from "react-bootstrap/FormLabel";
+// import { MultiSelect } from "react-multi-select-component";
 import MultiSelect from "react-multiple-select-dropdown-lite";
 import "react-multiple-select-dropdown-lite/dist/index.css";
 import "./RoomSelection.scss";

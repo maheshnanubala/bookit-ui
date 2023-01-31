@@ -22,6 +22,7 @@
     "react-hook-form": "^7.33.1",
     "react-icons": "^4.4.0",
     "react-moment": "^1.1.2",
+    "react-multi-date-picker": "^3.3.4",
     "react-multi-select-component": "^4.2.9",
     "react-multiple-select-dropdown-lite": "^2.0.5",
     "react-redux": "^8.0.2",
@@ -32,6 +33,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.4.2",
     "sass": "^1.53.0",
+    "sweetalert": "^2.1.2",
     "toastr": "^2.1.4",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
