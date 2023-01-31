@@ -307,7 +307,7 @@ const CabinFillDetails = () => {
                 <form onSubmit={handleSubmit(onSubmit)}>
                   {/* <form onSubmit={formSubmit}> */}
                   <Row className="text-center">
-                    <label>floor1</label>
+                    <label>Floor1</label>
                   </Row>
 
                   <div>
@@ -330,7 +330,7 @@ const CabinFillDetails = () => {
     
                         <tr>
                           <td className="text-left py-4  uppercase font bold text-2xl">
-                            cabin1
+                            Cabin1
                           </td>
                          
                           <td className=" text-center ">
@@ -418,7 +418,7 @@ const CabinFillDetails = () => {
 
                         <tr>
                           <td className="text-left py-4 uppercase font bold text-2xl">
-                            cabin2
+                            Cabin2
                           </td>
                           <td className=" text-center ">
                             <input
