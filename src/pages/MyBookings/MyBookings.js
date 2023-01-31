@@ -118,7 +118,7 @@ const MyBookings = () => {
                   <th>Email</th>
                 </tr>
               </thead>
-              <tbody>
+               <tbody>
                 {participants?.length > 0 ? (
                   participants.map((participant, index) => (
                     <tr key={participants.id}>
@@ -137,7 +137,7 @@ const MyBookings = () => {
                     </td>
                   </tr>
                 )}
-              </tbody>
+              </tbody> 
             </Table>
           </Modal.Body>
         </div>

@@ -2,24 +2,46 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Form, Row, Col, Button, Container, Card, Spinner, Breadcrumb, Modal } from "react-bootstrap";
+import {
+  Form,
+  Row,
+  Col,
+  Button,
+  Container,
+  Card,
+  Spinner,
+  Breadcrumb,
+  Modal,
+} from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { bookWorkSpaceSchema } from "../../../services/ValidationSchema";
-import { bookworkspace, availableWorkspace, updateCurrentBookingData, modifyBookWorkSpace } from "../../../redux/ActionReducer/bookSlice";
+import {
+  bookworkspace,
+  availableWorkspace,
+  updateCurrentBookingData,
+  modifyBookWorkSpace,
+} from "../../../redux/ActionReducer/bookSlice";
 import moment from "moment";
 import BookSpaceModal from "../BookSpaceModal";
 import Label from "react-bootstrap/FormLabel";
+//import { MultiSelect } from "react-multi-select-component";
 import MultiSelect from "react-multiple-select-dropdown-lite";
 import "react-multiple-select-dropdown-lite/dist/index.css";
 import "./RoomSelection.scss";
 
-
 export const RoomSelection = () => {
-  const { loading, workspacedetails, availableworkspace, currentBookingData, modifyBookingData } = useSelector((state) => ({ ...state.bookworkspace }));
-  const { floorId, fromDate, toDate, startTime, endTime, buildingId, purpose, } = useParams();
+  const {
+    loading,
+    workspacedetails,
+    availableworkspace,
+    currentBookingData,
+    modifyBookingData,
+  } = useSelector((state) => ({ ...state.bookworkspace }));
+  const { floorId, fromDate, toDate, startTime, endTime, buildingId, purpose } =
+    useParams();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -29,34 +51,87 @@ export const RoomSelection = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const UserObj = JSON.parse(localStorage.getItem("user"))?.user || {};
 
-  let availableUserIds = (currentBookingData?.userDetails?.participantsIds?.length > 0 && currentBookingData?.userDetails?.participantsIds?.participantsIds) || (availableworkspace?.user_ids !== '' && availableworkspace?.user_ids?.split(",").length > 0 && availableworkspace?.user_ids?.split(",").map((uId) => {
-    return Number(uId)
-  })) || [];
-  let testUserIds = (currentBookingData?.userDetails?.participantsIds?.length > 0 && currentBookingData?.userDetails?.participantsIds) || (availableworkspace?.user_ids !== '' && availableworkspace?.user_ids?.split(",").length > 0 && availableworkspace?.user_ids?.split(",").map((uId) => {
-    return Number(uId)
-  })) || [];
+  let availableUserIds =
+    (currentBookingData?.userDetails?.participantsIds?.length > 0 &&
+      currentBookingData?.userDetails?.participantsIds?.participantsIds) ||
+    (availableworkspace?.user_ids !== "" &&
+      availableworkspace?.user_ids?.split(",").length > 0 &&
+      availableworkspace?.user_ids?.split(",").map((uId) => {
+        return Number(uId);
+      })) ||
+    [];
+  let testUserIds =
+    (currentBookingData?.userDetails?.participantsIds?.length > 0 &&
+      currentBookingData?.userDetails?.participantsIds) ||
+    (availableworkspace?.user_ids !== "" &&
+      availableworkspace?.user_ids?.split(",").length > 0 &&
+      availableworkspace?.user_ids?.split(",").map((uId) => {
+        return Number(uId);
+      })) ||
+    [];
   var workspaceUserLists = workspacedetails?.workspace_details?.UserList;
-  const usersList = workspaceUserLists?.filter((array) => availableUserIds?.includes(array.id));
-  const modifyBookingUserIds = modifyBookingData?.BookingParticipant.map((data) => { return data.id })
+  const usersList = workspaceUserLists?.filter((array) =>
+    availableUserIds?.includes(array.id)
+  );
+  const modifyBookingUserIds = modifyBookingData?.BookingParticipant.map(
+    (data) => {
+      return data.id;
+    }
+  );
 
   const [show, setShow] = useState(false);
-  const [commonMail, setCommonMail] = useState(currentBookingData?.commonMail || modifyBookingData?.common_emails || '');
-  const [comments, setComments] = useState(currentBookingData?.comments || modifyBookingData?.comments || '');
-  const [userList, setUserList] = useState((testUserIds.length > 0 && testUserIds) || modifyBookingUserIds|| [UserObj.id]);
+  const [commonMail, setCommonMail] = useState(
+    currentBookingData?.commonMail || modifyBookingData?.common_emails || ""
+  );
+  const [comments, setComments] = useState(
+    currentBookingData?.comments || modifyBookingData?.comments || ""
+  );
+  const [userList, setUserList] = useState(
+    (testUserIds.length > 0 && testUserIds) ||
+      modifyBookingUserIds || [UserObj.id]
+  );
   const [display_add_val, setDisplay_add_val] = useState("");
   const [display_edit_val, setDisplay_edit_val] = useState("none");
   const [selectedUser, setSelectedUser] = useState(
-    ((usersList?.length > 0 && usersList?.map((x) => x.name).join(",")) || modifyBookingData?.BookingParticipant.map((x) => x.user_name).join(",")) || [UserObj.name]);
-  const [defaultUser, setDefaultUser] = useState((usersList?.length > 0 && usersList?.map((x) => { return { label: x.name, value: x.id } })) || [{ label: UserObj.name, value: UserObj.id }]);
+    (usersList?.length > 0 && usersList?.map((x) => x.name).join(",")) ||
+      modifyBookingData?.BookingParticipant.map((x) => x.user_name).join(
+        ","
+      ) || [UserObj.name]
+  );
+  const [defaultUser, setDefaultUser] = useState(
+    (usersList?.length > 0 &&
+      usersList?.map((x) => {
+        return { label: x.name, value: x.id };
+      })) || [{ label: UserObj.name, value: UserObj.id }]
+  );
   const [showUserModal, setUserModal] = useState(false);
 
   useEffect(() => {
-    if (floorId !== "" && fromDate !== "" && toDate !== "" && startTime !== "" && endTime !== "" && buildingId !== "" && purpose !== "") {
+    if (
+      floorId !== "" &&
+      fromDate !== "" &&
+      toDate !== "" &&
+      startTime !== "" &&
+      endTime !== "" &&
+      buildingId !== "" &&
+      purpose !== ""
+    ) {
       dispatch(
-        availableWorkspace({ floorId, fromDate, toDate, startTime, endTime, buildingId, userList, purpose })
+        availableWorkspace({
+          floorId,
+          fromDate,
+          toDate,
+          startTime,
+          endTime,
+          buildingId,
+          userList,
+          purpose,
+        })
       );
     }
   }, []);
+
+  const [selected, setSelected] = useState([]);
 
   const [roomInfo, setRoomInfo] = useState([]);
   const [bookSpace, setBookspace] = useState({
@@ -106,14 +181,27 @@ export const RoomSelection = () => {
     setShow(false);
   };
   const handleSave = () => {
-    const roomBookingDetails = { ...bookSpace, comments: comments, common_emails: commonMail, active: true }
-    console.log('roomBookingDetails', roomBookingDetails);
+    const roomBookingDetails = {
+      ...bookSpace,
+      comments: comments,
+      common_emails: commonMail,
+      active: true,
+    };
+    console.log("roomBookingDetails", roomBookingDetails);
     setShow(false);
     if (modifyFlag) {
-      dispatch(modifyBookWorkSpace({ bookSpace: roomBookingDetails, navigate, toast, bookingId }));
-    }
-    else {
-      dispatch(bookworkspace({ bookSpace: roomBookingDetails, navigate, toast }));
+      dispatch(
+        modifyBookWorkSpace({
+          bookSpace: roomBookingDetails,
+          navigate,
+          toast,
+          bookingId,
+        })
+      );
+    } else {
+      dispatch(
+        bookworkspace({ bookSpace: roomBookingDetails, navigate, toast })
+      );
     }
   };
 
@@ -123,28 +211,34 @@ export const RoomSelection = () => {
     } else {
       setComments(e.target.value);
     }
-  }
+  };
   const handleUserListModal = (blnVal) => {
     setUserModal(blnVal);
-  }
+  };
   const validateOnsubmit = (formValue) => {
-    if (commonMail !== '' && !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(commonMail))) {
+    if (
+      commonMail !== "" &&
+      !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(commonMail)
+    ) {
       toast.error("Please enter valid email address");
     } else {
       onSubmit(formValue);
     }
-  }
+  };
   const checkAmetiesAvailable = (roomData) => {
     let bln = false;
     let amenitiesList = [];
-    roomData.forEach((obj) => (
-      obj.amenities.forEach((value) => (
-        value.is_present === true && amenitiesList.push(value.name)
-      ))
-    ));
+    roomData.forEach((obj) =>
+      obj.amenities.forEach(
+        (value) => value.is_present === true && amenitiesList.push(value.name)
+      )
+    );
     return amenitiesList.length > 0 ? !bln : bln;
-  }
-  const handleOnchange = (val) => {
+  };
+  const handledropdown = (val) => {
+    setSelected(val);
+
+    console.log("handledropdown", val);
     let userIds = val.split(",").map((uId) => {
       return Number(uId);
     });
@@ -167,6 +261,32 @@ export const RoomSelection = () => {
     setSelectedUser(newArr.join(","));
     setDefaultUser(userObjArr);
   };
+
+    const handleOnchange = (val) => {
+  //console.log("handleOnchange",val);
+      let userIds = val.split(",").map((uId) => {
+        return Number(uId);
+      });
+      setUserList(userIds);
+      setDisplay_add_val("none");
+      setDisplay_edit_val("inline");
+      let newArr = [];
+      let userObjArr = [];
+      let userRecords = workspacedetails?.workspace_details?.UserList;
+      userIds.map((userId) => {
+        userRecords?.find((u) => {
+          if (u.id === Number(userId)) {
+            newArr.push(u.name);
+            userObjArr.push({ label: u.name, value: u.id });
+          }
+          return null;
+        });
+        return userId;
+      });
+      setSelectedUser(newArr.join(","));
+      setDefaultUser(userObjArr);
+    };
+
   const handleUserModalClose = () => {
     setSelectedUser([UserObj.name]);
     setDefaultUser([{ label: UserObj.name, value: UserObj.id }]);
@@ -179,16 +299,16 @@ export const RoomSelection = () => {
   const handleAddParticiapants = () => {
     const userDetails = {
       participants: defaultUser,
-      participantsIds: userList
+      participantsIds: userList,
     };
     const payload = {
       userDetails: userDetails,
       comments: comments,
-      commonMail: commonMail
-    }
-    dispatch(updateCurrentBookingData(payload))
+      commonMail: commonMail,
+    };
+    dispatch(updateCurrentBookingData(payload));
     setUserModal(false);
-  }
+  };
   const onSubmit = (formValue) => {
     let fd = new Date(availableworkspace?.data?.FromDate);
     let td = new Date(availableworkspace?.data?.ToDate);
@@ -221,22 +341,20 @@ export const RoomSelection = () => {
     );
 
   const redirectToModify = () => {
-    if (modifyFlag)
-      navigate(`/modify-booking`)
-    else
-      navigate(`/new-booking`)
+    if (modifyFlag) navigate(`/modify-booking`);
+    else navigate(`/conferenceRoom-booking`);
 
     const payload = {
       userDetails: { participants: selectedUser, participantsIds: userList },
       comments: comments,
-      commonMail: commonMail
-    }
-    dispatch(updateCurrentBookingData(payload))
-  }
+      commonMail: commonMail,
+    };
+    dispatch(updateCurrentBookingData(payload));
+  };
 
-  console.log('testUserIds',testUserIds);
-  console.log('usersList',usersList);
-  console.log('defaultUser',defaultUser);
+  console.log("testUserIds", testUserIds);
+  console.log("usersList", usersList);
+  console.log("defaultUser", defaultUser);
 
   return (
     <Container fluid>
@@ -244,10 +362,10 @@ export const RoomSelection = () => {
         <Col>
           <Breadcrumb>
             <Breadcrumb.Item
-              className="newbooking-breadcrumb-item"
+              className="conferenceRoombooking-breadcrumb-item"
               onClick={redirectToModify}
             >
-              {modifyFlag ? 'Modify Booking' : 'New Booking'}
+              {modifyFlag ? "Modify Booking" : "ConferenceRoom Booking"}
             </Breadcrumb.Item>
             <Breadcrumb.Item className="conference-breadcrumb-item">
               Conference Room Selection{" "}
@@ -328,18 +446,32 @@ export const RoomSelection = () => {
                       <h5 className="mb-3">Select Conference Room</h5>
                       {/* <h6><i> - Info</i></h6> */}
                     </Col>
-                    (<Col className="d-flex" md={2} style={{ alignItems: "baseline" }}>
+                    (
+                    <Col
+                      className="d-flex"
+                      md={2}
+                      style={{ alignItems: "baseline" }}
+                    >
                       <span className="box booking-available"></span>
                       <span>Available</span>
                     </Col>
-                    <Col className="d-flex justify-content-center" md={2} style={{ alignItems: "baseline" }}>
+                    <Col
+                      className="d-flex justify-content-center"
+                      md={2}
+                      style={{ alignItems: "baseline" }}
+                    >
                       <div className="box booking-selected-seats"></div>
                       <span>Selected</span>
                     </Col>
-                    <Col className="d-flex justify-content-end" md={2} style={{ alignItems: "baseline" }}>
+                    <Col
+                      className="d-flex justify-content-end"
+                      md={2}
+                      style={{ alignItems: "baseline" }}
+                    >
                       <div className="box booking-booked-seats"></div>
                       <span>Booked</span>
-                    </Col>)
+                    </Col>
+                    )
                   </Row>
                   <Form.Group>
                     <Row className="seats">
@@ -350,9 +482,11 @@ export const RoomSelection = () => {
                               type="radio"
                               id={item.id}
                               value={item.id}
-                              disabled={availableworkspace?.data?.BookedWorkSpaces.filter(
-                                (x) => x.seats.includes(item.id)
-                              )?.length > 0}
+                              disabled={
+                                availableworkspace?.data?.BookedWorkSpaces.filter(
+                                  (x) => x.seats.includes(item.id)
+                                )?.length > 0
+                              }
                               {...register("selected_workspaces.seats")}
                               onChange={(e) => {
                                 if (e.target.checked) {
@@ -395,32 +529,43 @@ export const RoomSelection = () => {
                     {roomInfo.length > 0
                       ? ""
                       : errors.selected_workspaces &&
-                      errors.selected_workspaces.find((x) => x)?.seats
-                        .message}
+                        errors.selected_workspaces.find((x) => x)?.seats
+                          .message}
                   </span>
                   <br />
                   <Row>
                     <Col className="col-md-3 text-field-label">
-                      <Label>
-                        Comments
-                      </Label>
+                      <Label>Comments</Label>
                     </Col>
                     <Col className="col-md-9">
                       <Form.Group>
-                        <Form.Control className="text-field-input" as="textarea" value={comments} onChange={(e) => { handleInput(e, 'comment') }} />
+                        <Form.Control
+                          className="text-field-input"
+                          as="textarea"
+                          value={comments}
+                          onChange={(e) => {
+                            handleInput(e, "comment");
+                          }}
+                        />
                       </Form.Group>
                     </Col>
                   </Row>
                   <br />
                   <Row>
                     <Col className="col-md-3 text-field-label">
-                      <Label>
-                        Common Mail Id
-                      </Label>
+                      <Label>Common Mail Id</Label>
                     </Col>
                     <Col className="col-md-9">
                       <Form.Group>
-                        <Form.Control style={{ width: "150%" }} type="email" placeholder="Enter email" value={commonMail} onChange={(e) => { handleInput(e, 'email') }} />
+                        <Form.Control
+                          style={{ width: "150%" }}
+                          type="email"
+                          placeholder="Enter email"
+                          value={commonMail}
+                          onChange={(e) => {
+                            handleInput(e, "email");
+                          }}
+                        />
                       </Form.Group>
                     </Col>
                   </Row>
@@ -430,27 +575,42 @@ export const RoomSelection = () => {
                         className="addmem-cust"
                         style={{ display: display_add_val, cursor: "pointer" }}
                       >
-                        <span onClick={() => { handleUserListModal(true) }}>
-                          <i className="bi bi-plus-circle">&nbsp;&nbsp;&nbsp;</i>
+                        <span
+                          onClick={() => {
+                            handleUserListModal(true);
+                          }}
+                        >
+                          <i className="bi bi-plus-circle">
+                            &nbsp;&nbsp;&nbsp;
+                          </i>
                           <u>Add Participants</u>
                         </span>
                       </span>
                       <span
                         className="addmem-cust"
                         style={{
-                          display: selectedUser?.length > 0 ? "inline" : display_edit_val,
+                          display:
+                            selectedUser?.length > 0
+                              ? "inline"
+                              : display_edit_val,
                         }}
                       >
                         <span
-                          style={{ cursor: "pointer", display: display_edit_val }}
-                          onClick={() => { handleUserListModal(true) }}
+                          style={{
+                            cursor: "pointer",
+                            display: display_edit_val,
+                          }}
+                          onClick={() => {
+                            handleUserListModal(true);
+                          }}
                         >
                           <i className="bi bi-plus-circle">
                             &nbsp;&nbsp;&nbsp;<u>Edit Participants</u>{" "}
                           </i>
                         </span>
                         <small>
-                          &nbsp;&nbsp;&nbsp;Selected Participants:&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;Selected
+                          Participants:&nbsp;&nbsp;&nbsp;
                         </small>
                         <span id="selected-members">{selectedUser} </span>
                       </span>
@@ -458,7 +618,9 @@ export const RoomSelection = () => {
                     <Modal
                       id="modal-card"
                       show={showUserModal}
-                      onHide={() => { handleUserListModal(false) }}
+                      onHide={() => {
+                        handleUserListModal(false);
+                      }}
                       size="md"
                       backdrop="static"
                       keyboard={false}
@@ -466,11 +628,12 @@ export const RoomSelection = () => {
                       centered
                     >
                       <Modal.Body id="modal-card">
-                        <Form.Group className="mb-3 ">
+                        <Form.Group className="mb-3">
                           <MultiSelect
                             showArrow
-                            onChange={handleOnchange}
+                            onChange={handledropdown}
                             defaultValue={defaultUser}
+                            value={selected}
                             options={
                               workspacedetails?.workspace_details?.UserList?.map(
                                 (item) => ({
@@ -484,7 +647,13 @@ export const RoomSelection = () => {
                         </Form.Group>
                       </Modal.Body>
                       <Modal.Footer>
-                        <Button onClick={() => { handleAddParticiapants() }} id="modal-save-btn" type="submit">
+                        <Button
+                          onClick={() => {
+                            handleAddParticiapants();
+                          }}
+                          id="modal-save-btn"
+                          type="submit"
+                        >
                           Add
                         </Button>
                         <Button
@@ -502,7 +671,8 @@ export const RoomSelection = () => {
                       <Button
                         type="submit"
                         className="book-conference-room-btn shadow-none"
-                        onClick={redirectToModify}>
+                        onClick={redirectToModify}
+                      >
                         <i className="bi bi-pencil-square me-2" />
                         Modify
                       </Button>
@@ -514,31 +684,35 @@ export const RoomSelection = () => {
                         disabled={roomInfo.length > 0 ? false : true}
                       >
                         {loading ? "Booking..." : "Book Conference Room"}
-                        {loading && (
+                        {/* {loading && (
                           <Spinner
                             animation="border"
                             size="sm"
                             variant="light"
                             className="ms-2"
                           />
-                        )}
+                        )} */}
                       </Button>
                     </Col>
                   </Row>
                 </Col>
                 <Col lg={6} className="amenities-section">
-                  {individualRoomDetail?.length > 0 && checkAmetiesAvailable(individualRoomDetail) && (
-                    <div>
-                      <h6>Amenities</h6>
-                      {individualRoomDetail.map((obj) => (
-                        <div style={{ textAlign: "center" }}>
-                          {obj.amenities.map((value) => (
-                            value.is_present === true && <div>{value.name}</div>
-                          ))}
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  {individualRoomDetail?.length > 0 &&
+                    checkAmetiesAvailable(individualRoomDetail) && (
+                      <div>
+                        <h6>Amenities</h6>
+                        {individualRoomDetail.map((obj) => (
+                          <div style={{ textAlign: "center" }}>
+                            {obj.amenities.map(
+                              (value) =>
+                                value.is_present === true && (
+                                  <div>{value.name}</div>
+                                )
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                 </Col>
               </Row>
             </Form>
@@ -631,7 +805,7 @@ export const RoomSelection = () => {
                     <tbody>
                       <tr>
                         <td colSpan={7} className="text-center pt-3 pb-3">
-                          No Conference Rooms Selected
+                          No Conference Rooms selected
                         </td>
                       </tr>
                     </tbody>

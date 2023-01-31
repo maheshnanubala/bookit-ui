@@ -16,7 +16,7 @@ import format from "date-fns/format";
 import "react-multiple-select-dropdown-lite/dist/index.css";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import "./newBooking.scss";
+import "./ConferenceRoomBooking.scss";
 
 
 const FillDetails = () => {
@@ -114,7 +114,7 @@ const FillDetails = () => {
         navigate(`/modify-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`)
       }
       else {
-        navigate(`/new-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`);
+        navigate(`/conferenceRoom-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`);
       }
     }
   };
@@ -361,8 +361,11 @@ const FillDetails = () => {
               <Form.Group className="mb-3 ">
                 <MultiSelect
                   showArrow
-                  onChange={handleOnchange}
+                  onChange={handledropdown}
                   defaultValue={defaultUser}
+                  value={selected}
+                 // onChange={setSelected}
+          
                   options={
                     workspacedetails?.workspace_details?.UserList?.map(
                       (item) => ({

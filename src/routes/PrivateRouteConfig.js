@@ -3,7 +3,8 @@ import { RoomSelection } from "../pages/BookSpace/RoomSelection/RoomSelection";
 import Home from "../pages/Home/Home.lazy";
 import MyBookings from "../pages/MyBookings/MyBookings.lazy";
 import MyProfile from "../pages/MyProfile/MyProfile.lazy";
-import NewBooking from "../pages/NewBooking/newBooking";
+import ConferenceRoomBooking from "../pages/ConferenceRoomBooking/ConferenceRoomBooking"
+import CabinBooking from "../pages/CabinBooking/cabinBooking";
 import { NotFound } from "../pages/NotFound/NotFound";
 
 export const PrivateRouteConfig = [
@@ -25,21 +26,34 @@ export const PrivateRouteConfig = [
     element: <MyBookings />,
     exact: true,
   },
+
   {
-    name: "new bookings",
-    path: "/new-booking",
-    element: <NewBooking />,
+    name: "conferenceRoom bookings",
+    path: "/conferenceRoom-booking",
+    element: <ConferenceRoomBooking />,
+    exact: true,
+  },
+  {
+    name: "cabin bookings",
+    path: "/cabin-booking",
+    element: <CabinBooking />,
     exact: true,
   },
   {
     name: "modify bookings",
     path: "/modify-booking",
-    element: <NewBooking />,
+    element: <ConferenceRoomBooking />,
+    exact: true,
+  },
+  {
+    name: "modify bookings",
+    path: "/modify- booking",
+    element: <CabinBooking />,
     exact: true,
   },
   {
     name: "room selection",
-    path: "/new-booking/room-selection/:floorId/:fromDate/:toDate/:startTime/:endTime/:buildingId/:purpose",
+    path: "/conferenceRoom-booking/room-selection/:floorId/:fromDate/:toDate/:startTime/:endTime/:buildingId/:purpose",
     element: <RoomSelection />,
     exact: true,
   },

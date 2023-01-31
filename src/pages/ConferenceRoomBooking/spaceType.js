@@ -1,5 +1,5 @@
 import Form from 'react-bootstrap/Form';
-import './newBooking.scss'
+import './ConferenceRoomBooking.scss'
 import { Row, Col} from 'react-bootstrap'
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
@@ -9,7 +9,7 @@ function SpaceType() {
     return <Tooltip {...props} className='tooltip-text'>Work Space under construction</Tooltip>
   }
   return (
-    <Form>
+     <Form>
       {['radio'].map((type) => (
         <div key={`ConferenceRoom-${type}`} className="mb-3">
             <Row>
@@ -34,7 +34,7 @@ function SpaceType() {
             </Row>        
         </div>
       ))}
-    </Form>
+     </Form>
   );
 }
 

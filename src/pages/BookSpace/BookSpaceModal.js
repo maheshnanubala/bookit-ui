@@ -63,8 +63,8 @@ const BookSpaceModal = ({
           <Row className="confirm-content mb-2">
             <Col>
               Room Capacity{" "}
-              {individualRoomDetail &&
-                individualRoomDetail.find((x) => x)?.capacity}{" "}
+               {individualRoomDetail &&
+                individualRoomDetail.find((x) => x)?.capacity}{" "} 
               Seats
             </Col>
           </Row>
