@@ -16,7 +16,7 @@ import format from "date-fns/format";
 import "react-multiple-select-dropdown-lite/dist/index.css";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import "./newBooking.scss";
+import "./conferenceRoomBooking.scss";
 
 
 const FillDetails = () => {
@@ -114,7 +114,7 @@ const FillDetails = () => {
         navigate(`/modify-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`)
       }
       else {
-        navigate(`/new-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`);
+        navigate(`/conferenceRoom-booking/room-selection/${floorId}/${fromDate}/${toDate}/${startTime}/${endTime}/${buildingId}/${purpose}`);
       }
     }
   };

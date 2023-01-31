@@ -7,16 +7,19 @@ import { getMyBookingDetails } from "../../redux/ActionReducer/bookSlice";
 import { UpcomingBookingCardItem } from "./UpcomingBookingCard";
 import { RecentBookingCardItem } from "./RecentBookingCardItem";
 import "./Home.scss";
-
+import { UpcomingCabinCardItem } from "./UpcomingCabinCardItem";
 
 const Home = () => {
   const [bookedByUser, setBookedByUser] = useState("");
   const [participants, setParticipants] = useState([]);
   const [show, setShow] = useState(false);
 
+
   // const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { workspaceBookingDetails } = useSelector((state) => ({...state.bookworkspace }));
+  const { workspaceBookingDetails } = useSelector((state) => ({
+    ...state.bookworkspace
+  }));
 
   const userdetails = JSON.parse(localStorage.getItem("user"));
   const UserObj = JSON.parse(localStorage.getItem("user"))?.user || {};
@@ -46,31 +49,36 @@ const Home = () => {
               </span>
             </h4>
           </Col>
-          {/* <Col className="home-newbooking-btn" xs={12} sm={6} md={6} lg={6}>
-            <Button
-              className="booking-icon"
-              onClick={() => navigate("/new-booking")}
-            >
-              New Booking
-            </Button>
-          </Col> */}
         </Row>
       </section>
       <section>
         <Row className="custom-upcomingbooking-section pt-5 pb-3">
-          <h4 className="headings">Upcoming Bookings</h4>
-          {upcomingBookings?.filter(val => val.active).length > 0 ? (
-            upcomingBookings?.filter(val => val.active).map((booking) => (
-              <React.Fragment key={booking.id}>
-                <UpcomingBookingCardItem
-                  booking={booking}
-                  handleShow={handleShow}
-                />
-              </React.Fragment>
-            ))
+          <h4 className="headings">Upcoming Conference Bookings</h4>
+          {upcomingBookings?.filter((val) => val.active).length > 0 ? (
+            upcomingBookings
+              ?.filter((val) => val.active)
+              .map((booking) => (
+                <React.Fragment key={booking.id}>
+                  <UpcomingBookingCardItem
+                    booking={booking}
+                    handleShow={handleShow}
+                  />
+                </React.Fragment>
+              ))
           ) : (
-            <span className="not-found-span">No upcoming bookings</span>
+            <span className="not-found-span">No upcoming conference bookings</span>
           )}
+        </Row>
+      </section>
+      <section>
+        <Row className="custom-upcomingbooking-section pt-5 pb-3">
+          <h4 className="headings">Upcoming Cabin Bookings</h4>
+          <React.Fragment>
+            <UpcomingCabinCardItem 
+            handleShow={handleShow}
+            />
+          </React.Fragment>
+          <span className="not-found-span">No upcoming Cabin bookings</span>
         </Row>
       </section>
       <hr className="hr" />
@@ -119,7 +127,7 @@ const Home = () => {
           className="booking-participant-body"
           style={{
             height: participants.length > 5 ? "" : "300px",
-            overflow: "auto",
+            overflow: "auto"
           }}
         >
           <Modal.Body>
@@ -177,7 +185,7 @@ const Home = () => {
           </Row>
         </Modal.Footer>
       </Modal>
-    </Container>
+     </Container>
   );
 };
 

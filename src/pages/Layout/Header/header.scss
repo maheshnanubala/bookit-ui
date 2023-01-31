@@ -23,23 +23,18 @@
 #icon_text {
    padding-left: 10px;
 }
-.header-newbooking-btn{
+.header-conferenceRoombooking-btn{
    display: flex;
    justify-content: flex-end;
 }
+.header-cabinbooking-btn{
+   display: flex;
+   justify-content:space-evenly;
+}
 .booking-icon {
-   width: 154px;
-   height: 40px;
    background: #f06a3e;
-   border-radius: 50px;
-   opacity: 1;
-   float: right;
-   font-family: "lato-Medium";
-   letter-spacing: 0px;
    color: #ffffff;
    border-color: transparent;
-   box-shadow: none;
-   outline: none;
  }
  .booking-icon:hover {
    background-color: #f06a3e;

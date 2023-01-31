@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import indiumLogo from "../../../assest/images/logo.png";
 import "./header.scss";
+import Dropdown from "react-bootstrap/Dropdown";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -15,16 +16,24 @@ const Header = () => {
         <img
           className="logo"
           src={indiumLogo}
-          onClick={() => navigate('/')}
+          onClick={() => navigate("/")}
           alt=""
         />
-        <div className="header-newbooking-btn col-md-7" >
-          <button
-            className="booking-icon"
-            onClick={() => navigate("/new-booking")}
-          >
-            New Booking
-          </button>
+        <div className="header-conferenceRoombooking-btn col-md-7">
+          <Dropdown>
+            <Dropdown.Toggle id="dropdown-basic" className="find-button">
+              New Booking
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item href="/cabin-booking">Cabin Booking</Dropdown.Item>
+              <Dropdown.Item href="/conferenceRoom-booking">
+                Conference Room
+              </Dropdown.Item>
+              <Dropdown.Item disabled={true} href="">
+                Work space
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </div>
         <button className="logout-button" onClick={handleLogout}>
           <i className="bi bi-box-arrow-right" />

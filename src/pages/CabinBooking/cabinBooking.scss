@@ -1,0 +1,182 @@
+.cabin-booking-block {
+  position: relative;
+}
+#page-title {
+  font-family: "lato-heavy";
+  font-size: 16px;
+  color: #0a1656;
+  padding-top: 15px;
+  margin-top: 1rem;
+}
+.inputBox {
+  border: none;
+  border-radius: 5px;
+  background-color: white;
+  width: 12rem;
+  border: 1px solid #dededf;
+  border-radius: 4px;
+  text-align: left;
+  height: 30px;
+}
+.find-button {
+  border-radius: 1.5rem !important;
+  border: none !important;
+  box-shadow: 0px 0px 3px 0px rgba(143, 209, 199, 0.757) !important;
+  height: 40px;
+  font-size: initial;
+  font-family: "lato-Medium";
+  background-color: #f06a3e !important;
+  color: white;
+}
+.msl-option-active {
+  color: #f06a3e !important;
+  background-color: white !important;
+  background-image: url("../../assest/images/member_selected.png") !important;
+  background-size: 20px !important;
+  background-repeat: no-repeat !important;
+  background-position-y: center !important ;
+}
+.msl-option {
+  background-image: url("../../assest/images/employee.png");
+  color: #9c9c9c;
+  background-size: 20px !important;
+  background-repeat: no-repeat !important;
+  background-position-y: center !important ;
+  border-bottom: 2px solid whitesmoke;
+  border-width: 150%;
+  box-shadow: none !important;
+}
+.msl-chip {
+  display: none !important;
+}
+.msl-active ~ .msl-options {
+  max-height: 300px !important;
+}
+.custom-input {
+  width: 400%;
+}
+.floor-label {
+  padding-left: 40%;
+}
+.tooltip > div.tooltip-inner {
+  background-color: #2f3c7f !important;
+}
+.custom-input {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  padding-left: 0.5rem;
+  font-size: 0.875rem;
+  //border-radius: .2rem;
+  border: 1px solid #ced4da;
+}
+.custom-input:focus {
+  outline: none;
+  border: 1px solid #ffffff;
+  box-shadow: 0 0 10px 2px #8fb9dd;
+}
+.custom-output {
+  max-width: 500px;
+  margin: 20rem auto;
+}
+.accordion {
+  max-width: 800px;
+  margin: 2rem auto;
+}
+.accordion-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  cursor: pointer;
+  background-color: #ffffff;
+}
+.accordion-title:hover {
+  background-color: #ffffff;
+}
+.accordion-title,
+.accordion-content {
+  padding: 1rem;
+}
+.accordion-content {
+  background-color: #ffffff;
+}
+.container label {
+  vertical-align: middle;
+}
+#text {
+  vertical-align: middle;
+}
+/* .footer {
+  background: #ffffff;
+} */
+.button1 {
+}
+.button2 {
+  margin-left: 600px;
+  box-shadow: 0px 0px 3px 0px rgba(143, 209, 199, 0.757) !important;
+}
+.button3 {
+  margin-left: 600px;
+  box-shadow: 0px 0px 3px 0px rgba(143, 209, 199, 0.757) !important;
+}
+.booking-participant-modal {
+  font-family: "lato-bold";
+  .participant-model-title {
+    background-color: #4557b3;
+    color: #fdf8f6;
+  }
+  .participant-model-header {
+    background-color: #f06a3e;
+    color: #fdf8f6;
+  }
+  .model-close-button {
+    text-align: center;
+  }
+  .booking-participant-body {
+    background: url("../../assest/images/Indium-software-Logo.png");
+    background-color: #f5f7ff;
+    background-blend-mode: color-burn;
+    background-repeat: no-repeat;
+    background-position-x: right;
+    background-position-y: bottom;
+    width: 100%;
+  }
+  .booking-participant-table {
+    background-color: transparent;
+  }
+  /* .footer-block {
+    margin: 0px;
+    padding: 10px;
+    background-color: #f5f7ff;
+  } */
+  .booked-by-col {
+    font-family: "lato-heavy";
+    color: #0a1656;
+  }
+  .booked-by-row {
+    padding: 15px;
+  }
+  .modal-close-btn {
+    outline: none;
+    box-shadow: none;
+    border: none;
+    font-size: 25px;
+    color: white;
+  }
+  .close-btn {
+    border-radius: 50px;
+    width: 20%;
+  }
+  .close-btn:hover {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+  .close-btn:focus {
+    background-color: #dc3545;
+  }
+}
+input[type="checkbox"] {
+  width: 17px;
+  height: 15px;
+  border: 1px solid black;
+}

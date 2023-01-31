@@ -36,3 +36,4 @@ export const availableworkspace = (floorId, fromDate, toDate, startTime, endTime
     buildingId
   )}&user_ids=${[value]}&purpose=${purpose}`
 );
+export const availablecabinworkspace = (datevalues, buildings ) => API.get(`api/my_cabinbookings?booking_date=${datevalues}&api/my_cabinbookings?building_id=${Number(buildings)}`);

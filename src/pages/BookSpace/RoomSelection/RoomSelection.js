@@ -224,7 +224,7 @@ export const RoomSelection = () => {
     if (modifyFlag)
       navigate(`/modify-booking`)
     else
-      navigate(`/new-booking`)
+      navigate(`/conferenceRoom-booking`)
 
     const payload = {
       userDetails: { participants: selectedUser, participantsIds: userList },
@@ -244,7 +244,7 @@ export const RoomSelection = () => {
         <Col>
           <Breadcrumb>
             <Breadcrumb.Item
-              className="newbooking-breadcrumb-item"
+              className="conferenceRoombooking-breadcrumb-item"
               onClick={redirectToModify}
             >
               {modifyFlag ? 'Modify Booking' : 'New Booking'}
@@ -270,7 +270,7 @@ export const RoomSelection = () => {
                       {new Date(
                         availableworkspace?.data?.FromDate
                       ).toDateString()}
-                    </span>{" "}
+                    </span>
                     {/* -
                     <span className="ms-2">
                       {new Date(

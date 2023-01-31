@@ -1,5 +1,5 @@
 import Form from 'react-bootstrap/Form';
-import './newBooking.scss'
+import './conferenceRoomBooking.scss'
 import { Row, Col} from 'react-bootstrap'
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
