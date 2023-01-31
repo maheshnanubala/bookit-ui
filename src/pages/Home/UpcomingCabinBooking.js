@@ -34,12 +34,12 @@ export const UpcomingCabinCardItem = () => {
     Date: "03/1/2023",
     Cabin: "Cabin 1",
     Floor: "First Floor",
-    Section: "Full Day",
+    Section: "Morning ",
     Sno: 1,
     Date1: "04/1/2023",
-    Cabin1: "Cabin 2",
+    Cabin1: "Cabin 1",
     Floor1: "Second Floor",
-    Section1: "Morning Shift",
+    Section1: "Evening",
     Sno1: 2,
   };
   return (
@@ -124,7 +124,7 @@ export const UpcomingCabinCardItem = () => {
                   <tr>
                     <th>S.No</th>
                     <th>Date</th>
-                    <th>Cabin</th>
+                    <th>Cabin Name</th>
                     <th>Floor</th>
                     <th>Session</th>
                   </tr>

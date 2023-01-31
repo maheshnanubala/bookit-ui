@@ -29,9 +29,9 @@ const CancelCabinBookingModal = ({ show, handleClose, bookingDetails }) => {
     Section: "Morning ",
     Sno: 1,
     Date1: "06/1/2023",
-    Cabin1: "Cabin 2",
+    Cabin1: "Cabin 1",
     Floor1: "Second Floor",
-    Section1: "Morning ",
+    Section1: "Afternoon ",
     Sno1: 2,
     Date2: "07/1/2023",
     Cabin2: "Cabin 1",
@@ -58,7 +58,7 @@ const CancelCabinBookingModal = ({ show, handleClose, bookingDetails }) => {
         </Modal.Header>
         <Modal.Footer className="cancel-modal-footer">
           <Button className="cancel-booking-button" onClick={onCancelBooking}>
-            Cancel 
+          completely
           </Button>
           <Button className="cancel-booking-button" onClick={handleShowModal}  onHide={handleCloseModal}>
             Partial 
@@ -104,7 +104,7 @@ const CancelCabinBookingModal = ({ show, handleClose, bookingDetails }) => {
                 </thead>
                 <tbody>
                  
-                  <td>Jan 10, 2023</td>
+                  <td>Jan 03, 2023</td>
                   <td>{person.Cabin}</td>
                   <th>
                     <input type="checkbox" id="screenshots" unchecked />
@@ -114,7 +114,7 @@ const CancelCabinBookingModal = ({ show, handleClose, bookingDetails }) => {
                 </tbody>
                 <tbody>
                  
-                  <td>Jan 11, 2023</td>
+                  <td>Jan 04, 2023</td>
                   <td>{person.Cabin1}</td>
                   <th>
                     <input type="checkbox" id="screenshots" unchecked />
@@ -122,16 +122,7 @@ const CancelCabinBookingModal = ({ show, handleClose, bookingDetails }) => {
                   </th>
                  
                 </tbody>
-                <tbody>
-                
-                  <td>Jan 12, 2023</td>
-                  <td>{person.Cabin2}</td>
-                  <th>
-                    <input type="checkbox" id="screenshots" unchecked />
-                    <label>{person.Section1}</label>
-                  </th>
-                  
-                </tbody>
+               
               </Table>
               </Col>
               </Row>
