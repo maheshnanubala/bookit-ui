@@ -300,8 +300,7 @@ const CabinFillDetails = () => {
                       <input type="checkbox" disabled={true} />&nbsp;
 
                       <span>Booked</span>
-                    </Col>
-                    
+                    </Col>                   
                   </Row>
                 </Row>
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -736,4 +735,4 @@ const CabinFillDetails = () => {
 
 export default CabinFillDetails;
 
-
+//git
