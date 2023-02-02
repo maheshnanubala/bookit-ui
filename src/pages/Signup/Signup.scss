@@ -125,7 +125,8 @@ input::-ms-clear {
   }
   /*--------footer----------*/
   .footer-block {
-    padding-top: 100px;
+    position: absolute;
+    top: 10px;
     .footer-logo {
       width: 130px;
       padding-top: 10px;
@@ -143,9 +144,9 @@ input::-ms-clear {
 
 /*--------for large screens----------*/
 @media only screen and (min-device-width: 1440px) {
-  .footer-block {
-    padding-top: 80px !important;
-  }
+  // .footer-block {
+  //   //padding-top: 80px !important;
+  // }
 }
 
 /*--------for tablets screens----------*/

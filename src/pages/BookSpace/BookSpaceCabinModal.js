@@ -33,15 +33,10 @@ const BookSpaceModal = ({
             <Col md={12}>
               <Row>
                 <Col md={6} className="confirm-heading-date">
-                  <span>
-                    {/* {fDateString} - {tDateString} */}
-                    {fDateString}
-                  </span>
+                <span>Date : </span>{" "}
                 </Col>
                 <Col md={6} className="ps-3">
-                  <span>
-                    {formData?.start_time}  - {formData?.end_time}
-                  </span>
+                <span>Building : </span>{" "}
                 </Col>
               </Row>
             </Col>

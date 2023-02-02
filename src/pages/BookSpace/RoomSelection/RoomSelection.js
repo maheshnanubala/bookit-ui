@@ -1,73 +1,61 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
+// import validator from 'validator'
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  Form,
-  Row,
-  Col,
-  Table,
-  Button,
-  Container,
-  Card,
-  Spinner,
-  Breadcrumb,
-} from "react-bootstrap";
+import { Form, Row, Col, Button, Container, Card, Spinner, Breadcrumb, Modal } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
-import moment from "moment";
 import { toast } from "react-toastify";
 import { bookWorkSpaceSchema } from "../../../services/ValidationSchema";
+import { bookworkspace, availableWorkspace, updateCurrentBookingData, modifyBookWorkSpace } from "../../../redux/ActionReducer/bookSlice";
+import moment from "moment";
 import BookSpaceModal from "../BookSpaceModal";
+import Label from "react-bootstrap/FormLabel";
+// import { MultiSelect } from "react-multi-select-component";
+import MultiSelect from "react-multiple-select-dropdown-lite";
+import "react-multiple-select-dropdown-lite/dist/index.css";
 import "./RoomSelection.scss";
-import {
-  bookworkspace,
-  availableWorkspace,
-} from "../../../redux/ActionReducer/bookSlice";
-//import format from "date-fns/format";
+
 
 export const RoomSelection = () => {
-  const {
-    floorId,
-    fromDate,
-    toDate,
-    startTime,
-    endTime,
-    buildingId,
-    value,
-    purpose,
-  } = useParams();
+  const { loading, workspacedetails, availableworkspace, currentBookingData, modifyBookingData } = useSelector((state) => ({ ...state.bookworkspace }));
+  const { floorId, fromDate, toDate, startTime, endTime, buildingId, purpose, } = useParams();
 
-  const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const modifyFlag = modifyBookingData ? true : false;
+  const bookingId = modifyBookingData?.id;
   const user = JSON.parse(localStorage.getItem("user"));
-  const { loading, availableworkspace } = useSelector((state) => ({
-    ...state.bookworkspace,
-  }));
+  const UserObj = JSON.parse(localStorage.getItem("user"))?.user || {};
+
+  let availableUserIds = (currentBookingData?.userDetails?.participantsIds?.length > 0 && currentBookingData?.userDetails?.participantsIds?.participantsIds) || (availableworkspace?.user_ids !== '' && availableworkspace?.user_ids?.split(",").length > 0 && availableworkspace?.user_ids?.split(",").map((uId) => {
+    return Number(uId)
+  })) || [];
+  let testUserIds = (currentBookingData?.userDetails?.participantsIds?.length > 0 && currentBookingData?.userDetails?.participantsIds) || (availableworkspace?.user_ids !== '' && availableworkspace?.user_ids?.split(",").length > 0 && availableworkspace?.user_ids?.split(",").map((uId) => {
+    return Number(uId)
+  })) || [];
+  var workspaceUserLists = workspacedetails?.workspace_details?.UserList;
+  const usersList = workspaceUserLists?.filter((array) => availableUserIds?.includes(array.id));
+  const modifyBookingUserIds = modifyBookingData?.BookingParticipant.map((data) => { return data.id })
+
+  const [show, setShow] = useState(false);
+  const [commonMail, setCommonMail] = useState(currentBookingData?.commonMail || modifyBookingData?.common_emails || '');
+  const [comments, setComments] = useState(currentBookingData?.comments || modifyBookingData?.comments || '');
+  const [userList, setUserList] = useState((testUserIds.length > 0 && testUserIds) || modifyBookingUserIds|| [UserObj.id]);
+  const [display_add_val, setDisplay_add_val] = useState("");
+  const [display_edit_val, setDisplay_edit_val] = useState("none");
+  const [selectedUser, setSelectedUser] = useState(
+    ((usersList?.length > 0 && usersList?.map((x) => x.name).join(",")) || modifyBookingData?.BookingParticipant.map((x) => x.user_name).join(",")) || [UserObj.name]);
+  const [defaultUser, setDefaultUser] = useState((usersList?.length > 0 && usersList?.map((x) => { return { label: x.name, value: x.id } })) || [{ label: UserObj.name, value: UserObj.id }]);
+  const [showUserModal, setUserModal] = useState(false);
 
   useEffect(() => {
-    if (
-      floorId !== "" &&
-      fromDate !== "" &&
-      toDate !== "" &&
-      startTime !== "" &&
-      endTime !== "" &&
-      buildingId !== "" &&
-      value !== "" &&
-      purpose !== ""
-    ) {
+    if (floorId !== "" && fromDate !== "" && toDate !== "" && startTime !== "" && endTime !== "" && buildingId !== "" && purpose !== "") {
       dispatch(
-        availableWorkspace({
-          floorId,
-          fromDate,
-          toDate,
-          startTime,
-          endTime,
-          buildingId,
-          value,
-          purpose,
-          navigate,
-        })
+        availableWorkspace({ floorId, fromDate, toDate, startTime, endTime, buildingId, userList, purpose })
       );
     }
   }, []);
@@ -100,7 +88,7 @@ export const RoomSelection = () => {
   } = useForm({ resolver: yupResolver(bookWorkSpaceSchema) });
 
   const individualRoomDetail =
-    availableworkspace?.data?.FloorDetails?.workspaces.filter((array) =>
+    availableworkspace?.data?.FloorDetails?.workspaces?.filter((array) =>
       roomInfo.some((filter) => filter.id === array.id)
     );
 
@@ -120,10 +108,89 @@ export const RoomSelection = () => {
     setShow(false);
   };
   const handleSave = () => {
+    const roomBookingDetails = { ...bookSpace, comments: comments, common_emails: commonMail, active: true }
+    console.log('roomBookingDetails', roomBookingDetails);
     setShow(false);
-    dispatch(bookworkspace({ bookSpace, navigate, toast }));
+    if (modifyFlag) {
+      dispatch(modifyBookWorkSpace({ bookSpace: roomBookingDetails, navigate, toast, bookingId }));
+    }
+    else {
+      dispatch(bookworkspace({ bookSpace: roomBookingDetails, navigate, toast }));
+    }
   };
 
+  const handleInput = (e, field) => {
+    if (field === "email") {
+      setCommonMail(e.target.value);
+    } else {
+      setComments(e.target.value);
+    }
+  }
+  const handleUserListModal = (blnVal) => {
+    setUserModal(blnVal);
+  }
+  const validateOnsubmit = (formValue) => {
+    if (commonMail !== '' && !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(commonMail))) {
+      toast.error("Please enter valid email address");
+    } else {
+      onSubmit(formValue);
+    }
+  }
+  const checkAmetiesAvailable = (roomData) => {
+    let bln = false;
+    let amenitiesList = [];
+    roomData.forEach((obj) => (
+      obj.amenities.forEach((value) => (
+        value.is_present === true && amenitiesList.push(value.name)
+      ))
+    ));
+    return amenitiesList.length > 0 ? !bln : bln;
+  }
+  const handleOnchange = (val) => {
+    let userIds = val.split(",").map((uId) => {
+      return Number(uId);
+    });
+    setUserList(userIds);
+    setDisplay_add_val("none");
+    setDisplay_edit_val("inline");
+    let newArr = [];
+    let userObjArr = [];
+    let userRecords = workspacedetails?.workspace_details?.UserList;
+    userIds.map((userId) => {
+      userRecords?.find((u) => {
+        if (u.id === Number(userId)) {
+          newArr.push(u.name);
+          userObjArr.push({ label: u.name, value: u.id });
+        }
+        return null;
+      });
+      return userId;
+    });
+    setSelectedUser(newArr.join(","));
+    setDefaultUser(userObjArr);
+  };
+  const handleUserModalClose = () => {
+    setSelectedUser([UserObj.name]);
+    setDefaultUser([{ label: UserObj.name, value: UserObj.id }]);
+    setUserList([UserObj.id]);
+    setDisplay_add_val("none");
+    setDisplay_edit_val("inline");
+    setUserModal(false);
+  };
+
+  const handleAddParticiapants = () => {
+    const userDetails = {
+      participants: defaultUser,
+      participantsIds: userList
+    };
+    const payload = {
+      userDetails: userDetails,
+      comments: comments,
+      commonMail: commonMail
+    }
+    dispatch(updateCurrentBookingData(payload))
+    setUserModal(false);
+  }
   const onSubmit = (formValue) => {
     let fd = new Date(availableworkspace?.data?.FromDate);
     let td = new Date(availableworkspace?.data?.ToDate);
@@ -143,7 +210,7 @@ export const RoomSelection = () => {
       end_time: availableworkspace?.data?.EndTime || "",
       purpose: availableworkspace?.data?.Purpose || "",
       user_id: user?.user?.id,
-      user_ids: availableworkspace?.user_ids.split(",").map(Number) || [],
+      user_ids: userList || [],
       selected_workspaces: formValue.selected_workspaces || [],
       data: availableworkspace?.data || [],
     });
@@ -154,6 +221,48 @@ export const RoomSelection = () => {
     availableworkspace?.data?.FloorDetails?.workspaces.filter(
       (item) => item.type === "conference"
     );
+  //   const [emailError, setEmailError] = useState('')
+  // const validateEmail = (e) => {
+  //   var email = e.target.value
+  
+  //   if (validator.isEmail(email)) {
+  //     setEmailError('Valid Email ID')
+  //   } else {
+  //     setEmailError('Invalid Email ID')
+  //   }  
+  // }
+  // const [errorMessage, setErrorMessage] = useState('')
+ 
+  // const validate = (value) => {
+ 
+  //   if (validator.isStrongPassword(value, {
+  //     minLength: 8, minLowercase: 1,
+  //     minUppercase: 1, minNumbers: 1, minSymbols: 1
+  //   })) {
+  //     setErrorMessage('Valid Password')
+  //   } else {
+  //     setErrorMessage('Invaid Password')
+  //   }
+  // }
+  
+
+  const redirectToModify = () => {
+    if (modifyFlag)
+      navigate(`/modify-booking`)
+    else
+      navigate(`/new-booking`)
+
+    const payload = {
+      userDetails: { participants: selectedUser, participantsIds: userList },
+      comments: comments,
+      commonMail: commonMail
+    }
+    dispatch(updateCurrentBookingData(payload))
+  }
+
+  console.log('testUserIds',testUserIds);
+  console.log('usersList',usersList);
+  console.log('defaultUser',defaultUser);
 
   return (
     <Container fluid>
@@ -162,9 +271,9 @@ export const RoomSelection = () => {
           <Breadcrumb>
             <Breadcrumb.Item
               className="newbooking-breadcrumb-item"
-              onClick={() => navigate(`/new-booking`)}
+              onClick={redirectToModify}
             >
-              New Booking
+              {modifyFlag ? 'Modify Booking' : 'New Booking'}
             </Breadcrumb.Item>
             <Breadcrumb.Item className="conference-breadcrumb-item">
               Conference Room Selection{" "}
@@ -178,7 +287,7 @@ export const RoomSelection = () => {
             <h5 className="room-selection-title mt-3 mb-4">
               Booking Information
             </h5>
-            <Form onSubmit={handleSubmit(onSubmit)}>
+            <Form onSubmit={handleSubmit(validateOnsubmit)}>
               <Row className="mb-3">
                 <Col md={4}>
                   <span className="book-label">Date</span>
@@ -267,9 +376,9 @@ export const RoomSelection = () => {
                               type="radio"
                               id={item.id}
                               value={item.id}
-                              disabled={availableworkspace?.data?.BookedWorkSpaces.find(
-                                (x) => x
-                              )?.seats.includes(item.id)}
+                              disabled={availableworkspace?.data?.BookedWorkSpaces.filter(
+                                (x) => x.seats.includes(item.id)
+                              )?.length > 0}
                               {...register("selected_workspaces.seats")}
                               onChange={(e) => {
                                 if (e.target.checked) {
@@ -315,16 +424,116 @@ export const RoomSelection = () => {
                       errors.selected_workspaces.find((x) => x)?.seats
                         .message}
                   </span>
+                  <br />
+                  <Row>
+                    <Col className="col-md-3 text-field-label">
+                      <Label>
+                        Comments
+                      </Label>
+                    </Col>
+                    <Col className="col-md-9">
+                      <Form.Group>
+                        <Form.Control className="text-field-input" as="textarea" value={comments} onChange={(e) => { handleInput(e, 'comment') }} />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <br />
+                  <Row>
+                    <Col className="col-md-3 text-field-label">
+                      <Label>
+                        Common Mail Id
+                      </Label>
+                    </Col>
+                    <Col className="col-md-9">
+                      <Form.Group>
+                        <Form.Control style={{ width: "150%" }} type="email" placeholder="Enter email" value={commonMail} onChange={(e) => { handleInput(e, 'email') }} />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <Row className="mt-4">
+                    <p className="preview-values">
+                      <span
+                        className="addmem-cust"
+                        style={{ display: display_add_val, cursor: "pointer" }}
+                      >
+                        <span onClick={() => { handleUserListModal(true) }}>
+                          <i className="bi bi-plus-circle">&nbsp;&nbsp;&nbsp;</i>
+                          <u>Add Participants</u>
+                        </span>
+                      </span>
+                      <span
+                        className="addmem-cust"
+                        style={{
+                          display: selectedUser?.length > 0 ? "inline" : display_edit_val,
+                        }}
+                      >
+                        <span
+                          style={{ cursor: "pointer", display: display_edit_val }}
+                          onClick={() => { handleUserListModal(true) }}
+                        >
+                          <i className="bi bi-plus-circle">
+                            &nbsp;&nbsp;&nbsp;<u>Edit Participants</u>{" "}
+                          </i>
+                        </span>
+                        <small>
+                          &nbsp;&nbsp;&nbsp;Selected Participants:&nbsp;&nbsp;&nbsp;
+                        </small>
+                        <span id="selected-members">{selectedUser} </span>
+                      </span>
+                    </p>
+                    <Modal
+                      id="modal-card"
+                      show={showUserModal}
+                      onHide={() => { handleUserListModal(false) }}
+                      size="md"
+                      backdrop="static"
+                      keyboard={false}
+                      aria-labelledby="contained-modal-title-vcenter"
+                      centered
+                    >
+                      <Modal.Body id="modal-card">
+                        <Form.Group className="mb-3 ">
+                          <MultiSelect
+                            showArrow
+                            onChange={handleOnchange}
+                            defaultValue={defaultUser}
+                            options={
+                              workspacedetails?.workspace_details?.UserList?.map(
+                                (item) => ({
+                                  label: item.name,
+                                  value: item.id,
+                                })
+                              ) || []
+                            }
+                            id="modal-card"
+                          />
+                        </Form.Group>
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button onClick={() => { handleAddParticiapants() }} id="modal-save-btn" type="submit">
+                          Add
+                        </Button>
+                        <Button
+                          onClick={handleUserModalClose}
+                          className="modal-close-user-btn"
+                          type="submit"
+                        >
+                          Close
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
+                  </Row>
                   <Row className="mt-4 mb-3 text-lg-end">
                     <Col className="text-end">
+                    
                       <Button
                         type="submit"
                         className="book-conference-room-btn shadow-none"
-                        onClick={() => navigate(`/new-booking`)}
-                      >
+                        onClick={redirectToModify}>
                         <i className="bi bi-pencil-square me-2" />
                         Modify
                       </Button>
+                      
                     </Col>
                     <Col className="text-start">
                       <Button
@@ -345,10 +554,24 @@ export const RoomSelection = () => {
                     </Col>
                   </Row>
                 </Col>
+                <Col lg={6} className="amenities-section">
+                  {individualRoomDetail?.length > 0 && checkAmetiesAvailable(individualRoomDetail) && (
+                    <div>
+                      <h6>Amenities</h6>
+                      {individualRoomDetail.map((obj) => (
+                        <div style={{ textAlign: "center" }}>
+                          {obj.amenities.map((value) => (
+                            value.is_present === true && <div>{value.name}</div>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </Col>
               </Row>
             </Form>
-            <hr className="mt-0 mb-0" />
-            <Row className="mt-3">
+            {/* <hr className="mt-0 mb-0" /> */}
+            {/* <Row className="mt-3">
               <Col lg={12}>
                 <Table
                   className="booking-property-block"
@@ -443,7 +666,7 @@ export const RoomSelection = () => {
                   )}
                 </Table>
               </Col>
-            </Row>
+            </Row> */}
             <BookSpaceModal
               show={show}
               handleClose={handleClose}

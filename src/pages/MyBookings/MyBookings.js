@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import { Container, Row, Col, Button, Modal, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getMyBookingDetails } from "../../redux/ActionReducer/bookSlice";
@@ -17,12 +18,12 @@ const MyBookings = () => {
   const handleClose = () => setShow(false);
 
   const { workspaceBookingDetails } = useSelector((state) => ({
-    ...state.bookworkspace,
+    ...state.bookworkspace, 
   }));
 
   useEffect(() => {
     dispatch(getMyBookingDetails());
-  }, [dispatch]);
+  }, []);
 
   const handleShow = (participants, bookedByUserName) => {
     setShow(true);
@@ -37,11 +38,11 @@ const MyBookings = () => {
       <section className="custom-upcomingbooking-section pt-3 pb-3">
         <Row>
           <h4 className="headings">Upcoming Bookings</h4>
-          {upcomingBookings?.length > 0 ? (
+          {upcomingBookings?.filter(val => val.active).length > 0 ? (
             upcomingBookings
               .slice()
               .sort((a, b) => (a.from_datetime > b.from_datetime ? 1 : -1))
-              .map((booking) => (
+              .filter(val => val.active).map((booking) => (
                 <React.Fragment key={booking.id}>
                   <UpcomingBookingCardItem
                     booking={booking}

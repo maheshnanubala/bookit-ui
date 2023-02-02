@@ -4,24 +4,29 @@
   font-family: "lato-Medium";
   margin-top: 4% !important;
   padding-left: 2%;
+
   .home-newbooking-btn {
     justify-content: end;
   }
+
   .hr {
     border: solid 1px #888888;
     width: auto;
   }
+
   .cardtext {
     color: #92979a;
     font-size: 16px;
     padding: 5px;
     font-weight: bold;
   }
+
   .card-headings {
     font-size: 15px;
     font-family: "lato-bold";
     color: #262f36;
   }
+
   .card-headers {
     text-align: left;
     color: #262f36;
@@ -29,6 +34,7 @@
     font-family: "lato-bold";
     padding-left: 40px;
   }
+
   .home-conferenceroom-icon {
     background-image: url("../../assest/images/Conf_grey\ icon.svg");
     background-repeat: no-repeat;
@@ -36,11 +42,13 @@
     height: 30px;
     display: block;
   }
+
   .icon-dots {
     float: right;
     width: 35px;
     height: 25px;
   }
+
   .booking-icon {
     width: 154px;
     height: 40px;
@@ -55,53 +63,67 @@
     box-shadow: none;
     outline: none;
   }
+
   .booking-icon:hover {
     background-color: #f06a3e;
     color: white;
     border-color: #f06a3e;
   }
+
   .booking-icon:focus {
     background-color: #f06a3e;
   }
+
   .headings {
     color: #0a1656;
     font-size: 18px;
     font-family: "lato-heavy";
   }
+
   #welcomeName-row {
     font-family: "lato-Medium";
     color: #262f36;
   }
+
   #text-name {
     color: #f06a3e !important;
     font-weight: bold;
   }
+
   .text-initial {
     margin-top: 10%;
   }
+
   .ub-border-left {
     border-left: 5px solid #4fba46 !important;
   }
+
   .rb-border-left {
     border-left: 5px solid #f06a3e !important;
   }
+
   .rrb-border-left {
     border-left: 5px solid #db2828 !important;
   }
+
   .text-initial:hover {
     cursor: pointer;
   }
+
   .custom-recentbooking-section {
     height: auto;
   }
+
   .card-list-item {
     li {
       list-style-type: none;
     }
   }
+
   .not-found-span {
     color: red !important;
   }
+
   .time-header {
     text-align: left;
     color: #262f36;
@@ -113,17 +135,21 @@
 
 .booking-participant-modal {
   font-family: "lato-bold";
+
   .participant-model-title {
     background-color: #4557b3;
     color: #fdf8f6;
   }
+
   .participant-model-header {
     background-color: #f06a3e;
     color: #fdf8f6;
   }
+
   .model-close-button {
     text-align: center;
   }
+
   .booking-participant-body {
     background: url("../../assest/images/Indium-software-Logo.png");
     background-color: #f5f7ff;
@@ -133,21 +159,26 @@
     background-position-y: bottom;
     width: 100%;
   }
+
   .booking-participant-table {
     background-color: transparent;
   }
+
   .footer-block {
     margin: 0px;
     padding: 10px;
     background-color: #f5f7ff;
   }
+
   .booked-by-col {
     font-family: "lato-heavy";
     color: #0a1656;
   }
+
   .booked-by-row {
     padding: 15px;
   }
+
   .modal-close-btn {
     outline: none;
     box-shadow: none;
@@ -155,18 +186,37 @@
     font-size: 25px;
     color: white;
   }
+
   .close-btn {
     border-radius: 50px;
     width: 20%;
   }
+
   .close-btn:hover {
     color: #fff;
     background-color: #dc3545;
     border-color: #dc3545;
   }
+
   .close-btn:focus {
     background-color: #dc3545;
   }
+}
+
+.cancel-booking-button {
+  background-color: red;
+  border-color: red;
+  border-radius: 50px;
+  padding: 8.5px 24px 8.5px 24px;
+  color: white;
+  font-size: 14px;
+  font-family: "lato-medium";
+}
+
+.cancel-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /*-------Media Query Mobile---------------*/
