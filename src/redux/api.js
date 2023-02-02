@@ -14,7 +14,7 @@ API.interceptors.request.use((req) => {
 
 // Login
 export const signIn = (data) => API.post("/api/sign-in", data);
-export const VerifySigninOtp = (data) => API.post("/api/verifySigninOtp", data);
+//export const VerifySigninOtp = (data) => API.post("/api/verifySigninOtp", data);
 export const signUp = (data) => API.post("/api/sign-up", data);
 export const verifyUserOtp = (data) => API.post("/api/verify-otp", data);
 
